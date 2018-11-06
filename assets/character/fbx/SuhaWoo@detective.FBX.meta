@@ -1,0 +1,1215 @@
+fileFormatVersion: 2
+guid: 4acfa160c09a2f84da08d6175388f0b3
+timeCreated: 1503627277
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: baby sitter1_bottom
+    100002: baby sitter1_shoes
+    100004: baby sitter1_top
+    100006: baby sitter2_bottom
+    100008: baby sitter2_shoes
+    100010: baby sitter2_top
+    100012: basic_bottom
+    100014: basic_top
+    100016: Bip001
+    100018: Bip001 Footsteps
+    100020: Bip001 Head
+    100022: Bip001 HeadNub
+    100024: Bip001 L Calf
+    100026: Bip001 L Clavicle
+    100028: Bip001 L Finger0
+    100030: Bip001 L Finger01
+    100032: Bip001 L Finger0Nub
+    100034: Bip001 L Finger1
+    100036: Bip001 L Finger11
+    100038: Bip001 L Finger1Nub
+    100040: Bip001 L Finger2
+    100042: Bip001 L Finger21
+    100044: Bip001 L Finger2Nub
+    100046: Bip001 L Finger3
+    100048: Bip001 L Finger31
+    100050: Bip001 L Finger3Nub
+    100052: Bip001 L Finger4
+    100054: Bip001 L Finger41
+    100056: Bip001 L Finger4Nub
+    100058: Bip001 L Foot
+    100060: Bip001 L Forearm
+    100062: Bip001 L Hand
+    100064: Bip001 L Thigh
+    100066: Bip001 L Toe0
+    100068: Bip001 L Toe0Nub
+    100070: Bip001 L UpperArm
+    100072: Bip001 Neck
+    100074: Bip001 Pelvis
+    100076: Bip001 R Calf
+    100078: Bip001 R Clavicle
+    100080: Bip001 R Finger0
+    100082: Bip001 R Finger01
+    100084: Bip001 R Finger0Nub
+    100086: Bip001 R Finger1
+    100088: Bip001 R Finger11
+    100090: Bip001 R Finger1Nub
+    100092: Bip001 R Finger2
+    100094: Bip001 R Finger21
+    100096: Bip001 R Finger2Nub
+    100098: Bip001 R Finger3
+    100100: Bip001 R Finger31
+    100102: Bip001 R Finger3Nub
+    100104: Bip001 R Finger4
+    100106: Bip001 R Finger41
+    100108: Bip001 R Finger4Nub
+    100110: Bip001 R Foot
+    100112: Bip001 R Forearm
+    100114: Bip001 R Hand
+    100116: Bip001 R Thigh
+    100118: Bip001 R Toe0
+    100120: Bip001 R Toe0Nub
+    100122: Bip001 R UpperArm
+    100124: Bip001 Spine
+    100126: Bip001 Spine1
+    100128: 'body '
+    100130: Bone breast l
+    100132: Bone breast r
+    100134: Bone cats_neck
+    100136: Bone cats_onepiece_tail 1
+    100138: Bone cats_onepiece_tail 2
+    100140: Bone cats_onepiece_tail 3
+    100142: Bone eye l
+    100144: Bone eye r
+    100146: Bone figure_onepiece b
+    100148: Bone figure_onepiece f
+    100150: Bone figure_onepiece l
+    100152: Bone figure_onepiece r
+    100154: Bone hair_AriJin b 1
+    100156: Bone hair_AriJin b 2
+    100158: Bone hair_AriJin b 3
+    100160: Bone hair_AriJin l 1
+    100162: Bone hair_AriJin l 2
+    100164: Bone hair_AriJin r 1
+    100166: Bone hair_AriJin r 2
+    100168: Bone hair_Shuel b 1
+    100170: Bone hair_Shuel b 2
+    100172: Bone hair_Shuel b 3
+    100174: Bone hair_Shuel l 1
+    100176: Bone hair_Shuel l 2
+    100178: Bone hair_Shuel l 3
+    100180: Bone hair_Shuel r 1
+    100182: Bone hair_Shuel r 2
+    100184: Bone hair_Shuel r 3
+    100186: Bone hair_SuhaWoo b 1
+    100188: Bone hair_SuhaWoo b 2
+    100190: Bone hair_SuhaWoo b 3
+    100192: Bone hair_SuhaWoo l 1
+    100194: Bone hair_SuhaWoo l 2
+    100196: Bone hair_SuhaWoo l 3
+    100198: Bone hair_SuhaWoo r 1
+    100200: Bone hair_SuhaWoo r 2
+    100202: Bone hair_SuhaWoo r 3
+    100204: Bone healing_onepiece b 1
+    100206: Bone healing_onepiece b 2
+    100208: Bone healing_onepiece f 1
+    100210: Bone healing_onepiece l 1
+    100212: Bone healing_onepiece l 2
+    100214: Bone healing_onepiece r 1
+    100216: Bone healing_onepiece r 2
+    100218: Bone idol_hat
+    100220: Bone idol_onepiece b
+    100222: Bone idol_onepiece f
+    100224: Bone idol_onepiece l
+    100226: Bone idol_onepiece r
+    100228: Bone police_hat
+    100230: Bone princess_onepiece b 1
+    100232: Bone princess_onepiece b 2
+    100234: Bone princess_onepiece b 3
+    100236: Bone princess_onepiece b 4
+    100238: Bone princess_onepiece f 1
+    100240: Bone princess_onepiece f 2
+    100242: Bone princess_onepiece f 3
+    100244: Bone princess_onepiece f 4
+    100246: Bone princess_onepiece l 1
+    100248: Bone princess_onepiece l 2
+    100250: Bone princess_onepiece l 3
+    100252: Bone princess_onepiece l 4
+    100254: Bone princess_onepiece r 1
+    100256: Bone princess_onepiece r 2
+    100258: Bone princess_onepiece r 3
+    100260: Bone princess_onepiece r 4
+    100262: Bone singer1_bottom b
+    100264: Bone singer1_bottom f
+    100266: Bone singer1_bottom l
+    100268: Bone singer1_bottom r
+    100270: Bone singer1_top necktie 1
+    100272: Bone singer1_top necktie 2
+    100274: cats_hat
+    100276: cats_onepiece
+    100278: cats_shoes
+    100280: company1_bottom
+    100282: company1_shoes
+    100284: company1_top
+    100286: company2_bottom
+    100288: company2_shoes
+    100290: company2_top
+    100292: crown pin
+    100294: detective1_bottom
+    100296: detective1_shoes
+    100298: detective1_top
+    100300: detective2_bottom
+    100302: detective2_shoes
+    100304: detective2_top
+    100306: face_AriJin
+    100308: face_MinSunwoo
+    100310: face_Shuel
+    100312: face_SuhaWoo
+    100314: fashion_bottom
+    100316: fashion_shoes
+    100318: fashion_top
+    100320: figure_onepiece
+    100322: figure_shoes
+    100324: hair_AriJin
+    100326: hair_MinSunwoo
+    100328: hair_Shuel
+    100330: hair_SuhaWoo
+    100332: healing_onepiece
+    100334: healing_shoes
+    100336: health1_bottom
+    100338: health1_shoes
+    100340: health1_top
+    100342: health2_bottom
+    100344: health2_shoes
+    100346: health2_top
+    100348: idol_hat
+    100350: idol_onepiece
+    100352: idol_shoes
+    100354: Particle View 001
+    100356: Particle View 001 1
+    100358: Particle View 01
+    100360: patissier_hat
+    100362: patissier_onepiece
+    100364: police_bottom
+    100366: police_hat
+    100368: police_shoes
+    100370: police_top
+    100372: princess_hat
+    100374: princess_onepiece
+    100376: ribbon hair band
+    100378: singer1_bottom
+    100380: singer1_shoes
+    100382: singer1_top
+    100384: singer2_onepiece
+    100386: singer2_shoes
+    100388: stewardess_bottom
+    100390: stewardess_hat
+    100392: stewardess_shoes
+    100394: stewardess_top
+    100396: //RootNode
+    100398: teacher1_bottom
+    100400: teacher1_shoes
+    100402: teacher1_top
+    100404: teacher2_bottom
+    100406: teacher2_shoes
+    100408: teacher2_top
+    100410: veterinarian_bottom
+    100412: veterinarian_shoes
+    100414: veterinarian_top
+    100416: zookeeper_bottom
+    100418: zookeeper_shoes
+    100420: zookeeper_top
+    400000: baby sitter1_bottom
+    400002: baby sitter1_shoes
+    400004: baby sitter1_top
+    400006: baby sitter2_bottom
+    400008: baby sitter2_shoes
+    400010: baby sitter2_top
+    400012: basic_bottom
+    400014: basic_top
+    400016: Bip001
+    400018: Bip001 Footsteps
+    400020: Bip001 Head
+    400022: Bip001 HeadNub
+    400024: Bip001 L Calf
+    400026: Bip001 L Clavicle
+    400028: Bip001 L Finger0
+    400030: Bip001 L Finger01
+    400032: Bip001 L Finger0Nub
+    400034: Bip001 L Finger1
+    400036: Bip001 L Finger11
+    400038: Bip001 L Finger1Nub
+    400040: Bip001 L Finger2
+    400042: Bip001 L Finger21
+    400044: Bip001 L Finger2Nub
+    400046: Bip001 L Finger3
+    400048: Bip001 L Finger31
+    400050: Bip001 L Finger3Nub
+    400052: Bip001 L Finger4
+    400054: Bip001 L Finger41
+    400056: Bip001 L Finger4Nub
+    400058: Bip001 L Foot
+    400060: Bip001 L Forearm
+    400062: Bip001 L Hand
+    400064: Bip001 L Thigh
+    400066: Bip001 L Toe0
+    400068: Bip001 L Toe0Nub
+    400070: Bip001 L UpperArm
+    400072: Bip001 Neck
+    400074: Bip001 Pelvis
+    400076: Bip001 R Calf
+    400078: Bip001 R Clavicle
+    400080: Bip001 R Finger0
+    400082: Bip001 R Finger01
+    400084: Bip001 R Finger0Nub
+    400086: Bip001 R Finger1
+    400088: Bip001 R Finger11
+    400090: Bip001 R Finger1Nub
+    400092: Bip001 R Finger2
+    400094: Bip001 R Finger21
+    400096: Bip001 R Finger2Nub
+    400098: Bip001 R Finger3
+    400100: Bip001 R Finger31
+    400102: Bip001 R Finger3Nub
+    400104: Bip001 R Finger4
+    400106: Bip001 R Finger41
+    400108: Bip001 R Finger4Nub
+    400110: Bip001 R Foot
+    400112: Bip001 R Forearm
+    400114: Bip001 R Hand
+    400116: Bip001 R Thigh
+    400118: Bip001 R Toe0
+    400120: Bip001 R Toe0Nub
+    400122: Bip001 R UpperArm
+    400124: Bip001 Spine
+    400126: Bip001 Spine1
+    400128: 'body '
+    400130: Bone breast l
+    400132: Bone breast r
+    400134: Bone cats_neck
+    400136: Bone cats_onepiece_tail 1
+    400138: Bone cats_onepiece_tail 2
+    400140: Bone cats_onepiece_tail 3
+    400142: Bone eye l
+    400144: Bone eye r
+    400146: Bone figure_onepiece b
+    400148: Bone figure_onepiece f
+    400150: Bone figure_onepiece l
+    400152: Bone figure_onepiece r
+    400154: Bone hair_AriJin b 1
+    400156: Bone hair_AriJin b 2
+    400158: Bone hair_AriJin b 3
+    400160: Bone hair_AriJin l 1
+    400162: Bone hair_AriJin l 2
+    400164: Bone hair_AriJin r 1
+    400166: Bone hair_AriJin r 2
+    400168: Bone hair_Shuel b 1
+    400170: Bone hair_Shuel b 2
+    400172: Bone hair_Shuel b 3
+    400174: Bone hair_Shuel l 1
+    400176: Bone hair_Shuel l 2
+    400178: Bone hair_Shuel l 3
+    400180: Bone hair_Shuel r 1
+    400182: Bone hair_Shuel r 2
+    400184: Bone hair_Shuel r 3
+    400186: Bone hair_SuhaWoo b 1
+    400188: Bone hair_SuhaWoo b 2
+    400190: Bone hair_SuhaWoo b 3
+    400192: Bone hair_SuhaWoo l 1
+    400194: Bone hair_SuhaWoo l 2
+    400196: Bone hair_SuhaWoo l 3
+    400198: Bone hair_SuhaWoo r 1
+    400200: Bone hair_SuhaWoo r 2
+    400202: Bone hair_SuhaWoo r 3
+    400204: Bone healing_onepiece b 1
+    400206: Bone healing_onepiece b 2
+    400208: Bone healing_onepiece f 1
+    400210: Bone healing_onepiece l 1
+    400212: Bone healing_onepiece l 2
+    400214: Bone healing_onepiece r 1
+    400216: Bone healing_onepiece r 2
+    400218: Bone idol_hat
+    400220: Bone idol_onepiece b
+    400222: Bone idol_onepiece f
+    400224: Bone idol_onepiece l
+    400226: Bone idol_onepiece r
+    400228: Bone police_hat
+    400230: Bone princess_onepiece b 1
+    400232: Bone princess_onepiece b 2
+    400234: Bone princess_onepiece b 3
+    400236: Bone princess_onepiece b 4
+    400238: Bone princess_onepiece f 1
+    400240: Bone princess_onepiece f 2
+    400242: Bone princess_onepiece f 3
+    400244: Bone princess_onepiece f 4
+    400246: Bone princess_onepiece l 1
+    400248: Bone princess_onepiece l 2
+    400250: Bone princess_onepiece l 3
+    400252: Bone princess_onepiece l 4
+    400254: Bone princess_onepiece r 1
+    400256: Bone princess_onepiece r 2
+    400258: Bone princess_onepiece r 3
+    400260: Bone princess_onepiece r 4
+    400262: Bone singer1_bottom b
+    400264: Bone singer1_bottom f
+    400266: Bone singer1_bottom l
+    400268: Bone singer1_bottom r
+    400270: Bone singer1_top necktie 1
+    400272: Bone singer1_top necktie 2
+    400274: cats_hat
+    400276: cats_onepiece
+    400278: cats_shoes
+    400280: company1_bottom
+    400282: company1_shoes
+    400284: company1_top
+    400286: company2_bottom
+    400288: company2_shoes
+    400290: company2_top
+    400292: crown pin
+    400294: detective1_bottom
+    400296: detective1_shoes
+    400298: detective1_top
+    400300: detective2_bottom
+    400302: detective2_shoes
+    400304: detective2_top
+    400306: face_AriJin
+    400308: face_MinSunwoo
+    400310: face_Shuel
+    400312: face_SuhaWoo
+    400314: fashion_bottom
+    400316: fashion_shoes
+    400318: fashion_top
+    400320: figure_onepiece
+    400322: figure_shoes
+    400324: hair_AriJin
+    400326: hair_MinSunwoo
+    400328: hair_Shuel
+    400330: hair_SuhaWoo
+    400332: healing_onepiece
+    400334: healing_shoes
+    400336: health1_bottom
+    400338: health1_shoes
+    400340: health1_top
+    400342: health2_bottom
+    400344: health2_shoes
+    400346: health2_top
+    400348: idol_hat
+    400350: idol_onepiece
+    400352: idol_shoes
+    400354: Particle View 001
+    400356: Particle View 001 1
+    400358: Particle View 01
+    400360: patissier_hat
+    400362: patissier_onepiece
+    400364: police_bottom
+    400366: police_hat
+    400368: police_shoes
+    400370: police_top
+    400372: princess_hat
+    400374: princess_onepiece
+    400376: ribbon hair band
+    400378: singer1_bottom
+    400380: singer1_shoes
+    400382: singer1_top
+    400384: singer2_onepiece
+    400386: singer2_shoes
+    400388: stewardess_bottom
+    400390: stewardess_hat
+    400392: stewardess_shoes
+    400394: stewardess_top
+    400396: //RootNode
+    400398: teacher1_bottom
+    400400: teacher1_shoes
+    400402: teacher1_top
+    400404: teacher2_bottom
+    400406: teacher2_shoes
+    400408: teacher2_top
+    400410: veterinarian_bottom
+    400412: veterinarian_shoes
+    400414: veterinarian_top
+    400416: zookeeper_bottom
+    400418: zookeeper_shoes
+    400420: zookeeper_top
+    4300000: hair_MinSunwoo
+    4300002: basic_top
+    4300004: police_top
+    4300006: police_bottom
+    4300008: police_shoes
+    4300010: hair_AriJin
+    4300012: hair_SuhaWoo
+    4300014: cats_onepiece
+    4300016: cats_shoes
+    4300018: cats_hat
+    4300020: basic_bottom
+    4300022: stewardess_bottom
+    4300024: stewardess_shoes
+    4300026: stewardess_hat
+    4300028: stewardess_top
+    4300030: ribbon hair band
+    4300032: crown pin
+    4300034: police_hat
+    4300036: baby sitter1_top
+    4300038: baby sitter1_bottom
+    4300040: baby sitter1_shoes
+    4300042: company2_shoes
+    4300044: company2_bottom
+    4300046: company2_top
+    4300048: teacher1_shoes
+    4300050: teacher1_bottom
+    4300052: teacher1_top
+    4300054: health1_bottom
+    4300056: health1_top
+    4300058: health1_shoes
+    4300060: zookeeper_bottom
+    4300062: zookeeper_top
+    4300064: zookeeper_shoes
+    4300066: singer1_top
+    4300068: singer1_shoes
+    4300070: singer1_bottom
+    4300072: idol_onepiece
+    4300074: 'body '
+    4300076: idol_shoes
+    4300078: idol_hat
+    4300080: teacher2_bottom
+    4300082: teacher2_shoes
+    4300084: teacher2_top
+    4300086: veterinarian_bottom
+    4300088: veterinarian_shoes
+    4300090: veterinarian_top
+    4300092: figure_onepiece
+    4300094: figure_shoes
+    4300096: fashion_bottom
+    4300098: fashion_shoes
+    4300100: fashion_top
+    4300102: baby sitter2_bottom
+    4300104: baby sitter2_top
+    4300106: baby sitter2_shoes
+    4300108: healing_onepiece
+    4300110: healing_shoes
+    4300112: company1_top
+    4300114: company1_bottom
+    4300116: company1_shoes
+    4300118: detective1_shoes
+    4300120: detective1_bottom
+    4300122: detective2_shoes
+    4300124: detective2_bottom
+    4300126: detective2_top
+    4300128: singer2_shoes
+    4300130: singer2_onepiece
+    4300132: princess_onepiece
+    4300134: princess_hat
+    4300136: patissier_hat
+    4300138: patissier_onepiece
+    4300140: health2_bottom
+    4300142: health2_top
+    4300144: health2_shoes
+    4300146: face_MinSunwoo
+    4300148: face_AriJin
+    4300150: face_Shuel
+    4300152: face_SuhaWoo
+    4300154: detective1_top
+    4300156: hair_Shuel
+    7400000: detective
+    9500000: //RootNode
+    13700000: baby sitter1_bottom
+    13700002: baby sitter1_shoes
+    13700004: baby sitter1_top
+    13700006: baby sitter2_bottom
+    13700008: baby sitter2_shoes
+    13700010: baby sitter2_top
+    13700012: basic_bottom
+    13700014: basic_top
+    13700016: 'body '
+    13700018: cats_hat
+    13700020: cats_onepiece
+    13700022: cats_shoes
+    13700024: company1_bottom
+    13700026: company1_shoes
+    13700028: company1_top
+    13700030: company2_bottom
+    13700032: company2_shoes
+    13700034: company2_top
+    13700036: crown pin
+    13700038: detective1_bottom
+    13700040: detective1_shoes
+    13700042: detective1_top
+    13700044: detective2_bottom
+    13700046: detective2_shoes
+    13700048: detective2_top
+    13700050: face_AriJin
+    13700052: face_MinSunwoo
+    13700054: face_Shuel
+    13700056: face_SuhaWoo
+    13700058: fashion_bottom
+    13700060: fashion_shoes
+    13700062: fashion_top
+    13700064: figure_onepiece
+    13700066: figure_shoes
+    13700068: hair_AriJin
+    13700070: hair_MinSunwoo
+    13700072: hair_Shuel
+    13700074: hair_SuhaWoo
+    13700076: healing_onepiece
+    13700078: healing_shoes
+    13700080: health1_bottom
+    13700082: health1_shoes
+    13700084: health1_top
+    13700086: health2_bottom
+    13700088: health2_shoes
+    13700090: health2_top
+    13700092: idol_hat
+    13700094: idol_onepiece
+    13700096: idol_shoes
+    13700098: patissier_hat
+    13700100: patissier_onepiece
+    13700102: police_bottom
+    13700104: police_hat
+    13700106: police_shoes
+    13700108: police_top
+    13700110: princess_hat
+    13700112: princess_onepiece
+    13700114: ribbon hair band
+    13700116: singer1_bottom
+    13700118: singer1_shoes
+    13700120: singer1_top
+    13700122: singer2_onepiece
+    13700124: singer2_shoes
+    13700126: stewardess_bottom
+    13700128: stewardess_hat
+    13700130: stewardess_shoes
+    13700132: stewardess_top
+    13700134: teacher1_bottom
+    13700136: teacher1_shoes
+    13700138: teacher1_top
+    13700140: teacher2_bottom
+    13700142: teacher2_shoes
+    13700144: teacher2_top
+    13700146: veterinarian_bottom
+    13700148: veterinarian_shoes
+    13700150: veterinarian_top
+    13700152: zookeeper_bottom
+    13700154: zookeeper_shoes
+    13700156: zookeeper_top
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: detective
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 130
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: baby sitter1_bottom
+        weight: 1
+      - path: baby sitter1_shoes
+        weight: 1
+      - path: baby sitter1_top
+        weight: 1
+      - path: baby sitter2_bottom
+        weight: 1
+      - path: baby sitter2_shoes
+        weight: 1
+      - path: baby sitter2_top
+        weight: 1
+      - path: basic_bottom
+        weight: 1
+      - path: basic_top
+        weight: 1
+      - path: Bip001
+        weight: 1
+      - path: Bip001/Bip001 Footsteps
+        weight: 1
+      - path: Bip001/Bip001 Pelvis
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 L Thigh
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 L Thigh/Bip001 L Calf
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 L Thigh/Bip001 L Calf/Bip001
+          L Foot
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 L Thigh/Bip001 L Calf/Bip001
+          L Foot/Bip001 L Toe0
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 L Thigh/Bip001 L Calf/Bip001
+          L Foot/Bip001 L Toe0/Bip001 L Toe0Nub
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 R Thigh
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 R Thigh/Bip001 R Calf
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 R Thigh/Bip001 R Calf/Bip001
+          R Foot
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 R Thigh/Bip001 R Calf/Bip001
+          R Foot/Bip001 R Toe0
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 R Thigh/Bip001 R Calf/Bip001
+          R Foot/Bip001 R Toe0/Bip001 R Toe0Nub
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Bip001
+          HeadNub
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Bone
+          eye l
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Bone
+          eye r
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Bone
+          hair_AriJin b 1
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Bone
+          hair_AriJin b 1/Bone hair_AriJin b 2
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Bone
+          hair_AriJin b 1/Bone hair_AriJin b 2/Bone hair_AriJin b 3
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Bone
+          hair_AriJin l 1
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Bone
+          hair_AriJin l 1/Bone hair_AriJin l 2
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Bone
+          hair_AriJin r 1
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Bone
+          hair_AriJin r 1/Bone hair_AriJin r 2
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Bone
+          hair_Shuel b 1
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Bone
+          hair_Shuel b 1/Bone hair_Shuel b 2
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Bone
+          hair_Shuel b 1/Bone hair_Shuel b 2/Bone hair_Shuel b 3
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Bone
+          hair_Shuel l 1
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Bone
+          hair_Shuel l 1/Bone hair_Shuel l 2
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Bone
+          hair_Shuel l 1/Bone hair_Shuel l 2/Bone hair_Shuel l 3
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Bone
+          hair_Shuel r 1
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Bone
+          hair_Shuel r 1/Bone hair_Shuel r 2
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Bone
+          hair_Shuel r 1/Bone hair_Shuel r 2/Bone hair_Shuel r 3
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Bone
+          hair_SuhaWoo b 1
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Bone
+          hair_SuhaWoo b 1/Bone hair_SuhaWoo b 2
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Bone
+          hair_SuhaWoo b 1/Bone hair_SuhaWoo b 2/Bone hair_SuhaWoo b 3
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Bone
+          hair_SuhaWoo l 1
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Bone
+          hair_SuhaWoo l 1/Bone hair_SuhaWoo l 2
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Bone
+          hair_SuhaWoo l 1/Bone hair_SuhaWoo l 2/Bone hair_SuhaWoo l 3
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Bone
+          hair_SuhaWoo r 1
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Bone
+          hair_SuhaWoo r 1/Bone hair_SuhaWoo r 2
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Bone
+          hair_SuhaWoo r 1/Bone hair_SuhaWoo r 2/Bone hair_SuhaWoo r 3
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 Head/Bone
+          idol_hat
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 L
+          Clavicle
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 L
+          Clavicle/Bip001 L UpperArm
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 L
+          Clavicle/Bip001 L UpperArm/Bip001 L Forearm
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 L
+          Clavicle/Bip001 L UpperArm/Bip001 L Forearm/Bip001 L Hand
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 L
+          Clavicle/Bip001 L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger0
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 L
+          Clavicle/Bip001 L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger0/Bip001
+          L Finger01
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 L
+          Clavicle/Bip001 L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger0/Bip001
+          L Finger01/Bip001 L Finger0Nub
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 L
+          Clavicle/Bip001 L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger1
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 L
+          Clavicle/Bip001 L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger1/Bip001
+          L Finger11
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 L
+          Clavicle/Bip001 L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger1/Bip001
+          L Finger11/Bip001 L Finger1Nub
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 L
+          Clavicle/Bip001 L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger2
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 L
+          Clavicle/Bip001 L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger2/Bip001
+          L Finger21
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 L
+          Clavicle/Bip001 L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger2/Bip001
+          L Finger21/Bip001 L Finger2Nub
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 L
+          Clavicle/Bip001 L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger3
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 L
+          Clavicle/Bip001 L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger3/Bip001
+          L Finger31
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 L
+          Clavicle/Bip001 L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger3/Bip001
+          L Finger31/Bip001 L Finger3Nub
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 L
+          Clavicle/Bip001 L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger4
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 L
+          Clavicle/Bip001 L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger4/Bip001
+          L Finger41
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 L
+          Clavicle/Bip001 L UpperArm/Bip001 L Forearm/Bip001 L Hand/Bip001 L Finger4/Bip001
+          L Finger41/Bip001 L Finger4Nub
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 R
+          Clavicle
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 R
+          Clavicle/Bip001 R UpperArm
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 R
+          Clavicle/Bip001 R UpperArm/Bip001 R Forearm
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 R
+          Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 R
+          Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger0
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 R
+          Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger0/Bip001
+          R Finger01
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 R
+          Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger0/Bip001
+          R Finger01/Bip001 R Finger0Nub
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 R
+          Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger1
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 R
+          Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger1/Bip001
+          R Finger11
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 R
+          Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger1/Bip001
+          R Finger11/Bip001 R Finger1Nub
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 R
+          Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger2
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 R
+          Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger2/Bip001
+          R Finger21
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 R
+          Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger2/Bip001
+          R Finger21/Bip001 R Finger2Nub
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 R
+          Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger3
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 R
+          Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger3/Bip001
+          R Finger31
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 R
+          Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger3/Bip001
+          R Finger31/Bip001 R Finger3Nub
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 R
+          Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger4
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 R
+          Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger4/Bip001
+          R Finger41
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bip001 Neck/Bip001 R
+          Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand/Bip001 R Finger4/Bip001
+          R Finger41/Bip001 R Finger4Nub
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bone breast l
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bone breast r
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bone cats_neck
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bone singer1_top necktie
+          1
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 Spine1/Bone singer1_top necktie
+          1/Bone singer1_top necktie 2
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone cats_onepiece_tail 1
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone cats_onepiece_tail 1/Bone cats_onepiece_tail
+          2
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone cats_onepiece_tail 1/Bone cats_onepiece_tail
+          2/Bone cats_onepiece_tail 3
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone figure_onepiece b
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone figure_onepiece f
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone figure_onepiece l
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone figure_onepiece r
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone healing_onepiece b 1
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone healing_onepiece b 1/Bone healing_onepiece
+          b 2
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone healing_onepiece f 1
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone healing_onepiece l 1
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone healing_onepiece l 1/Bone healing_onepiece
+          l 2
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone healing_onepiece r 1
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone healing_onepiece r 1/Bone healing_onepiece
+          r 2
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone idol_onepiece b
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone idol_onepiece f
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone idol_onepiece l
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone idol_onepiece r
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone princess_onepiece b 1
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone princess_onepiece b 1/Bone princess_onepiece
+          b 2
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone princess_onepiece b 1/Bone princess_onepiece
+          b 2/Bone princess_onepiece b 3
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone princess_onepiece b 1/Bone princess_onepiece
+          b 2/Bone princess_onepiece b 3/Bone princess_onepiece b 4
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone princess_onepiece f 1
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone princess_onepiece f 1/Bone princess_onepiece
+          f 2
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone princess_onepiece f 1/Bone princess_onepiece
+          f 2/Bone princess_onepiece f 3
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone princess_onepiece f 1/Bone princess_onepiece
+          f 2/Bone princess_onepiece f 3/Bone princess_onepiece f 4
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone princess_onepiece l 1
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone princess_onepiece l 1/Bone princess_onepiece
+          l 2
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone princess_onepiece l 1/Bone princess_onepiece
+          l 2/Bone princess_onepiece l 3
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone princess_onepiece l 1/Bone princess_onepiece
+          l 2/Bone princess_onepiece l 3/Bone princess_onepiece l 4
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone princess_onepiece r 1
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone princess_onepiece r 1/Bone princess_onepiece
+          r 2
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone princess_onepiece r 1/Bone princess_onepiece
+          r 2/Bone princess_onepiece r 3
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone princess_onepiece r 1/Bone princess_onepiece
+          r 2/Bone princess_onepiece r 3/Bone princess_onepiece r 4
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone singer1_bottom b
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone singer1_bottom f
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone singer1_bottom l
+        weight: 1
+      - path: Bip001/Bip001 Pelvis/Bone singer1_bottom r
+        weight: 1
+      - path: 'body '
+        weight: 1
+      - path: Bone police_hat
+        weight: 1
+      - path: cats_hat
+        weight: 1
+      - path: cats_onepiece
+        weight: 1
+      - path: cats_shoes
+        weight: 1
+      - path: company1_bottom
+        weight: 1
+      - path: company1_shoes
+        weight: 1
+      - path: company1_top
+        weight: 1
+      - path: company2_bottom
+        weight: 1
+      - path: company2_shoes
+        weight: 1
+      - path: company2_top
+        weight: 1
+      - path: crown pin
+        weight: 1
+      - path: detective1_bottom
+        weight: 1
+      - path: detective1_shoes
+        weight: 1
+      - path: detective1_top
+        weight: 1
+      - path: detective2_bottom
+        weight: 1
+      - path: detective2_shoes
+        weight: 1
+      - path: detective2_top
+        weight: 1
+      - path: face_AriJin
+        weight: 1
+      - path: face_MinSunwoo
+        weight: 1
+      - path: face_Shuel
+        weight: 1
+      - path: face_SuhaWoo
+        weight: 1
+      - path: fashion_bottom
+        weight: 1
+      - path: fashion_shoes
+        weight: 1
+      - path: fashion_top
+        weight: 1
+      - path: figure_onepiece
+        weight: 1
+      - path: figure_shoes
+        weight: 1
+      - path: hair_AriJin
+        weight: 1
+      - path: hair_MinSunwoo
+        weight: 1
+      - path: hair_Shuel
+        weight: 1
+      - path: hair_SuhaWoo
+        weight: 1
+      - path: healing_onepiece
+        weight: 1
+      - path: healing_shoes
+        weight: 1
+      - path: health1_bottom
+        weight: 1
+      - path: health1_shoes
+        weight: 1
+      - path: health1_top
+        weight: 1
+      - path: health2_bottom
+        weight: 1
+      - path: health2_shoes
+        weight: 1
+      - path: health2_top
+        weight: 1
+      - path: idol_hat
+        weight: 1
+      - path: idol_onepiece
+        weight: 1
+      - path: idol_shoes
+        weight: 1
+      - path: Particle View 001
+        weight: 1
+      - path: Particle View 01
+        weight: 1
+      - path: Particle View 001 1
+        weight: 1
+      - path: patissier_hat
+        weight: 1
+      - path: patissier_onepiece
+        weight: 1
+      - path: police_bottom
+        weight: 1
+      - path: police_hat
+        weight: 1
+      - path: police_shoes
+        weight: 1
+      - path: police_top
+        weight: 1
+      - path: princess_hat
+        weight: 1
+      - path: princess_onepiece
+        weight: 1
+      - path: ribbon hair band
+        weight: 1
+      - path: singer1_bottom
+        weight: 1
+      - path: singer1_shoes
+        weight: 1
+      - path: singer1_top
+        weight: 1
+      - path: singer2_onepiece
+        weight: 1
+      - path: singer2_shoes
+        weight: 1
+      - path: stewardess_bottom
+        weight: 1
+      - path: stewardess_hat
+        weight: 1
+      - path: stewardess_shoes
+        weight: 1
+      - path: stewardess_top
+        weight: 1
+      - path: teacher1_bottom
+        weight: 1
+      - path: teacher1_shoes
+        weight: 1
+      - path: teacher1_top
+        weight: 1
+      - path: teacher2_bottom
+        weight: 1
+      - path: teacher2_shoes
+        weight: 1
+      - path: teacher2_top
+        weight: 1
+      - path: veterinarian_bottom
+        weight: 1
+      - path: veterinarian_shoes
+        weight: 1
+      - path: veterinarian_top
+        weight: 1
+      - path: zookeeper_bottom
+        weight: 1
+      - path: zookeeper_shoes
+        weight: 1
+      - path: zookeeper_top
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
