@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          android:theme="@android:style/Theme.NoTitleBar"
+          package="com.feelingki.fh"
+          android:versionCode="16"
+          android:versionName="0.8.4"
+          android:installLocation="preferExternal"
+          >
+  <uses-sdk android:targetSdkVersion="23" android:minSdkVersion="14" />
+  <uses-feature android:name="android.hardware.camera" />
+  <supports-screens android:anyDensity="true" android:xlargeScreens="true" android:largeScreens="true" android:normalScreens="true" android:smallScreens="true" />
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.WAKE_LOCK" />
+  <!--<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+  <permission android:name="com.feelingki.fh.permission.C2D_MESSAGE" android:protectionLevel="signature"/>
+  <uses-permission android:name="com.feelingki.fh.permission.C2D_MESSAGE"/>-->
+  <uses-permission android:name="android.permission.CAMERA" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+  <application android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" android:screenOrientation="portrait" android:label="@string/app_name" android:icon="@drawable/app_icon" android:isGame="true" android:banner="@drawable/app_banner">
+    <activity android:name="com.feelingki.fh.checkPermission" android:screenOrientation="portrait">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+    <activity android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" android:label="@string/app_name" android:name="com.feelingki.fh.UnityPlayerNativeActivity" android:screenOrientation="portrait" android:launchMode="singleTask" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale">
+      <meta-data android:name="unityplayer.UnityActivity" android:value="true" />
+      <meta-data android:name="unityplayer.ForwardNativeEventsToDalvik" android:value="false" />
+      <meta-data android:name="unityplayer.SkipPermissionsDialog" android:value="true" />
+    </activity>
+    <activity android:name="com.unity3d.player.VideoPlayer" android:label="@string/app_name" android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen" android:screenOrientation="portrait">
+    </activity>
+    
+    <!-- To support devices using the TI S3D library for stereo mode we must add the following library. Devices that require this are: ODG X6 -->
+    <uses-library android:name="com.ti.s3d" android:required="false" />
+    <!-- To support the ODG R7 in stereo mode we must add the following library. -->
+    <uses-library android:name="com.osterhoutgroup.api.ext" android:required="false" />
+
+
+    <!-- FCM 메시지 수신 서비스 --><!--
+    <service android:name="com.feelingki.fh.FCMService">
+      <intent-filter>
+        <action android:name="com.google.firebase.MESSAGING_EVENT" />
+      </intent-filter>
+    </service>
+
+
+    --><!-- FCM ID 수신 서비스 --><!--
+    <service android:name="com.feelingki.fh.FCMIDService" >
+      <intent-filter>
+        <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+      </intent-filter>
+    </service>
+
+
+    --><!-- FCM token 생성을 위해서 필요한 것 같습니다. --><!--
+    <receiver android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver" android:exported="true"
+      android:permission="com.google.android.c2dm.permission.SEND">
+      <intent-filter>
+        <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+        <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
+        <category android:name="com.feelingki.fh"/>
+      </intent-filter>
+    </receiver>
+
+    <receiver android:name="com.google.firebase.iid.FirebaseInstanceIdInternalReceiver"
+      android:exported="false" >
+      <intent-filter android:priority="-500">
+        <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+      </intent-filter>
+    </receiver>
+
+
+    --><!-- FCM 서비스 제공을 위해서 필요한 것 같습니다. --><!--
+    <provider
+         android:authorities="com.feelingki.fh.firebaseinitprovider"
+         android:name="com.google.firebase.provider.FirebaseInitProvider"
+         android:exported="false"
+         android:initOrder="100" />-->
+
+  </application>
+  <uses-feature android:glEsVersion="0x00020000" />
+  <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+  <uses-feature android:name="android.hardware.camera.front" android:required="false" />
+  <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
+  <uses-feature android:name="android.hardware.touchscreen.multitouch" android:required="false" />
+  <uses-feature android:name="android.hardware.touchscreen.multitouch.distinct" android:required="false" />
+  <uses-permission android:name="android.permission.VIBRATE" />
+ 
+</manifest>
