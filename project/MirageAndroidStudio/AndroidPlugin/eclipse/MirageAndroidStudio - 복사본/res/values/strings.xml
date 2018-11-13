@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">플라워링하트 AR</string>
+  
+  <string name="default_web_client_id" translatable="false">200870014695-52mhqvf85nf4ukv1skcv8cdebnhur0ol.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://mirage-80398.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">200870014695</string>
+    <string name="google_api_key" translatable="false">AIzaSyDOv1h9EXnmGuiAU6L8LKZC7b-NZHvtUPA</string>
+    <string name="google_app_id" translatable="false">1:200870014695:android:1dadae99dc2df2e7</string>
+    <string name="google_storage_bucket" translatable="false">mirage-80398.appspot.com</string>
+
+
+  
+</resources>

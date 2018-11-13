@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "200870014695",
+    "firebase_url": "https://mirage-80398.firebaseio.com",
+    "project_id": "mirage-80398",
+    "storage_bucket": "mirage-80398.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:200870014695:android:1dadae99dc2df2e7",
+        "android_client_info": {
+          "package_name": "com.feelingki.fh"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "200870014695-52mhqvf85nf4ukv1skcv8cdebnhur0ol.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.feelingki.fh",
+            "certificate_hash": "64937ec196bb3912dcd9de40862829c50413202c"
+          }
+        },
+        {
+          "client_id": "200870014695-su5t80kjak93p3986kn7t6i0d4affdk0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOv1h9EXnmGuiAU6L8LKZC7b-NZHvtUPA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "200870014695-su5t80kjak93p3986kn7t6i0d4affdk0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "200870014695-0pmefr1uu8sgu6pec3kh3h41t1v35h45.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.feelingki.fh",
+                "app_store_id": "1305660020"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
