@@ -167,6 +167,7 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
 
+        //AndroidFuntionCall.instance.log("start");
         guideButtonUI.SetActive(true);
         uiState = UIState.main;
         canvasBottomButtonUI = cameraMainUI.transform.Find("CanvasMainButtonUI").transform.Find("panelBottom").gameObject;
@@ -393,7 +394,6 @@ public class GameManager : MonoBehaviour
         //Transform obj2 = PopupManager.guideUI.transform.Find("Scroll View").Find("Viewport").Find("Content");
         for (int i = 1; i < 11; i++)
         {
-            Debug.Log("asdfasdf");
             obj.Find("use_" + i).GetComponent<UnityEngine.UI.Image>().sprite = LoadAsset.instance.dicClothImg["use_" + i];
             //obj2.Find("use_" + i).GetComponent<UnityEngine.UI.Image>().sprite = LoadAsset.instance.dicClothImg["use_" + i];
         }

@@ -102,7 +102,7 @@ public class LoadAsset : MonoBehaviour {
         clientVersion = Application.version;
        
         clientAssetVersion = PlayerPrefs.GetInt("assetVersion");
-        //DontDestroyOnLoad(this);
+        DontDestroyOnLoad(this);
     }
     private void Update()
     {
@@ -503,6 +503,7 @@ public class LoadAsset : MonoBehaviour {
             loadingPercent = 100;
             sliderProgressBar.value = loadingPercent / 100;
             progressText.text = string.Format("Loading...{0}%", (int)loadingPercent);
+            //AndroidFuntionCall.instance.log("loading");
         }
     }
 

@@ -659,6 +659,7 @@ public class FashionRecognition : MonoBehaviour
     public void capture()
     {
         buttonOnOff(false, false, false, false, false, false);
+        //canvasFashion.transform.Find("loading").gameObject.SetActive(true);
         if (GameManager.instance.character.active)
             GameManager.instance.character.SetActive(false);
         canvasFashion.transform.Find("top").gameObject.SetActive(false);
@@ -668,11 +669,11 @@ public class FashionRecognition : MonoBehaviour
     }
     public IEnumerator takePicture()
     {
+        //canvasFashion.transform.Find("loading").gameObject.SetActive(false);
         yield return new WaitForEndOfFrame();
         AndroidFuntionCall.texture = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
         AndroidFuntionCall.texture.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0, false);
         AndroidFuntionCall.texture.Apply();
-
 
         img_bytes = ScaleTexture(AndroidFuntionCall.texture, 720, (int)((720 * Screen.height) / Screen.width)).EncodeToJPG();
         capturePlane.SetActive(true);
@@ -686,6 +687,7 @@ public class FashionRecognition : MonoBehaviour
         category = "kid";
         categoryObj.transform.Find("kid").Find("check").gameObject.SetActive(true);
         categoryObj.transform.Find("adult").Find("check").gameObject.SetActive(false);
+        canvasFashion.transform.Find("loading").gameObject.SetActive(false);
     }
     public void buttonOnOff(bool album, bool capture, bool card, bool reCapture, bool send, bool camera)
     {
@@ -883,49 +885,62 @@ public class FashionRecognition : MonoBehaviour
     {
         touchPos = Input.mousePosition;
         Debug.Log("debugP : " + Input.mousePosition);
-        cropTrans.sizeDelta = new Vector2(Math.Abs((orignPos.x - touchPos.x) * 720 / Screen.width), Math.Abs((orignPos.y - touchPos.y) * 1280 / Screen.height));
+        if(((touchPos.x - orignPos.x) * 720 / Screen.width >0 ) && ((touchPos.y - orignPos.y) * 1280/Screen.height >0))
+        {
+            cropTrans.sizeDelta = new Vector2(Math.Abs((orignPos.x - touchPos.x) * 720 / Screen.width), Math.Abs((orignPos.y - touchPos.y) * 1280 / Screen.height));
+        }
     }
     public void scaleDrag_XPYN()
     {
         touchPos = Input.mousePosition;
-        newCropTrans.sizeDelta = new Vector2(Math.Abs((orignPos.x - touchPos.x) * 720 / Screen.width), Math.Abs(y + ((orignPos.y - touchPos.y)) * 1280 / Screen.height));
+        if(((touchPos.x - orignPos.x) * 720 / Screen.width > 0)&&(orignPos.y - touchPos.y + y) * 1280 / Screen.height > 0)
+        {
+            newCropTrans.sizeDelta = new Vector2(Math.Abs((orignPos.x - touchPos.x) * 720 / Screen.width), Math.Abs(y + ((orignPos.y - touchPos.y)) * 1280 / Screen.height));
 
-        Vector3 pos;
-        pos.x = orignPos.x;
-        pos.y = touchPos.y;
-        pos.z = orignPos.z;
-        newCropTrans.position = fashionCamera.ScreenToWorldPoint(pos);
+            Vector3 pos;
+            pos.x = orignPos.x;
+            pos.y = touchPos.y;
+            pos.z = orignPos.z;
+            newCropTrans.position = fashionCamera.ScreenToWorldPoint(pos);
+            cropTrans = newCropTrans;
+        }
         //Debug.Log("size : " + tran.rect.height);
 
-        cropTrans = newCropTrans;
     }
     public void scaleDrag_XNYN()
     {
         touchPos = Input.mousePosition;
-        newCropTrans.sizeDelta = new Vector2(Math.Abs(x + ((orignPos.x - touchPos.x)) * 720 / Screen.width), Math.Abs(y + ((orignPos.y - touchPos.y)) * 1280 / Screen.height));
+        if (((orignPos.x - touchPos.x + x) * 720 / Screen.width) > 0 && (orignPos.y - touchPos.y + y) * 1280 / Screen.height > 0)
+        {
 
-        Vector3 pos;
-        pos.x = touchPos.x;
-        pos.y = touchPos.y;
-        pos.z = orignPos.z;
-        newCropTrans.position = fashionCamera.ScreenToWorldPoint(pos);
+            newCropTrans.sizeDelta = new Vector2(Math.Abs(x + ((orignPos.x - touchPos.x)) * 720 / Screen.width), Math.Abs(y + ((orignPos.y - touchPos.y)) * 1280 / Screen.height));
+
+            Vector3 pos;
+            pos.x = touchPos.x;
+            pos.y = touchPos.y;
+            pos.z = orignPos.z;
+            newCropTrans.position = fashionCamera.ScreenToWorldPoint(pos);
+            cropTrans = newCropTrans;
+        }
         //Debug.Log("size : " + tran.rect.height);
 
-        cropTrans = newCropTrans;
     }
     public void scaleDrag_XNYP()
     {
         touchPos = Input.mousePosition;
-        newCropTrans.sizeDelta = new Vector2(Math.Abs(x + ((orignPos.x - touchPos.x)) * 720 / Screen.width), (touchPos.y - orignPos.y) * 1280 / Screen.height);
+        if (((orignPos.x - touchPos.x + x) * 720 / Screen.width > 0) && ((touchPos.y - orignPos.y) * 1280 / Screen.height > 0))
+        {
+            newCropTrans.sizeDelta = new Vector2(Math.Abs(x + ((orignPos.x - touchPos.x)) * 720 / Screen.width), (touchPos.y - orignPos.y) * 1280 / Screen.height);
 
-        Vector3 pos;
-        pos.x = touchPos.x;
-        pos.y = orignPos.y;
-        pos.z = orignPos.z;
-        newCropTrans.position = fashionCamera.ScreenToWorldPoint(pos);
-        //Debug.Log("size : " + tran.rect.height);
+            Vector3 pos;
+            pos.x = touchPos.x;
+            pos.y = orignPos.y;
+            pos.z = orignPos.z;
+            newCropTrans.position = fashionCamera.ScreenToWorldPoint(pos);
+            //Debug.Log("size : " + tran.rect.height);
 
-        cropTrans = newCropTrans;
+            cropTrans = newCropTrans;
+        }
     }
     public void scaleDragX_N()
     {
@@ -951,7 +966,7 @@ public class FashionRecognition : MonoBehaviour
     {
         touchPos = Input.mousePosition;
 
-        if ((touchPos.x - orignPos.x) > 0)
+        if ((touchPos.x - orignPos.x) * 1280 / Screen.height > 0)
         {
             newCropTrans.sizeDelta = new Vector2((touchPos.x - orignPos.x) * 720 / Screen.width, orignCropTrans.rect.height);
             Debug.Log("input : " + Input.mousePosition.x + ", orign :  " + touchPos.x + ", " + orignPos.x + ", value : " + (touchPos.x - orignPos.x));
@@ -971,7 +986,7 @@ public class FashionRecognition : MonoBehaviour
     public void scaleDragY_N()
     {
         touchPos = Input.mousePosition;
-        if ((orignPos.y - touchPos.y + y) > 0)
+        if ((orignPos.y - touchPos.y + y) * 1280 / Screen.height > 0)
         {
 
             newCropTrans.sizeDelta = new Vector2(orignCropTrans.rect.width, Math.Abs(y + ((orignPos.y - touchPos.y)) * 1280 / Screen.height));

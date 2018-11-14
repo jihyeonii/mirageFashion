@@ -68,7 +68,16 @@ public class AndroidFuntionCall : MonoBehaviour {
 		GameManager.instance.callShareForiOS();
 		#endif
     }
- 
+//    public void log(string str)
+//    {
+//#if UNITY_ANDROID && !UNITY_EDITOR
+//        plugins.Call("log", str);
+//#elif UNITY_IOS
+
+//#elif UNITY_EDITOR
+//        Debug.Log("log");
+//#endif
+//    }
     public void imgPath(string path)
     {
         if (GameManager.instance.uiState == GameManager.UIState.camera)
