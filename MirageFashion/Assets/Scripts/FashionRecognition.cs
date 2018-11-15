@@ -71,7 +71,7 @@ public class FashionRecognition : MonoBehaviour
     public int[] cloth_kIndex;
     byte[] receivedData = new byte[1024];
 
-    public static long nKey;
+    public static long nKey;        //7300: 촬영한 이미지, 7301: 영역설정한 이미지 
 
     public string category = "kid";
 
@@ -92,9 +92,19 @@ public class FashionRecognition : MonoBehaviour
 
     public RectTransform cropRectPos;
 
+
+    public enum Error
+    {
+        none, socket, thread
+    }
+
+    public Error errorState;
+
     // Use this for initialization
     void Start()
     {
+        instance = this;
+        errorState = Error.none;
         fashionCamera = GameObject.Find("FashionCamera").GetComponent<Camera>();
         host = "112.172.129.16";
         port = 8004;
@@ -225,10 +235,11 @@ public class FashionRecognition : MonoBehaviour
         Screen.SetResolution(Screen.width, Screen.height, true);
 
         option = canvasFashion.transform.Find("option").gameObject;
-        //Debug.Log("w : " + Screen.width + ", h : " + Screen.height);
-        //capturePlane.gameObject.transform.localScale = new Vector3(720 / 10, 0.1f, (720 / screenWidth) * screenHeight / 10);
 
-
+        canvasFashion.transform.Find("popup").Find("Text").GetComponent<Text>().font = LoadAsset.instance.font["nanum"];
+        canvasFashion.transform.Find("popup").Find("btnConfirm").Find("Text").GetComponent<Text>().font = LoadAsset.instance.font["nanum"];
+        canvasFashion.transform.Find("popup").Find("btnCancel").Find("Text").GetComponent<Text>().font = LoadAsset.instance.font["nanum"];
+        canvasFashion.transform.Find("option").Find("Text").GetComponent<Text>().font = LoadAsset.instance.font["nanum"];
     }
 
     // Update is called once per frame
@@ -267,6 +278,7 @@ public class FashionRecognition : MonoBehaviour
                 }
                 try
                 {
+                    errorState = Error.none;
                     Debug.Log("connect");
                     tcp_socket = new TcpClient(host, port);
 
@@ -285,7 +297,9 @@ public class FashionRecognition : MonoBehaviour
                 catch (Exception e)
                 {
                     // Something went wrong
+                    errorState = Error.socket;
                     Debug.Log("Socket error: " + e);
+                    PopupManager.instance.showPopup("서버에 접속할 수 없습니다.");
                     //isSend = false;
                 }
             }
@@ -566,12 +580,14 @@ public class FashionRecognition : MonoBehaviour
                 Debug.Log("write");
                 try
                 {
+                    errorState = Error.thread;
                     write.Start();
                     canvasFashion.transform.Find("loading").gameObject.SetActive(true);
                 }
                 catch (Exception e)
                 {
-
+                    errorState = Error.socket;
+                    PopupManager.instance.showPopup("서버에 접속할 수 없습니다.");
                 }
             }
         }

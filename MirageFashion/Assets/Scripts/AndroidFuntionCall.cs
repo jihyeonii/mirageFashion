@@ -55,7 +55,7 @@ public class AndroidFuntionCall : MonoBehaviour {
 		imagePicker.OnPressShowPicker();
 #elif UNITY_EDITOR
         //Debug.Log(Application.persistentDataPath);
-        strImgPath = "C:\\Android\\image.jpg";
+        strImgPath = "C:\\Android\\Camera\\image.jpg";
         imgPath(strImgPath);
 #endif
     }
@@ -126,10 +126,11 @@ public class AndroidFuntionCall : MonoBehaviour {
 
                     if (strImgPath.Contains("Camera"))
                     {
-                        Vector2 width = new Vector3(((float)texture.height) * (float)720 / (float)texture.width, ((float)texture.width) * (float)720 / (float)texture.width);
+                        Vector2 width = new Vector3(((float)texture.height) * (float)1280 / (float)texture.width, ((float)texture.width) * (float)1280 / (float)texture.width);
+                        //Vector2 width = new Vector3(((float)texture.height) * (float)720 / (float)texture.width, ((float)texture.width) * (float)720 / (float)texture.width);
                         GameManager.instance.charCamera.transform.Find("Canvas").Find("background").gameObject.SetActive(true);
                         GameManager.instance.charCamera.transform.Find("Canvas").Find("background").Find("image").GetComponent<UnityEngine.UI.Image>().sprite = Sprite.Create(texture, rect, new Vector2(0, 0));
-                        GameManager.instance.charCamera.transform.Find("Canvas").Find("background").Find("image").GetComponent<RectTransform>().sizeDelta = new Vector2(1280f, 720f);
+                        GameManager.instance.charCamera.transform.Find("Canvas").Find("background").Find("image").GetComponent<RectTransform>().sizeDelta = new Vector2(width.y, width.x);
                         GameManager.instance.charCamera.transform.Find("Canvas").Find("background").Find("image").transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 270));
                     }
                     else
@@ -143,47 +144,7 @@ public class AndroidFuntionCall : MonoBehaviour {
 
                 }
             }
-            //foreach (string tstring in pathList)
-            //{
-            //    WWW www = new WWW("file://" + tstring);
-            //    yield return www;
-
-            //    Texture2D texTmp = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
-            //    www.LoadImageIntoTexture(texTmp);
-            //    if (texTmp.width > texTmp.height)
-            //    {
-            //        //가로사진
-            //        CameraSettings tmp = FindObjectOfType<CameraSettings>();
-            //        if (tmp.IsFrontCameraActive())
-            //        {
-            //            img.transform.localRotation = Quaternion.Euler(new Vector3(180, 90, 270));
-            //        }
-            //        else
-            //        {
-            //            img.transform.localRotation = Quaternion.Euler(new Vector3(180, 90, 270));
-            //        }
-
-            //        img.transform.localScale = new Vector3((720 / screenWidth) * screenHeight / 10, 0.1f, 720 / 10);
-            //        texTmp = ScaleTexture(texTmp, Screen.height, Screen.width);
-            //    }
-            //    else
-            //    {
-            //        CameraSettings tmp = FindObjectOfType<CameraSettings>();
-            //        if (tmp.IsFrontCameraActive())
-            //        {
-            //            img.transform.localRotation = Quaternion.Euler(new Vector3(90, 0, 180));
-            //        }
-            //        else
-            //        {
-            //            img.transform.localRotation = Quaternion.Euler(new Vector3(90, 0, 180));
-            //        }
-            //        img.transform.localScale = new Vector3(720 / 10, 0.1f, (720 / screenWidth) * screenHeight / 10);
-
-            //        texTmp = ScaleTexture(texTmp, Screen.width, Screen.height);
-            //    }
-
-            //    img.material.mainTexture = texTmp;
-            //}
+            
             img.gameObject.SetActive(true);
 
             btnOnOff(true);
@@ -212,6 +173,7 @@ public class AndroidFuntionCall : MonoBehaviour {
                     rect.y = 0;
                     rect.width = texture.width;
                     rect.height = texture.height;
+
                     Vector2 width = new Vector3(((float)texture.width) * (float)720 / (float)texture.width, ((float)texture.height) * (float)720 / (float)texture.width);
                     FashionRecognition.canvasFashion.transform.Find("Image").gameObject.SetActive(true);
                     FashionRecognition.canvasFashion.transform.Find("Image").transform.GetComponent<RectTransform>().sizeDelta = width;
@@ -280,7 +242,7 @@ public class AndroidFuntionCall : MonoBehaviour {
             {
                 LoadAsset.instance.permissionCamera = false;
                 LoadAsset.instance.permissionStorage = false;
-                LoadAsset.instance.showPopup(LoadAsset.statePopup.permission);
+                LoadAsset.instance.showPopup(LoadAsset.Error.permission);
             }
             
 

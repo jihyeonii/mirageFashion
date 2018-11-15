@@ -57,11 +57,11 @@ public class LoadAsset : MonoBehaviour {
     public GameObject popup;
 
     public static int num = 0;
-    public enum statePopup
+    public enum Error
     {
-        basic, netNull, down3G, Update, permission, memory, loadError
+        none, netNull, down3G, Update, permission, memory, loadError
     }
-    public statePopup popupState = statePopup.basic;
+    public Error errorState = Error.none;
     public static float screenRate = 0;
     //
     public bool checkPermission = false;
@@ -107,7 +107,7 @@ public class LoadAsset : MonoBehaviour {
     private void Update()
     {
         
-        test.text = "isnet : " + isNet;
+        //test.text = "isnet : " + isNet;
         if (Application.loadedLevelName == "introScene")
         {
             if (Application.internetReachability == NetworkReachability.ReachableViaCarrierDataNetwork)
@@ -120,7 +120,7 @@ public class LoadAsset : MonoBehaviour {
             if (isNet == null)
             {
                 popup.gameObject.SetActive(true);
-                popupState = statePopup.netNull;
+                errorState = Error.netNull;
                 popup.transform.Find("Text").GetComponent<Text>().text = "네트워크 연결을 확인해 주세요.";
                 popup.transform.Find("Button").gameObject.SetActive(false);
                 //popup.transform.Find("Button").transform.localPosition = new Vector3(0, popup.transform.Find("Button").transform.localPosition.y, popup.transform.Find("Button").transform.localPosition.z);
@@ -132,7 +132,7 @@ public class LoadAsset : MonoBehaviour {
             else if (isNet == "3G" && down3G == false && isCheckAssetVer && isCheckStoreVer && (clientAssetVersion != serverAssetVersion))
             {
                 test.text = "3g";
-                popupState = statePopup.down3G;
+                errorState = Error.down3G;
                 popup.gameObject.SetActive(true);
                 popup.transform.Find("Text").GetComponent<Text>().text = "3G/4G 환경에서는 데이터 요금이 발생할 수 있습니다.";
                 popup.transform.Find("Button").gameObject.SetActive(true);
@@ -218,8 +218,8 @@ public class LoadAsset : MonoBehaviour {
     {
         if (availableMemory >= 0 && availableMemory < 20)
         {
-            popupState = statePopup.memory;
-            showPopup(popupState);
+            errorState = Error.memory;
+            showPopup(errorState);
         }
         else
         {
@@ -229,12 +229,12 @@ public class LoadAsset : MonoBehaviour {
     }
     public void popupBtn(bool btn)
     {
-        if (popupState == statePopup.down3G)
+        if (errorState == Error.down3G)
         {
             down3G = btn;
-            popupState = statePopup.basic;
+            errorState = Error.none;
         }
-        else if (popupState == statePopup.Update)
+        else if (errorState == Error.Update)
         {
             if (btn)
             {
@@ -242,28 +242,28 @@ public class LoadAsset : MonoBehaviour {
                 //Application.Quit();
             }
         }
-        else if(popupState == statePopup.permission)
+        else if(errorState == Error.permission)
         {
             if (btn)
             {
                 Application.Quit();
             }
         }
-        else if(popupState == statePopup.memory)
+        else if(errorState == Error.memory)
         {
             if (btn)
             {
                 Application.Quit();
             }
         }
-        else if(popupState == statePopup.loadError)
+        else if(errorState == Error.loadError)
         {
             if (btn)
             {
                 Application.Quit();
             }
         }
-        else if(popupState == statePopup.netNull)
+        else if(errorState == Error.netNull)
         {
             if (!btn)
             {
@@ -271,9 +271,9 @@ public class LoadAsset : MonoBehaviour {
             }
         }
     }
-    public void showPopup(statePopup popupstate)
+    public void showPopup(Error errorState)
     {
-        if(popupstate == statePopup.permission)
+        if(errorState == Error.permission)
         {
             
             if (permissionCamera == false)
@@ -284,23 +284,23 @@ public class LoadAsset : MonoBehaviour {
             {
                 msg2 = "읽기권한 X";
             }
-            popupState = statePopup.permission;
+            errorState = Error.permission;
             popup.SetActive(true);
             popup.transform.Find("Text").GetComponent<Text>().text = msg1 + "\n" + msg2;
             popup.transform.Find("Button").gameObject.SetActive(true);
             popup.transform.Find("Button").transform.localPosition = new Vector3(0, popup.transform.Find("Button").transform.localPosition.y, popup.transform.Find("Button").transform.localPosition.z);
             popup.transform.Find("Button2").gameObject.SetActive(false);
         }
-        if(popupstate == statePopup.Update)
+        if(errorState == Error.Update)
         {
-            popupState = statePopup.Update;
+            errorState = Error.Update;
             popup.SetActive(true);
             popup.transform.Find("Text").GetComponent<Text>().text = "업데이트 해주세요.";
             popup.transform.Find("Button").gameObject.SetActive(true);
             popup.transform.Find("Button").transform.localPosition = new Vector3(0, popup.transform.Find("Button").transform.localPosition.y, popup.transform.Find("Button").transform.localPosition.z);
             popup.transform.Find("Button2").gameObject.SetActive(false);
         }
-        if(popupstate == statePopup.memory)
+        if(errorState == Error.memory)
         {
             popup.SetActive(true);
             popup.transform.Find("Text").GetComponent<Text>().text = "사용공간이 부족합니다. ";
@@ -308,7 +308,7 @@ public class LoadAsset : MonoBehaviour {
             popup.transform.Find("Button").transform.localPosition = new Vector3(0, popup.transform.Find("Button").transform.localPosition.y, popup.transform.Find("Button").transform.localPosition.z);
             popup.transform.Find("Button2").gameObject.SetActive(false);
         }
-        if(popupstate == statePopup.loadError)
+        if(errorState == Error.loadError)
         {
             popup.SetActive(true);
             popup.transform.Find("Text").GetComponent<Text>().text = "리소스 다운로드를 실패했습니다. \n 잠시후 시도해 주세요.";
@@ -330,7 +330,7 @@ public class LoadAsset : MonoBehaviour {
         if (versionWWW.error != null)
         {
             Debug.Log("error");
-            showPopup(statePopup.loadError);
+            showPopup(Error.loadError);
         }
         serverAssetVersion = int.Parse(versionWWW.text);
         versionWWW.Dispose();
@@ -380,8 +380,8 @@ public class LoadAsset : MonoBehaviour {
             test.text = "www Error : " + www.error;
             downloading = false;
             loadingFail = true;
-            popupState = statePopup.loadError;
-            showPopup(popupState);
+            errorState = Error.loadError;
+            showPopup(errorState);
         }
         
         AssetBundle bundleManifest = www.assetBundle;

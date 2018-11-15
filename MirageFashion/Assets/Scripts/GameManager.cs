@@ -86,20 +86,24 @@ public class GameManager : MonoBehaviour
     //public Text DebugTxt;
     //string path = "/storage/emulated/0/DCIM/TEST/";
 
-    public UIState uiState;
     public PaintState paintState;
     public enum PaintState
     {
         none, pen, text
     }
 
-
+    public UIState uiState;
     public enum UIState
     {
         guide, main, paint, camera, save,fashion
     }
+
+    public Error errorState;
+    public enum Error
+    {
+        none, save, move, galleray
+    }
     public bool isPopup = false;
-    //public bool isTracking = false;
     Texture2D[] texList;
     string[] pathList;
 
@@ -163,10 +167,11 @@ public class GameManager : MonoBehaviour
     public string selectTopColor = "";
     public string selectBottomColor = "";
     public int onClothCount = 0;
+
     private void Start()
     {
         instance = this;
-
+        errorState = Error.none;
         //AndroidFuntionCall.instance.log("start");
         guideButtonUI.SetActive(true);
         uiState = UIState.main;
@@ -326,6 +331,8 @@ public class GameManager : MonoBehaviour
             contentObj.Find("Text_" + i).GetComponent<Text>().font = LoadAsset.instance.font["nanum"];
         }
         guideButtonUI.transform.Find("Guide").Find("Scroll View").Find("Viewport").Find("Content").Find("Text").GetComponent<Text>().font = LoadAsset.instance.font["nanum"];
+
+        
     }
     public void matchMaterial()
     {
@@ -422,6 +429,7 @@ public class GameManager : MonoBehaviour
                     {
 
                         AndroidFuntionCall.instance.img.gameObject.SetActive(false);
+                        charCamera.transform.Find("Canvas").Find("background").gameObject.SetActive(false);
                         AndroidFuntionCall.instance.btnOnOff(true);
                         canvasTopButtonUI.transform.Find("btnCamSwitch").gameObject.SetActive(true);
                         loadGallery = false;
@@ -1266,10 +1274,10 @@ public class GameManager : MonoBehaviour
             canvasBottomButtonUI.transform.Find("cameraModeImg").gameObject.SetActive(false);
             canvasBottomButtonUI.transform.Find("fashion").gameObject.SetActive(true);
             charControlBtnUI.SetActive(true);
+            loadGallery = false;
         }
         else if (uiState == UIState.save)
         {
-            //isTracking = false;
             if (tmp.IsFrontCameraActive())
                 tmp.SelectCamera(CameraDevice.CameraDirection.CAMERA_BACK);
             character.SetActive(false);
@@ -1284,6 +1292,7 @@ public class GameManager : MonoBehaviour
             closeGuide();
             if (!isCardRecognition)
             {
+                //패션인식일 경우
                 showRecognitionCanvas(isCardRecognition);
                 FashionRecognition.canvasFashion.transform.Find("top").GetComponent<UnityEngine.UI.Image>().sprite = Resources.Load<Sprite>("Button/icon_top");
                 FashionRecognition.canvasFashion.transform.Find("bottom").GetComponent<UnityEngine.UI.Image>().sprite = Resources.Load<Sprite>("Button/icon_bottom");
@@ -1295,6 +1304,8 @@ public class GameManager : MonoBehaviour
             canvasBottomButtonUI.transform.Find("cameraModeImg").gameObject.SetActive(false);
             canvasBottomButtonUI.transform.Find("fashion").gameObject.SetActive(true);
             charControlBtnUI.SetActive(false);
+            canvasTopButtonUI.SetActive(true);
+            loadGallery = false;
         }
         else if (uiState == UIState.paint)
         {
@@ -1380,17 +1391,12 @@ public class GameManager : MonoBehaviour
                 recognizeObj[i].SetActive(false);
             }
             instance.uiState = UIState.camera;
+            loadGallery = false;
         }
         else if (uiState == UIState.paint)
         {
-            //if(isTracking == false)
-            //{
-            //    goTrackingScene();
-            //}
-            //else
-            //{
+            
             paintState = PaintState.none;
-            //resetPaintLayout();
             removePaint();
             cameraMainUI.SetActive(true);
             PaintManager.textLayout.SetActive(false);
@@ -1406,9 +1412,6 @@ public class GameManager : MonoBehaviour
             uiState = UIState.camera;
             instantiateSound(clickSound);
 
-            
-
-            //}
         }
         else if (uiState == UIState.save)
         {
@@ -1448,7 +1451,7 @@ public class GameManager : MonoBehaviour
         canvasTopButtonUI.transform.Find("btnAlbum").gameObject.SetActive(true);
         //canvasTopButtonUI.transform.Find("btnGuide").gameObject.SetActive(false);
         PopupManager.instance.cameraPopup.transform.Find("CanvasPopup").Find("SettingPage").Find("btnSetting").gameObject.SetActive(true);
-        loadGallery = false;
+        
         GuideLine.SetActive(false);
 
     }
@@ -1614,11 +1617,16 @@ public class GameManager : MonoBehaviour
 
         try
         {
+            errorState = Error.none;
             File.WriteAllBytes(myDefaultLocation, imageByte);
         }
         catch (Exception ex)
         {
+            errorState = Error.save;
             Debug.LogError(ex.Message, this);
+            PopupManager.instance.showPopup("사진을 저장 할 수 없습니다. \n 잠시 후 시도해 주세요.");
+            paintState = PaintState.none;
+            PaintManager.instance.paintLayout.SetActive(true);
         }
         finally
         {
@@ -1628,18 +1636,26 @@ public class GameManager : MonoBehaviour
         // 임시 디렉토리에서 DCIM 폴더로 이동
         try
         {
+            errorState = Error.none;
+            
             instantiateSound(saveSound);
 
             File.Move(myDefaultLocation, myScreenshotLocation);
-            canvasSaveUI.SetActive(true);
-            PopupManager.instance.showPraiseMsgPopup();
             uiState = UIState.save;
-#if UNITY_ANDROID
+#if !UNITY_EDITOR && UNITY_ANDROID
             AndroidFuntionCall.instance.mediaScan();
 #endif
+            PopupManager.instance.showPraiseMsgPopup();
+            canvasSaveUI.SetActive(true);
         }
         catch (Exception ex)
         {
+#if !UNITY_EDITOR && UNITY_ANDROID
+            errorState = Error.move;
+            PopupManager.instance.showPopup("사진을 저장 할 수 없습니다. \n 잠시 후 시도해 주세요.");
+            paintState = PaintState.none;
+            PaintManager.instance.paintLayout.SetActive(true);
+#endif
             Debug.LogError(ex.Message, this);
         }
         //<<<<<<< HEAD
@@ -1674,6 +1690,7 @@ public class GameManager : MonoBehaviour
 
         try
         {
+            errorState = Error.none;
             AndroidJavaClass mediaClass = new AndroidJavaClass("android.provider.MediaStore$Images$Media");
 
             // Set the tags for the data we want about each image.  This should really be done by calling; 
@@ -1709,7 +1726,9 @@ public class GameManager : MonoBehaviour
         catch (System.Exception e)
         {
             // do something with error...
-			Debug.Log(e.ToString());
+            errorState = Error.galleray;
+            PopupManager.instance.showPopup("사진첩을 불러 올 수 없습니다. \n 잠시후 시도해 주세요.");
+            Debug.Log(e.ToString());
         }
 
         return results;

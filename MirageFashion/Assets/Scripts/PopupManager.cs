@@ -498,7 +498,7 @@ public class PopupManager : MonoBehaviour
     {
         cameraPopup.transform.Find("CanvasPopup").Find("popup").gameObject.SetActive(true);
         cameraPopup.transform.Find("CanvasPopup").Find("popup").Find("popup").Find("Text").GetComponent<Text>().text = text;
-        if (GameManager.instance.isCardRecognition == false && GameManager.instance.uiState == GameManager.UIState.fashion)
+        if (GameManager.instance.isCardRecognition == false && GameManager.instance.uiState == GameManager.UIState.fashion || GameManager.instance.errorState != GameManager.Error.none)
         {
             cameraPopup.transform.Find("CanvasPopup").Find("popup").Find("popup").Find("Button").gameObject.SetActive(true);
             cameraPopup.transform.Find("CanvasPopup").Find("popup").Find("popup").Find("Button").localPosition = new Vector3(0, cameraPopup.transform.Find("CanvasPopup").Find("popup").Find("popup").Find("Button2").localPosition.y);
@@ -550,9 +550,25 @@ public class PopupManager : MonoBehaviour
                 GameManager.canvasTopButtonUI.transform.Find("btnAlbum").gameObject.SetActive(false);
 
             }
-            else if (GameManager.instance.isCardRecognition == false && GameManager.instance.uiState == GameManager.UIState.fashion)
+            else if (GameManager.instance.isCardRecognition == false && GameManager.instance.uiState == GameManager.UIState.fashion && (FashionRecognition.instance.errorState == FashionRecognition.Error.socket|| FashionRecognition.instance.errorState == FashionRecognition.Error.thread))
             {
-
+                //소켓접속 에러
+                FashionRecognition.instance.capturePlane.gameObject.SetActive(false);
+                FashionRecognition.instance.imagePlane.gameObject.SetActive(false);
+                if (GameManager.instance.charInfo.top != "0" || GameManager.instance.charInfo.bottom != "0" || GameManager.instance.charInfo.onepiece != "0")
+                {
+                    FashionRecognition.canvasFashion.transform.Find("top").gameObject.SetActive(true);
+                    FashionRecognition.canvasFashion.transform.Find("bottom").gameObject.SetActive(true);
+                    FashionRecognition.instance.buttonOnOff(true, true, true, false, false, true);
+                    GameManager.instance.character.SetActive(true);
+                }
+                else
+                {
+                    FashionRecognition.canvasFashion.transform.Find("top").gameObject.SetActive(false);
+                    FashionRecognition.canvasFashion.transform.Find("bottom").gameObject.SetActive(false);
+                    FashionRecognition.instance.buttonOnOff(true, true, true, false, false, false);
+                }
+                FashionRecognition.instance.errorState = FashionRecognition.Error.none;
             }
             else if (popupState == Popup.settingDressRoom || popupState == Popup.editDressRoom)
             {
@@ -562,6 +578,10 @@ public class PopupManager : MonoBehaviour
             else if (popupState == Popup.guide)
             {
                 Application.OpenURL(url);
+            }
+            else if(GameManager.instance.errorState == GameManager.Error.save || GameManager.instance.errorState == GameManager.Error.move)
+            {
+
             }
             else
             {
