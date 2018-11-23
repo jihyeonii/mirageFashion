@@ -5,19 +5,17 @@ using UnityEngine.EventSystems;
 using System.Collections.Generic;
 
 public class PaintManager: MonoBehaviour , IPointerDownHandler {
-    public static PaintManager instance;
-    public GameObject parentPaint;
+    public static PaintManager instance;    
+    public GameObject parentPaint;                      //pen, text 생성 위치
 
     public static GameObject penLayout;
-    //public static GameObject stickerLayout;
     public static GameObject textLayout;
     public static GameObject mainLayout;
 
-    public static GameObject optionLayout;
+    public static GameObject optionLayout;              //색상, 팬굵기 
     
     public static int colorState = 0;
     public static int fontState = 0; 
-
     public static int penState = 0;
 
     public Font font1;
@@ -36,12 +34,8 @@ public class PaintManager: MonoBehaviour , IPointerDownHandler {
     public static List<GameObject> paintList;
 
     public GameObject paintLayout;
-    GameObject closeBtn;
 
-     int PEN_TOOL = 0;
-     int TEXT_TOOL = 1;
-
-    //
+    
     Vector2 preDistance;
     Vector2 curDistance;
 
@@ -53,11 +47,7 @@ public class PaintManager: MonoBehaviour , IPointerDownHandler {
     bool isMove = false;
     GameObject obj;
     string msg = "";
-    public enum txtTransformState
-    {
-        none, move, expand, reduce
-    }
-
+   
     public Text test;
     // Use this for initialization
     void Start () {
@@ -130,17 +120,14 @@ public class PaintManager: MonoBehaviour , IPointerDownHandler {
                 }
                 else
                 {
-                    //test.text = delayTime.ToString();
                     switch (Input.GetTouch(0).phase)
                     {
                         case TouchPhase.Began:
                             isMove = true;
-                            //test.text = "시작";
                             obj = TouchUICheck(1);
                             textPos = GameManager.instance.cameraPaintUI.GetComponent<Camera>().WorldToScreenPoint(obj.transform.position);
                             textPos.z = 0;
                             distanceMousePos = textPos - Input.mousePosition;
-                            //test.text = "textPos : " + textPos.ToString() + ", distance : " + distanceMousePos.ToString();
                             break;
                         case TouchPhase.Moved:
                             if (isMove == false)
@@ -151,7 +138,6 @@ public class PaintManager: MonoBehaviour , IPointerDownHandler {
 
                                 pos.z = 100 - ((float)objCount) / 10;
                                 obj.gameObject.transform.position = pos;
-                                //test.text = obj.transform.position + ", " + distanceMousePos;
                                 Vector3 viewport = GameManager.instance.cameraPaintUI/*.transform.Find("Camera")*/.GetComponent<Camera>().WorldToScreenPoint(pos);
                                 if (viewport.x < 30 || viewport.x > Screen.width - 30 || viewport.y < 30 || viewport.y > Screen.height - 30)
                                 {
@@ -164,7 +150,6 @@ public class PaintManager: MonoBehaviour , IPointerDownHandler {
                         case TouchPhase.Ended:
                             isMove = false;
                             delayTime = 0f;
-                            //test.text = "끝";
                             break;
                     }
                 }
@@ -263,14 +248,10 @@ public class PaintManager: MonoBehaviour , IPointerDownHandler {
                     float keyboardHeight = GetKeyboardSize();
                     Vector3 pos = optionLayout.transform.position;
                    
-                    pos.y = GameManager.instance.cameraPaintUI/*.transform.Find("Camera")*/.GetComponent<Camera>().ScreenToWorldPoint(new Vector3(-360, keyboardHeight + 150, 0)).y;
-                    //textLayout.transform.Find("Text").GetComponent<Text>().text = keyboardHeight.ToString() ;
+                    pos.y = GameManager.instance.cameraPaintUI.GetComponent<Camera>().ScreenToWorldPoint(new Vector3(-360, keyboardHeight + 150, 0)).y;
                     optionLayout.transform.position = pos;
 					#endif
                     optionLayout.transform.parent.Find("btnComplete").gameObject.SetActive(false);
-                    //Vector3 pos = GameManager.instance.cameraPaintUI/*.transform.Find("Camera")*/.GetComponent<Camera>().ScreenToWorldPoint(new Vector3(-360, keyboardHeight + 150,0));
-                    //pos.z = 100;
-                    //optionLayout.transform.position = pos;
                     msg = inputField.text;
                 }
                 else if (TouchScreenKeyboard.visible == false)
@@ -297,11 +278,10 @@ public class PaintManager: MonoBehaviour , IPointerDownHandler {
                     gr.Raycast(ped, results);
                     if (results.Count > 0)
                     {
-                        //UI 
+                        //UIButton
                     }
-                    //if (EventSystem.current.IsPointerOverGameObject() == false)
                     if (results.Count == 0 || (results.Count > 0 && results[0].gameObject.name.Contains("text")))
-                    {  //UI이 위가 아니면.
+                    {  //UIButton 아니면.
                         objCount++;
 
                         isMousePressed = true;

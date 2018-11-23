@@ -187,7 +187,6 @@ public class LoadAsset : MonoBehaviour {
                 {
                     loadingPercent = 100;
                 }
-                //Debug.Log("progress : " + loadingPercent);
                 sliderProgressBar.value = loadingPercent / 100;
                 progressText.text = string.Format("Loading...{0}%", (int)loadingPercent);
             }
@@ -210,7 +209,7 @@ public class LoadAsset : MonoBehaviour {
             }
 
            
-            Debug.Log("downloading : " + downloading + ", isNet :" + isNet + ", isFinish : " + isFinished + ", ischecked Asset, store :" + isCheckAssetVer + ", " + isCheckStoreVer + ", " + clientAssetVersion + serverAssetVersion);
+            //Debug.Log("downloading : " + downloading + ", isNet :" + isNet + ", isFinish : " + isFinished + ", ischecked Asset, store :" + isCheckAssetVer + ", " + isCheckStoreVer + ", " + clientAssetVersion + serverAssetVersion);
             //test.text = "downloading : " + downloading + ", isNet :" + isNet + ", isFinish : " + isFinished + ", ischecked Asset, store :" + isCheckAssetVer + ", " + isCheckStoreVer + ", " + clientAssetVersion + serverAssetVersion;
         }
     }
@@ -406,7 +405,6 @@ public class LoadAsset : MonoBehaviour {
         
             caching = Caching.IsVersionCached(bundleURL + "iOS/"+clientVersion +"/" + assetBundleName, assetBundleManifest.GetAssetBundleHash(assetBundleName));
 #endif
-            Debug.Log("isCaching : " + caching);
 
 #if UNITY_EDITOR || UNITY_ANDROID
             if (caching == false)
@@ -471,7 +469,6 @@ public class LoadAsset : MonoBehaviour {
             }
             if (assetBundleName == "image")
             {
-                Debug.Log(assetName.Length);
                 for (int j = 0; j < assetName.Length; j++)
                 {
                     dicClothImg.Add(bundle.LoadAsset<Sprite>(assetName[j]).name, bundle.LoadAsset<Sprite>(assetName[j]));
@@ -481,13 +478,11 @@ public class LoadAsset : MonoBehaviour {
             {
                 for (int j = 0; j < assetName.Length; j++)
                 {
-                    //Debug.Log(bundle.LoadAsset<Font>(assetName[j]).name);
                     font.Add(bundle.LoadAsset<Font>(assetName[j]).name, bundle.LoadAsset<Font>(assetName[j]));
                 }
             }
             float endTime = Time.realtimeSinceStartup - startTime;
             
-            Debug.Log("time : " + endTime);
             bundle.Unload(false);
             www.Dispose();
             count++;

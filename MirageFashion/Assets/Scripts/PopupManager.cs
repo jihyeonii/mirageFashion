@@ -6,51 +6,51 @@ using System.Collections.Generic;
 public class PopupManager : MonoBehaviour
 {
     public static PopupManager instance;
+
     public GameObject cameraPopup;
-    //public static GameObject dialogPopup;
-    public static GameObject settingPage;
-    public static GameObject praiseMsgPopup;
-    public static GameObject toast;
-    public static GameObject missionPage;
-    public static GameObject userGuide;
-    public static int guideNum = 0;
 
-    public Animator closeSettingAnimator;
+    public static GameObject praiseMsgToast;            //사진저장 후 칭찬문구 토스트
+    public Text praisePopupTxt;                         //칭찬문구
+    bool isPraiseToast = false;
 
-    public static GameObject settingUI;
-    public static GameObject mirageIntroUI;
-    public static GameObject cardInfoUI;
-    public static GameObject guideUI;
-    public static GameObject lockerUI;
-
-    public GameObject tutorialCamra;
-
-    public Text popupTxt;
-    public Text praisePopupTxt;
-    public Popup popupState;
+    public static GameObject toast;                     
     Text toastTxt;
 
-    bool isPraisePopup = false;
+    public static GameObject missionPage;               //오늘의 미션
+    public static GameObject userGuideToast;            //사용가이드 토스트
+    public static int guideNum = 0;
+
+
+    public static GameObject settingPage;
+    public static GameObject settingUI;                 
+    public static GameObject mirageIntroUI;             //Mirage소개
+    public static GameObject cardInfoUI;                //카드정보
+    public static GameObject guideUI;                   //사용방법
+    public static GameObject lockerUI;                  //보관함
+
+    public GameObject tutorialCamra;                    //사용가이드 카메라
+
+    //public Text popupTxt;
+    public Popup popupState;
+    public enum Popup
+    {
+        none, settingHome, settingIntro, settingDressRoom, editDressRoom, settingCardInfo, guide    //팝업off, setting, Mirage소개, 보관함, 보관함 편집, 카드정보, 사용방법
+    }
 
     int lockerNum = 0;
-
-    float time = 0f;
 
     public bool closeSettingPage = false;
     public bool openSettingPage = false;
 
     public Transform openSettingPos;
     public Transform closeSettingPos;
-    public enum Popup
-    {
-        home, settingHome, settingIntro, settingDressRoom, editDressRoom, settingCardInfo, guide
-    }
+
     public enum Msg
     {
         val1, val2, val3, val4, val5, val6, val7, val8, val9, val10, val11, val12, val13, val14, val15, val16, val17, val18, val19, val20
     }
 
-    Dictionary<Msg, string> praiseMsg = new Dictionary<Msg, string>()
+    Dictionary<Msg, string> praiseMsg = new Dictionary<Msg, string>()       //사진저장 후 칭찬문구
     {
         {Msg.val1, "패션 좀 아는 구나~♡" },
         {Msg.val2, "패션센스가 정말 남달라! 최고다!" },
@@ -74,7 +74,7 @@ public class PopupManager : MonoBehaviour
         {Msg.val20, "반짝반짝 눈이 부실 정도로 예뻐!" },
 
     };
-    Dictionary<Msg, string> missionMsg = new Dictionary<Msg, string>()
+    Dictionary<Msg, string> missionMsg = new Dictionary<Msg, string>()      //오늘의 미션 문구
     {
         {Msg.val1, "감동적인 노래를 부르는 가수로 메이크업 체인지! 무대에서 더 돋보이는 스타일링 기대할게!"},
         {Msg.val2, "정의롭고 용감한 경찰이 되고 싶어! 나도 멋진 제복이 잘 어울리게 스타일링 부탁해!" },
@@ -96,15 +96,16 @@ public class PopupManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
         instance = this;
-        popupState = Popup.home;
+
+        popupState = Popup.none;
+
         settingPage = cameraPopup.transform.Find("CanvasPopup").transform.Find("SettingPage").transform.gameObject;
-        praiseMsgPopup = cameraPopup.transform.Find("CanvasPopup").transform.Find("PraiseMsg").transform.gameObject;
+        praiseMsgToast = cameraPopup.transform.Find("CanvasPopup").transform.Find("PraiseMsg").transform.gameObject;
         toast = cameraPopup.transform.Find("CanvasPopup").transform.Find("Toast").transform.gameObject;
         toastTxt = toast.transform.Find("Text").transform.GetComponent<Text>();
         missionPage = cameraPopup.transform.Find("CanvasPopup").transform.Find("Mission").transform.gameObject;
-        userGuide = cameraPopup.transform.Find("CanvasPopup").transform.Find("Guide").transform.gameObject;
+        userGuideToast = cameraPopup.transform.Find("CanvasPopup").transform.Find("Guide").transform.gameObject;
 
         settingUI = settingPage.transform.Find("1").transform.gameObject;
         mirageIntroUI = settingPage.transform.Find("MirageIntro").transform.gameObject;
@@ -143,14 +144,13 @@ public class PopupManager : MonoBehaviour
             GameManager.instance.isPopup = false;
 
         }
-        //DressRoomManager.instance.dicLockerChar.Remove("char1");
-        //GameManager.instance.saveLocker();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isPraisePopup)
+        //칭찬문구 여백 클릭 토스트 닫기
+        if (isPraiseToast)
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -160,30 +160,15 @@ public class PopupManager : MonoBehaviour
                 ray = cameraPopup.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out hitinfo) == false)
                 {
-                    isPraisePopup = false;
-                    praiseMsgPopup.SetActive(false);
-                    //cameraPopup.SetActive(false);
+                    isPraiseToast = false;
+                    praiseMsgToast.SetActive(false);
                 }
             }
         }
 
-        //if (GameManager.instance.uiState == GameManager.UIState.main && GameManager.instance.isPopup == false)
-        //{
-        //    if (Input.GetMouseButtonDown(0))
-        //    {
-        //        Ray ray;
-        //        RaycastHit hitinfo;
-
-        //        ray = cameraPopup.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
-        //        if (Physics.Raycast(ray, out hitinfo) == false)
-        //        {
-        //            //toast.SetActive(false);
-        //            closeGuide();
-        //        }
-        //    }
-        //}
         if (closeSettingPage)
         {
+            settingPage.transform.Find("Image").gameObject.SetActive(true);
             float speed = 8f * Time.smoothDeltaTime;
             settingPage.transform.position = Vector3.MoveTowards(settingPage.transform.position, closeSettingPos.position, speed);
 
@@ -195,8 +180,8 @@ public class PopupManager : MonoBehaviour
                 settingPage.transform.Find("btnSetting").transform.position = new Vector3(cameraPopup.GetComponent<Camera>().ScreenToWorldPoint(new Vector3(0, 0, 0)).x, settingPage.transform.Find("btnSetting").transform.position.y, settingPage.transform.Find("btnSetting").transform.position.z);
                 settingPage.transform.Find("btnSetting").Find("Image").GetComponent<Image>().sprite = Resources.Load<Sprite>("Button/btn_setting");
                 settingPage.transform.Find("1").Find("Button").gameObject.SetActive(false);
-                popupState = Popup.home;
-                if (GameManager.instance.uiState == GameManager.UIState.main && popupState == Popup.home)
+                popupState = Popup.none;
+                if (GameManager.instance.uiState == GameManager.UIState.main && popupState == Popup.none)
                     GameManager.instance.GuideLine.SetActive(true);
                 else
                     GameManager.instance.GuideLine.SetActive(false);
@@ -204,6 +189,7 @@ public class PopupManager : MonoBehaviour
                 GameManager.instance.SwitchAutofocus(true);
                 if (GameManager.instance.uiState == GameManager.UIState.main)
                     GameManager.instance.availableRecognize = true;
+
             }
             if (!GameManager.instance.charInfo.body.Contains("char"))
             {
@@ -226,9 +212,11 @@ public class PopupManager : MonoBehaviour
                 GameManager.instance.GuideLine.SetActive(false);
                 if (GameManager.instance.uiState == GameManager.UIState.main)
                     GameManager.instance.availableRecognize = false;
+                settingPage.transform.Find("Image").gameObject.SetActive(false);
             }
             GameManager.instance.guideButtonUI.SetActive(false);
         }
+        //오늘의 미션 다시보지않기
         if (missionPage.transform.Find("Toggle").GetComponent<Toggle>().isOn)
         {
             PlayerPrefs.SetString("mission", System.DateTime.Now.ToString("yyyyMMdd"));
@@ -241,9 +229,6 @@ public class PopupManager : MonoBehaviour
     
     public void showToast(string msg)
     {
-        ////cameraPopup.SetActive(true);
-        //dialogPopup.SetActive(false);
-        //settingPage.SetActive(false);
         toast.SetActive(true);
         toast.transform.Find("Image").gameObject.SetActive(true);
         toastTxt.text = msg;
@@ -252,39 +237,39 @@ public class PopupManager : MonoBehaviour
     IEnumerator closeToast()
     {
         yield return new WaitForSeconds(2.0f);
-        //cameraPopup.SetActive(false);
         toast.SetActive(false);
     }
 
-
+    /// <summary>
+    /// 오늘의 미션
+    /// </summary>
     public void openToday()
     {
-        //cameraPopup.SetActive(true);
         GameManager.instance.isPopup = true;
         missionPage.SetActive(true);
         missionPage.transform.Find("Image").transform.Find("Text2").GetComponent<Text>().text = missionMsg[(Msg)Random.Range(0, 15)];
     }
 
-
-
-    public void showPraiseMsgPopup()
+    /// <summary>
+    /// 칭찬문구 토스트
+    /// </summary>
+    public void showPraiseMsgToast()
     {
-        isPraisePopup = true;
-        //dialogPopup.SetActive(false);
+        isPraiseToast = true;
         toast.SetActive(false);
-        //cameraPopup.SetActive(true);
-        praiseMsgPopup.SetActive(true);
+        praiseMsgToast.SetActive(true);
         praisePopupTxt.text = praiseMsg[(Msg)Random.Range(0, 20)];
-        //StartCoroutine(this.closePraiseMsgPopup());
     }
 
-    //사용가이드(첫실행)
+    /// <summary>
+    /// 사용가이드(첫실행)
+    /// </summary>
     public void showGuide()
     {
         GameManager.instance.instantiateSound(GameManager.instance.clickSound);
         if (PlayerPrefs.GetString("guide") != "off")
         {
-            userGuide.SetActive(true);
+            userGuideToast.SetActive(true);
             if (guideNum < 3)
             {
                 guideNum++;
@@ -292,20 +277,20 @@ public class PopupManager : MonoBehaviour
 
             if (guideNum == 1)
             {
-                userGuide.transform.Find("Text").GetComponent<Text>().text = "다음은 의상 카드! 한장씩! 한장씩!";
-                userGuide.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load<Sprite>("Button/guide_img2");
-                userGuide.transform.Find("btn").gameObject.SetActive(true);
+                userGuideToast.transform.Find("Text").GetComponent<Text>().text = "다음은 의상 카드! 한장씩! 한장씩!";
+                userGuideToast.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load<Sprite>("Button/guide_img2");
+                userGuideToast.transform.Find("btn").gameObject.SetActive(true);
             }
             else if (guideNum == 2)
             {
-                userGuide.transform.Find("btn").transform.Find("Button").GetComponent<Image>().sprite = Resources.Load<Sprite>("Button/guide_close");
-                userGuide.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load<Sprite>("Button/guide_img3");
-                userGuide.transform.Find("Text").GetComponent<Text>().text = "스타일링이 끝나면 함께 사진도 찍을 수 있어~♡";
+                userGuideToast.transform.Find("btn").transform.Find("Button").GetComponent<Image>().sprite = Resources.Load<Sprite>("Button/guide_close");
+                userGuideToast.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load<Sprite>("Button/guide_img3");
+                userGuideToast.transform.Find("Text").GetComponent<Text>().text = "스타일링이 끝나면 함께 사진도 찍을 수 있어~♡";
             }
             else if (guideNum == 3)
             {
                 PlayerPrefs.SetString("guide", "off");
-                userGuide.SetActive(false);
+                userGuideToast.SetActive(false);
             }
 
         }
@@ -329,7 +314,7 @@ public class PopupManager : MonoBehaviour
     }
     public void closeGuide()
     {
-        userGuide.SetActive(false);
+        userGuideToast.SetActive(false);
     }
     //setting
     public void settingPageDown()
@@ -382,9 +367,11 @@ public class PopupManager : MonoBehaviour
     public void closeSetting()
     {
         closeSettingPage = true;
-        //settingPage.GetComponent<Animator>().enabled = true;
-        //settingPage.GetComponent<Animator>().SetBool("closeSetting", true);
     }
+
+    /// <summary>
+    /// 설정화면
+    /// </summary>
     public void goSettingHome()
     {
         GameManager.instance.instantiateSound(GameManager.instance.clickSound);
@@ -421,8 +408,11 @@ public class PopupManager : MonoBehaviour
         settingUI.transform.Find("btnShop").Find("Text").GetComponent<Text>().fontStyle = FontStyle.Normal;
         settingUI.transform.Find("btnShop").Find("Text").GetComponent<Text>().fontSize = 25;
 
-
     }
+
+    /// <summary>
+    /// Mirage소개
+    /// </summary>
     public void mirageIntro()
     {
         GameManager.instance.instantiateSound(GameManager.instance.clickSound);
@@ -435,6 +425,7 @@ public class PopupManager : MonoBehaviour
         mirageIntroUI.SetActive(true);
         popupState = Popup.settingIntro;
     }
+
     public void showIntro()
     {
         GameManager.instance.instantiateSound(GameManager.instance.clickSound);
@@ -446,6 +437,9 @@ public class PopupManager : MonoBehaviour
         mirageIntroUI.transform.Find("background").GetComponent<Image>().sprite = LoadAsset.instance.dicClothImg["guideBg2"];
         GuideManager.cardNum = 0;
     }
+    /// <summary>
+    /// 보관함
+    /// </summary>
     public void locker()
     {
         GameManager.instance.instantiateSound(GameManager.instance.clickSound);
@@ -459,6 +453,10 @@ public class PopupManager : MonoBehaviour
 
         popupState = Popup.settingDressRoom;
     }
+
+    /// <summary>
+    /// 카드정보
+    /// </summary>
     public void cardInfo()
     {
         GameManager.instance.instantiateSound(GameManager.instance.clickSound);
@@ -470,6 +468,10 @@ public class PopupManager : MonoBehaviour
         CardInfoManager.instance.cardInfoPage();
         popupState = Popup.settingCardInfo;
     }
+
+    /// <summary>
+    /// 사용방법
+    /// </summary>
     public void guide()
     {
         GameManager.instance.instantiateSound(GameManager.instance.clickSound);
@@ -489,11 +491,16 @@ public class PopupManager : MonoBehaviour
         }
         obj2.Find("Text").GetComponent<Text>().font = LoadAsset.instance.font["nanum"];
     }
+
+    /// <summary>
+    /// 뽀로로몰 이동
+    /// </summary>
     public void shopPopup()
     {
         string url = "http://www.pororomall.com/product/detail.html?product_no=2249&cate_no=213&display_group=1";
         Application.OpenURL(url);
     }
+
     public void showPopup(string text)
     {
         cameraPopup.transform.Find("CanvasPopup").Find("popup").gameObject.SetActive(true);
@@ -513,12 +520,16 @@ public class PopupManager : MonoBehaviour
             cameraPopup.transform.Find("CanvasPopup").Find("popup").Find("popup").Find("Button2").localPosition = new Vector3(130, cameraPopup.transform.Find("CanvasPopup").Find("popup").Find("popup").Find("Button2").localPosition.y);
         }
     }
+    /// <summary>
+    /// true:확인 false: 닫기
+    /// </summary>
+    /// <param name="btn"></param>
     public void popupBtn(bool btn)
     {
         string url = "http://www.pororomall.com/product/detail.html?product_no=2249&cate_no=213&display_group=1";
         if (btn)
         {
-            if (GameManager.instance.uiState == GameManager.UIState.main && GameManager.instance.isCardRecognition == false && popupState == Popup.home)
+            if (GameManager.instance.uiState == GameManager.UIState.main && GameManager.instance.isCardRecognition == false && popupState == Popup.none)
             {
                 //카드인식에서 패션인식
                 GameManager.instance.showRecognitionCanvas(GameManager.instance.isCardRecognition);
@@ -529,7 +540,7 @@ public class PopupManager : MonoBehaviour
                 GameObject.Find("FashionCamera").transform.Find("CanvasFashion").Find("camera").gameObject.SetActive(false);
                 GameManager.instance.showRecognitionCanvas(GameManager.instance.isCardRecognition);
             }
-            else if (GameManager.instance.isCardRecognition == false && popupState != Popup.home)
+            else if (GameManager.instance.isCardRecognition == false && popupState != Popup.none)
             {
                 //패션인식 중 보관함 불러오기
                 GameManager.instance.isCardRecognition = true;

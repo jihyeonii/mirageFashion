@@ -8,14 +8,14 @@ using System.Threading;
 
 public class FashionRecognition : MonoBehaviour
 {
-    Camera fashionCamera;
     public static FashionRecognition instance;
-    WebCamDevice[] devices;
-    WebCamTexture webCam;
-    public static GameObject canvasFashion;
-    public GameObject capturePlane;
-    public GameObject imagePlane;    //갤러리 이미지
-    public GameObject categoryObj;   //성인,아동 선택
+
+    Camera fashionCamera;
+    public static GameObject canvasFashion;         
+
+    public GameObject capturePlane;                 //화면캡처 이미지 Plane
+    public GameObject imagePlane;                   //갤러리로딩 이미지 Plane
+    public GameObject categoryObj;                  //성인,아동 선택
     byte[] imageByte;
 
     public string myFilename;
@@ -26,10 +26,7 @@ public class FashionRecognition : MonoBehaviour
     float screenHeight;
     float screenWidth;
 
-
     public GameObject option;
-
-
 
     internal Boolean socket_ready = false;
     internal Boolean mIsRecv = false;
@@ -53,6 +50,7 @@ public class FashionRecognition : MonoBehaviour
     long lColor;
     long lColor1;
 
+    //영영 좌표
     long lXPos;
     long lYPos;
     long lWidth;
@@ -60,44 +58,44 @@ public class FashionRecognition : MonoBehaviour
 
     public static byte[] img_bytes;
 
+    //adult
     public string[] colorArray;
     public string[] clothArray;
+    public int[] clothIndex;
 
+    //kid
     public string[] clothArray_k;
     public string[] sClothArray_k;
+    public int[] cloth_kIndex;
 
     public int[] colorIndex;
-    public int[] clothIndex;
-    public int[] cloth_kIndex;
+
     byte[] receivedData = new byte[1024];
 
-    public static long nKey;        //7300: 촬영한 이미지, 7301: 영역설정한 이미지 
+    public static long nKey;                         //7300: 촬영한 이미지, 7301: 영역설정한 이미지 
 
     public string category = "kid";
 
-    GameObject cropBox;
-    GameObject cropBtn;
+    GameObject cropBox;                             //영영박스
+    GameObject cropBtn;                             //캡처, 취소
 
-    Vector3 orignPos;
-    Vector3 touchPos;
+    Vector3 orignPos;                               //영역박스 초기 pos (pivot(0,0))
+    Vector3 touchPos;                               //확대, 축소 pos
     Vector3 distansPos;
 
-    RectTransform cropTrans;
-    RectTransform orignCropTrans;
+    RectTransform orignCropTrans;                   //영역박스 초기 transform
+    RectTransform cropTrans;                        //영역박스 transform 
+    RectTransform newCropTrans;                     //새로 생성된 영역박스 transform
 
-
-    RectTransform newCropTrans;
-    float y;
-    float x;
+    float width;                                    //orignCropTrans width
+    float height;                                   //orignCropTrans height                               
 
     public RectTransform cropRectPos;
-
 
     public enum Error
     {
         none, socket, thread
     }
-
     public Error errorState;
 
     // Use this for initialization
@@ -245,11 +243,10 @@ public class FashionRecognition : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-
         if (socket_ready)
             readSocket();
 
+        //받은 데이터 파싱
         if (mIsRecv)
         {
             recv_parsing();
@@ -305,10 +302,7 @@ public class FashionRecognition : MonoBehaviour
             }
             else
             {
-                //popup.SetActive(true);
-                //popup.transform.Find("popup").Find("naver").gameObject.SetActive(false);
-                //popup.transform.Find("popup").Find("Button").localPosition = new Vector2(0, popup.transform.Find("popup").Find("naver").localPosition.y);
-                //popup.transform.Find("popup").Find("Text").GetComponent<UnityEngine.UI.Text>().text = "성인, 아동 종류를 \n선택해 주세요";
+               
             }
         }
 
@@ -318,8 +312,6 @@ public class FashionRecognition : MonoBehaviour
         if (!socket_ready)
             return;
 
-        //socket_writer.Close();
-        //socket_reader.Close();
         net_stream.Close();
         tcp_socket.Close();
         socket_ready = false;
@@ -327,9 +319,6 @@ public class FashionRecognition : MonoBehaviour
     }
     public void readSocket()
     {
-        int pos = 0;
-
-
         if (net_stream.DataAvailable)
         {
             System.Array.Clear(receivedData, 0, 1024);
@@ -345,6 +334,9 @@ public class FashionRecognition : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// 영역설정 후 서버에 사진 전송
+    /// </summary>
     public void cropImage()
     {
         buttonOnOff(false, false, false, false, false, false);
@@ -437,10 +429,7 @@ public class FashionRecognition : MonoBehaviour
             {
                 GameObject popup = PopupManager.instance.cameraPopup.transform.Find("CanvasPopup").Find("popup").gameObject;
                 Debug.Log("인식결과 없음");
-                //popup.SetActive(true);
-                //popup.transform.Find("popup").Find("naver").gameObject.SetActive(false);
-                //popup.transform.Find("popup").Find("Button").localPosition = new Vector2(0, popup.transform.Find("popup").Find("naver").localPosition.y);
-                //popup.transform.Find("popup").Find("Text").GetComponent<UnityEngine.UI.Text>().text = "인식결과 없음";
+                
 
                 if (GameManager.instance.charInfo.top != "0" || GameManager.instance.charInfo.bottom != "0" || GameManager.instance.charInfo.onepiece != "0")
                     buttonOnOff(true, true, true, false, false, true);
@@ -448,6 +437,7 @@ public class FashionRecognition : MonoBehaviour
                     buttonOnOff(true, true, true, false, false, false);
                 capturePlane.SetActive(false);
                 imagePlane.gameObject.SetActive(false);
+
                 popup.SetActive(true);
                 popup.transform.Find("popup").Find("Text").GetComponent<UnityEngine.UI.Text>().text = "인식결과가 없습니다.";
                 popup.transform.Find("popup").Find("Button").gameObject.SetActive(false);
@@ -465,9 +455,7 @@ public class FashionRecognition : MonoBehaviour
                 GameObject popup = PopupManager.instance.cameraPopup.transform.Find("CanvasPopup").Find("popup").gameObject;
 
                 option.SetActive(true);
-                Debug.Log(sClothArray_k[lCloth] + "_" + colorArray[lColor] + "_img");
                 option.transform.Find("List").Find("0").GetComponent<UnityEngine.UI.Image>().sprite = LoadAsset.instance.fashionClothImg[sClothArray_k[lCloth] + "_" + colorArray[lColor] + "_img"];
-                //option.transform.Find("List").Find("0").Find("Text").GetComponent<UnityEngine.UI.Text>().text = clothArray_k[lCloth];
                 option.transform.Find("Color").Find("GameObject").Find(colorArray[lColor]).Find("check").gameObject.SetActive(true);
                 GameManager.instance.selectCloth = sClothArray_k[lCloth];
                 if (GameManager.instance.selectCloth.Contains("top") || GameManager.instance.selectCloth.Contains("onepiece"))
@@ -489,30 +477,20 @@ public class FashionRecognition : MonoBehaviour
                 lWidth = BitConverter.ToInt64(color, 0);
                 lHeight = BitConverter.ToInt64(color1, 0);
                 float r = (float)Screen.height / ((float)Screen.width / (float)720);
-                Debug.Log(r);
                 float textureH = AndroidFuntionCall.texture.height * 720 / AndroidFuntionCall.texture.width;
                 Rect rect;
-                Debug.Log("text@!!!!!" + AndroidFuntionCall.texture.height * 720 / AndroidFuntionCall.texture.width);
 
                 rect = new Rect((float)lXPos, (((float)r - (float)textureH) / (float)2) + ((float)textureH - (float)lYPos - (float)lHeight), (float)lWidth, (float)lHeight);
-                Debug.Log("count : " + lCount + ", x : " + lXPos + ", y : " + lYPos + ", width : " + lWidth + ", height : " + lHeight);
-                Debug.Log("rect : " + rect + ", screen.w : " + Screen.width + ", screenH: " + Screen.height);
                 //crop
-
                 RectTransform rectTrans;
                 rectTrans = cropBox.GetComponent<RectTransform>();
-
 
                 GameObject obj = cropBox.gameObject;
                 obj.SetActive(true);
 
-
                 cropRectPos.sizeDelta = new Vector2((float)rect.width, (float)rect.height);
 
-
                 Vector3 vPos;
-
-
                 vPos.x = rect.x;
                 vPos.y = rect.y;
                 vPos.z = rectTrans.position.z;
@@ -520,15 +498,17 @@ public class FashionRecognition : MonoBehaviour
                 rectTrans.anchoredPosition = vPos;
                 cropBtn.gameObject.SetActive(true);
 
-                //
                 buttonOnOff(false, false, false, false, false, false);
-
             }
             canvasFashion.transform.Find("loading").gameObject.SetActive(false);
             canvasFashion.transform.Find("reCapture").gameObject.SetActive(false);
         }
 
     }
+
+    /// <summary>
+    /// 촬영화면으로 이동
+    /// </summary>
     public void reCapture()
     {
         capturePlane.gameObject.SetActive(false);
@@ -574,7 +554,6 @@ public class FashionRecognition : MonoBehaviour
         if (img_bytes != null)
         {
             write = new Thread(writeImageSocket);
-            Debug.Log("!!!!!!: " + write.IsAlive);
             if (!write.IsAlive)
             {
                 Debug.Log("write");
@@ -600,7 +579,6 @@ public class FashionRecognition : MonoBehaviour
     }
     public void writeImageSocket()
     {
-        Debug.Log("image Byte :" + img_bytes.Length);
         string text = "abcd";
         long nImageSize = (long)img_bytes.Length;
 
@@ -675,7 +653,6 @@ public class FashionRecognition : MonoBehaviour
     public void capture()
     {
         buttonOnOff(false, false, false, false, false, false);
-        //canvasFashion.transform.Find("loading").gameObject.SetActive(true);
         if (GameManager.instance.character.active)
             GameManager.instance.character.SetActive(false);
         canvasFashion.transform.Find("top").gameObject.SetActive(false);
@@ -685,7 +662,6 @@ public class FashionRecognition : MonoBehaviour
     }
     public IEnumerator takePicture()
     {
-        //canvasFashion.transform.Find("loading").gameObject.SetActive(false);
         yield return new WaitForEndOfFrame();
         AndroidFuntionCall.texture = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
         AndroidFuntionCall.texture.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0, false);
@@ -761,12 +737,55 @@ public class FashionRecognition : MonoBehaviour
             if (GameManager.instance.selectCloth.Contains("top") || GameManager.instance.selectCloth.Contains("onepiece"))
             {
                 GameManager.instance.selectTopColor = obj.name;
-                option.transform.Find("List").Find("0").GetComponent<UnityEngine.UI.Image>().sprite = LoadAsset.instance.fashionClothImg[GameManager.instance.selectCloth + "_" + GameManager.instance.selectTopColor + "_img"];
+                if(GameManager.instance.selectCloth.Contains("shirts") || GameManager.instance.selectCloth.Contains("sweater"))
+                {
+                    if (GameManager.instance.selectCloth.Contains("shirts"))
+                    {
+                        if (obj.name.Contains("red") || obj.name.Contains("yellow") || obj.name.Contains("brown") || obj.name.Contains("white") || obj.name.Contains("black"))
+                            option.transform.Find("List").Find("0").GetComponent<UnityEngine.UI.Image>().sprite = LoadAsset.instance.fashionClothImg[GameManager.instance.selectCloth + "_" + GameManager.instance.selectTopColor + "_img"];
+                        else
+                            option.transform.Find("List").Find("0").GetComponent<UnityEngine.UI.Image>().sprite = LoadAsset.instance.fashionClothImg[GameManager.instance.selectCloth + "_B" + "_" + GameManager.instance.selectTopColor + "_img"];
+                    }
+                    else if (GameManager.instance.selectCloth.Contains("sweater"))
+                    {
+                        if (obj.name.Contains("red") || obj.name.Contains("green") || obj.name.Contains("purple") || obj.name.Contains("brown") || obj.name.Contains("white"))
+                            option.transform.Find("List").Find("0").GetComponent<UnityEngine.UI.Image>().sprite = LoadAsset.instance.fashionClothImg[GameManager.instance.selectCloth + "_" + GameManager.instance.selectTopColor + "_img"];
+                        else
+                            option.transform.Find("List").Find("0").GetComponent<UnityEngine.UI.Image>().sprite = LoadAsset.instance.fashionClothImg[GameManager.instance.selectCloth + "_B" + "_" + GameManager.instance.selectTopColor + "_img"];
+                    }
+                }
+                else 
+                    option.transform.Find("List").Find("0").GetComponent<UnityEngine.UI.Image>().sprite = LoadAsset.instance.fashionClothImg[GameManager.instance.selectCloth + "_" + GameManager.instance.selectTopColor + "_img"];
             }
             else if (GameManager.instance.selectCloth.Contains("bottom"))
             {
                 GameManager.instance.selectBottomColor = obj.name;
-                option.transform.Find("List").Find("0").GetComponent<UnityEngine.UI.Image>().sprite = LoadAsset.instance.fashionClothImg[GameManager.instance.selectCloth + "_" + GameManager.instance.selectBottomColor + "_img"];
+                if (GameManager.instance.selectCloth.Contains("skirt") || GameManager.instance.selectCloth.Contains("jeans"))
+                {
+                    if (GameManager.instance.selectCloth.Contains("skirt"))
+                    {
+                        if (obj.name.Contains("yellow") || obj.name.Contains("purple") || obj.name.Contains("pink") || obj.name.Contains("brown") || obj.name.Contains("gray"))
+                            option.transform.Find("List").Find("0").GetComponent<UnityEngine.UI.Image>().sprite = LoadAsset.instance.fashionClothImg[GameManager.instance.selectCloth + "_" + GameManager.instance.selectBottomColor + "_img"];
+                        else
+                        {
+                            Debug.Log("cloth : " + GameManager.instance.selectCloth + "_B_" + GameManager.instance.selectBottomColor + "_img");
+                            option.transform.Find("List").Find("0").GetComponent<UnityEngine.UI.Image>().sprite = LoadAsset.instance.fashionClothImg[GameManager.instance.selectCloth + "_B_" + GameManager.instance.selectBottomColor + "_img"];
+
+                        }
+                    }
+                    else if(GameManager.instance.selectCloth.Contains("jeans"))
+                    {
+                        if (obj.name.Contains("red") || obj.name.Contains("orange") || obj.name.Contains("yellow") || obj.name.Contains("green") || obj.name.Contains("blue") || obj.name.Contains("gray"))
+                            option.transform.Find("List").Find("0").GetComponent<UnityEngine.UI.Image>().sprite = LoadAsset.instance.fashionClothImg[GameManager.instance.selectCloth + "_" + GameManager.instance.selectBottomColor + "_img"];
+                        else
+                        {
+                            Debug.Log("cloth : " + GameManager.instance.selectCloth);
+                            option.transform.Find("List").Find("0").GetComponent<UnityEngine.UI.Image>().sprite = LoadAsset.instance.fashionClothImg[GameManager.instance.selectCloth + "_B_" + GameManager.instance.selectBottomColor + "_img"];
+                        }
+                    }
+                }
+                else
+                    option.transform.Find("List").Find("0").GetComponent<UnityEngine.UI.Image>().sprite = LoadAsset.instance.fashionClothImg[GameManager.instance.selectCloth + "_" + GameManager.instance.selectBottomColor + "_img"];
             }
             obj.transform.Find("check").gameObject.SetActive(true);
         }
@@ -784,10 +803,7 @@ public class FashionRecognition : MonoBehaviour
             GameManager.instance.character.SetActive(true);
             GameManager.instance.fashionCharacter.transform.GetChild(18).gameObject.SetActive(true);
             option.gameObject.SetActive(false);
-            //for (int i = 0; i < 3; i++)
-            //{
-            //    option.transform.Find("List").Find(i.ToString()).Find("check").gameObject.SetActive(false);
-            //}
+            
             for (int i = 0; i < 11; i++)
             {
                 option.transform.Find("Color").Find("GameObject").GetChild(i).Find("check").gameObject.SetActive(false);
@@ -825,8 +841,51 @@ public class FashionRecognition : MonoBehaviour
                     GameManager.instance.onClothCount = 1;
                 }
                 GameManager.instance.offCharObj("top");
-                GameManager.instance.charInfo.top = GameManager.instance.selectCloth;
-                canvasFashion.transform.Find("top").GetComponent<Image>().sprite = LoadAsset.instance.fashionClothImg[GameManager.instance.selectCloth + "_" + GameManager.instance.selectTopColor + "_img"];
+                if (GameManager.instance.selectCloth.Contains("shirts") || GameManager.instance.selectCloth.Contains("sweater"))
+                {
+                    if (GameManager.instance.selectCloth.Contains("shirts"))
+                    {
+                        if (GameManager.instance.selectTopColor.Contains("red") || GameManager.instance.selectTopColor.Contains("yellow") || GameManager.instance.selectTopColor.Contains("brown") || GameManager.instance.selectTopColor.Contains("white") || GameManager.instance.selectTopColor.Contains("black"))
+                        {
+                            GameManager.instance.charInfo.top = GameManager.instance.selectCloth;
+                            canvasFashion.transform.Find("top").GetComponent<Image>().sprite = LoadAsset.instance.fashionClothImg[GameManager.instance.selectCloth + "_" + GameManager.instance.selectTopColor + "_img"];
+                            GameManager.instance.onCloth(GameManager.instance.selectCloth.Substring(index + 1), GameManager.instance.selectCloth);
+                            GameManager.instance.fashionCharacter.transform.Find(GameManager.instance.selectCloth).GetComponent<Renderer>().material.mainTexture = LoadAsset.instance.fashionMaterialsImg[GameManager.instance.selectCloth + "_" + GameManager.instance.selectTopColor];
+                        }
+                        else
+                        {
+                            GameManager.instance.charInfo.top = GameManager.instance.selectCloth + "_B";
+                            canvasFashion.transform.Find("top").GetComponent<Image>().sprite = LoadAsset.instance.fashionClothImg[GameManager.instance.selectCloth + "_B" + "_" + GameManager.instance.selectTopColor + "_img"];
+                            GameManager.instance.onCloth(GameManager.instance.selectCloth.Substring(index + 1), GameManager.instance.selectCloth + "_B");
+                            GameManager.instance.fashionCharacter.transform.Find(GameManager.instance.selectCloth + "_B").GetComponent<Renderer>().material.mainTexture = LoadAsset.instance.fashionMaterialsImg[GameManager.instance.selectCloth + "_B_" + GameManager.instance.selectTopColor];
+                        }
+                    }
+                    else if (GameManager.instance.selectCloth.Contains("sweater"))
+                    {
+                        if (GameManager.instance.selectTopColor.Contains("red") || GameManager.instance.selectTopColor.Contains("green") || GameManager.instance.selectTopColor.Contains("purple") || GameManager.instance.selectTopColor.Contains("brown") || GameManager.instance.selectTopColor.Contains("white"))
+                        {
+                            GameManager.instance.charInfo.top = GameManager.instance.selectCloth;
+                            canvasFashion.transform.Find("top").GetComponent<Image>().sprite = LoadAsset.instance.fashionClothImg[GameManager.instance.selectCloth + "_" + GameManager.instance.selectTopColor + "_img"];
+                            GameManager.instance.onCloth(GameManager.instance.selectCloth.Substring(index + 1), GameManager.instance.selectCloth);
+                            GameManager.instance.fashionCharacter.transform.Find(GameManager.instance.selectCloth).GetComponent<Renderer>().material.mainTexture = LoadAsset.instance.fashionMaterialsImg[GameManager.instance.selectCloth + "_" + GameManager.instance.selectTopColor];
+                        }
+                        else
+                        {
+                            GameManager.instance.charInfo.top = GameManager.instance.selectCloth + "_B";
+                            canvasFashion.transform.Find("top").GetComponent<Image>().sprite = LoadAsset.instance.fashionClothImg[GameManager.instance.selectCloth + "_B" + "_" + GameManager.instance.selectTopColor + "_img"];
+                            GameManager.instance.onCloth(GameManager.instance.selectCloth.Substring(index + 1), GameManager.instance.selectCloth + "_B");
+                            GameManager.instance.fashionCharacter.transform.Find(GameManager.instance.selectCloth + "_B").GetComponent<Renderer>().material.mainTexture = LoadAsset.instance.fashionMaterialsImg[GameManager.instance.selectCloth + "_B_" + GameManager.instance.selectTopColor];
+                        }
+                    }
+                }
+                else
+                {
+                    GameManager.instance.charInfo.top = GameManager.instance.selectCloth;
+                    canvasFashion.transform.Find("top").GetComponent<Image>().sprite = LoadAsset.instance.fashionClothImg[GameManager.instance.selectCloth + "_" + GameManager.instance.selectTopColor + "_img"];
+                    GameManager.instance.onCloth(GameManager.instance.selectCloth.Substring(index + 1), GameManager.instance.selectCloth);
+                    GameManager.instance.fashionCharacter.transform.Find(GameManager.instance.selectCloth).GetComponent<Renderer>().material.mainTexture = LoadAsset.instance.fashionMaterialsImg[GameManager.instance.selectCloth + "_" + GameManager.instance.selectTopColor];
+                }
+               
             }
             else if (GameManager.instance.selectCloth.Substring(index + 1).Contains("bottom"))
             {
@@ -842,8 +901,52 @@ public class FashionRecognition : MonoBehaviour
                     GameManager.instance.onClothCount = 1;
                 }
                 GameManager.instance.offCharObj("bottom");
-                GameManager.instance.charInfo.bottom = GameManager.instance.selectCloth;
-                canvasFashion.transform.Find("bottom").GetComponent<Image>().sprite = LoadAsset.instance.fashionClothImg[GameManager.instance.selectCloth + "_" + GameManager.instance.selectBottomColor + "_img"];
+
+                if (GameManager.instance.selectCloth.Contains("skirt") || GameManager.instance.selectCloth.Contains("jeans"))
+                {
+                    if (GameManager.instance.selectCloth.Contains("skirt"))
+                    {
+                        if (GameManager.instance.selectBottomColor.Contains("yellow") || GameManager.instance.selectBottomColor.Contains("purple") || GameManager.instance.selectBottomColor.Contains("pink") || GameManager.instance.selectBottomColor.Contains("brown") || GameManager.instance.selectBottomColor.Contains("gray"))
+                        {
+                            GameManager.instance.charInfo.bottom = GameManager.instance.selectCloth;
+                            canvasFashion.transform.Find("bottom").GetComponent<Image>().sprite = LoadAsset.instance.fashionClothImg[GameManager.instance.selectCloth + "_" + GameManager.instance.selectBottomColor + "_img"];
+                            GameManager.instance.onCloth(GameManager.instance.selectCloth.Substring(index + 1), GameManager.instance.selectCloth);
+                            GameManager.instance.fashionCharacter.transform.Find(GameManager.instance.selectCloth).GetComponent<Renderer>().material.mainTexture = LoadAsset.instance.fashionMaterialsImg[GameManager.instance.selectCloth + "_" + GameManager.instance.selectBottomColor];
+                        }
+                        else
+                        {
+                            GameManager.instance.charInfo.bottom = GameManager.instance.selectCloth +"_B";
+                            canvasFashion.transform.Find("bottom").GetComponent<Image>().sprite = LoadAsset.instance.fashionClothImg[GameManager.instance.selectCloth + "_B" + "_" + GameManager.instance.selectBottomColor + "_img"];
+                            GameManager.instance.onCloth(GameManager.instance.selectCloth.Substring(index + 1), GameManager.instance.selectCloth + "_B");
+                            Debug.Log("cloth" + GameManager.instance.selectCloth + "_B_" + GameManager.instance.selectBottomColor);
+                            GameManager.instance.fashionCharacter.transform.Find(GameManager.instance.selectCloth+"_B").GetComponent<Renderer>().material.mainTexture = LoadAsset.instance.fashionMaterialsImg[GameManager.instance.selectCloth + "_B_" + GameManager.instance.selectBottomColor];
+                        }
+                    }
+                    else if (GameManager.instance.selectCloth.Contains("jeans"))
+                    {
+                        if (GameManager.instance.selectBottomColor.Contains("red") || GameManager.instance.selectBottomColor.Contains("orange") || GameManager.instance.selectBottomColor.Contains("yellow") || GameManager.instance.selectBottomColor.Contains("green") || GameManager.instance.selectBottomColor.Contains("blue") || GameManager.instance.selectBottomColor.Contains("gray"))
+                        {
+                            GameManager.instance.charInfo.bottom = GameManager.instance.selectCloth;
+                            canvasFashion.transform.Find("bottom").GetComponent<Image>().sprite = LoadAsset.instance.fashionClothImg[GameManager.instance.selectCloth + "_" + GameManager.instance.selectBottomColor + "_img"];
+                            GameManager.instance.onCloth(GameManager.instance.selectCloth.Substring(index + 1), GameManager.instance.selectCloth);
+                            GameManager.instance.fashionCharacter.transform.Find(GameManager.instance.selectCloth).GetComponent<Renderer>().material.mainTexture = LoadAsset.instance.fashionMaterialsImg[GameManager.instance.selectCloth + "_" + GameManager.instance.selectBottomColor];
+                        }
+                        else
+                        {
+                            GameManager.instance.charInfo.bottom = GameManager.instance.selectCloth + "_B";
+                            canvasFashion.transform.Find("bottom").GetComponent<Image>().sprite = LoadAsset.instance.fashionClothImg[GameManager.instance.selectCloth + "_B" + "_" + GameManager.instance.selectBottomColor + "_img"];
+                            GameManager.instance.onCloth(GameManager.instance.selectCloth.Substring(index + 1), GameManager.instance.selectCloth + "_B");
+                            GameManager.instance.fashionCharacter.transform.Find(GameManager.instance.selectCloth + "_B").GetComponent<Renderer>().material.mainTexture = LoadAsset.instance.fashionMaterialsImg[GameManager.instance.selectCloth + "_B_" + GameManager.instance.selectBottomColor];
+                        }
+                    }
+                }
+                else
+                {
+                    GameManager.instance.charInfo.bottom = GameManager.instance.selectCloth;
+                    canvasFashion.transform.Find("bottom").GetComponent<Image>().sprite = LoadAsset.instance.fashionClothImg[GameManager.instance.selectCloth + "_" + GameManager.instance.selectBottomColor + "_img"];
+                    GameManager.instance.onCloth(GameManager.instance.selectCloth.Substring(index + 1), GameManager.instance.selectCloth);
+                    GameManager.instance.fashionCharacter.transform.Find(GameManager.instance.selectCloth).GetComponent<Renderer>().material.mainTexture = LoadAsset.instance.fashionMaterialsImg[GameManager.instance.selectCloth + "_" + GameManager.instance.selectBottomColor];
+                }
             }
             else if (GameManager.instance.selectCloth.Substring(index + 1).Contains("onepiece"))
             {
@@ -856,14 +959,17 @@ public class FashionRecognition : MonoBehaviour
                 GameManager.instance.charInfo.onepiece = GameManager.instance.selectCloth;
                 canvasFashion.transform.Find("top").GetComponent<Image>().sprite = LoadAsset.instance.fashionClothImg[GameManager.instance.selectCloth + "_" + GameManager.instance.selectTopColor + "_img"];
                 canvasFashion.transform.Find("bottom").GetComponent<Image>().sprite = LoadAsset.instance.fashionClothImg[GameManager.instance.selectCloth + "_" + GameManager.instance.selectTopColor + "_img"];
+                GameManager.instance.onCloth(GameManager.instance.selectCloth.Substring(index + 1), GameManager.instance.selectCloth);
+                GameManager.instance.fashionCharacter.transform.Find(GameManager.instance.selectCloth).GetComponent<Renderer>().material.mainTexture = LoadAsset.instance.fashionMaterialsImg[GameManager.instance.selectCloth + "_" + GameManager.instance.selectTopColor];
             }
 
-            GameManager.instance.onCloth(GameManager.instance.selectCloth.Substring(index + 1), GameManager.instance.selectCloth);
+
             Debug.Log("cloth : " + GameManager.instance.selectCloth.Substring(index + 1));
-            if (GameManager.instance.selectCloth.Contains("top") || GameManager.instance.selectCloth.Contains("onepiece"))
-                GameManager.instance.fashionCharacter.transform.Find(GameManager.instance.selectCloth).GetComponent<Renderer>().material.mainTexture = LoadAsset.instance.fashionMaterialsImg[GameManager.instance.selectCloth + "_" + GameManager.instance.selectTopColor];
-            else if (GameManager.instance.selectCloth.Contains("bottom"))
-                GameManager.instance.fashionCharacter.transform.Find(GameManager.instance.selectCloth).GetComponent<Renderer>().material.mainTexture = LoadAsset.instance.fashionMaterialsImg[GameManager.instance.selectCloth + "_" + GameManager.instance.selectBottomColor];
+            /////여기기기기기기ㅣㅣ
+            //if (GameManager.instance.selectCloth.Contains("top") || GameManager.instance.selectCloth.Contains("onepiece"))
+            //    GameManager.instance.fashionCharacter.transform.Find(GameManager.instance.selectCloth).GetComponent<Renderer>().material.mainTexture = LoadAsset.instance.fashionMaterialsImg[GameManager.instance.selectCloth + "_" + GameManager.instance.selectTopColor];
+            //else if (GameManager.instance.selectCloth.Contains("bottom"))
+            //    GameManager.instance.fashionCharacter.transform.Find(GameManager.instance.selectCloth).GetComponent<Renderer>().material.mainTexture = LoadAsset.instance.fashionMaterialsImg[GameManager.instance.selectCloth + "_" + GameManager.instance.selectBottomColor];
             if (!GameManager.instance.charInfo.top.Contains("top") && !GameManager.instance.charInfo.onepiece.Contains("onepiece"))
                 GameManager.instance.onCloth("top", "basic_top");
             if (!GameManager.instance.charInfo.bottom.Contains("bottom") && !GameManager.instance.charInfo.onepiece.Contains("onepiece"))
@@ -893,14 +999,12 @@ public class FashionRecognition : MonoBehaviour
         orignPos = fashionCamera.WorldToScreenPoint(new Vector3(cropTrans.position.x, cropTrans.position.y, cropTrans.position.z));
         orignCropTrans = cropBox.GetComponent<RectTransform>();
 
-        x = orignCropTrans.rect.width;
-        y = orignCropTrans.rect.height;
-        //Debug.Log("pos :  " + orignPos.x + ",  " + orignPos.y + ", touch: " + trans.position.x + ", " + trans.position.y);
+        width = orignCropTrans.rect.width;
+        height = orignCropTrans.rect.height;
     }
     public void scaleDrag_XPYP()
     {
         touchPos = Input.mousePosition;
-        Debug.Log("debugP : " + Input.mousePosition);
         if(((touchPos.x - orignPos.x) * 720 / Screen.width >0 ) && ((touchPos.y - orignPos.y) * 1280/Screen.height >0))
         {
             cropTrans.sizeDelta = new Vector2(Math.Abs((orignPos.x - touchPos.x) * 720 / Screen.width), Math.Abs((orignPos.y - touchPos.y) * 1280 / Screen.height));
@@ -909,9 +1013,9 @@ public class FashionRecognition : MonoBehaviour
     public void scaleDrag_XPYN()
     {
         touchPos = Input.mousePosition;
-        if(((touchPos.x - orignPos.x) * 720 / Screen.width > 0)&&(orignPos.y - touchPos.y + y) * 1280 / Screen.height > 0)
+        if(((touchPos.x - orignPos.x) * 720 / Screen.width > 0)&&(orignPos.y - touchPos.y + height) * 1280 / Screen.height > 0)
         {
-            newCropTrans.sizeDelta = new Vector2(Math.Abs((orignPos.x - touchPos.x) * 720 / Screen.width), Math.Abs(y + ((orignPos.y - touchPos.y)) * 1280 / Screen.height));
+            newCropTrans.sizeDelta = new Vector2(Math.Abs((orignPos.x - touchPos.x) * 720 / Screen.width), Math.Abs(height + ((orignPos.y - touchPos.y)) * 1280 / Screen.height));
 
             Vector3 pos;
             pos.x = orignPos.x;
@@ -920,16 +1024,14 @@ public class FashionRecognition : MonoBehaviour
             newCropTrans.position = fashionCamera.ScreenToWorldPoint(pos);
             cropTrans = newCropTrans;
         }
-        //Debug.Log("size : " + tran.rect.height);
-
     }
     public void scaleDrag_XNYN()
     {
         touchPos = Input.mousePosition;
-        if (((orignPos.x - touchPos.x + x) * 720 / Screen.width) > 0 && (orignPos.y - touchPos.y + y) * 1280 / Screen.height > 0)
+        if (((orignPos.x - touchPos.x + width) * 720 / Screen.width) > 0 && (orignPos.y - touchPos.y + height) * 1280 / Screen.height > 0)
         {
 
-            newCropTrans.sizeDelta = new Vector2(Math.Abs(x + ((orignPos.x - touchPos.x)) * 720 / Screen.width), Math.Abs(y + ((orignPos.y - touchPos.y)) * 1280 / Screen.height));
+            newCropTrans.sizeDelta = new Vector2(Math.Abs(width + ((orignPos.x - touchPos.x)) * 720 / Screen.width), Math.Abs(height + ((orignPos.y - touchPos.y)) * 1280 / Screen.height));
 
             Vector3 pos;
             pos.x = touchPos.x;
@@ -938,43 +1040,35 @@ public class FashionRecognition : MonoBehaviour
             newCropTrans.position = fashionCamera.ScreenToWorldPoint(pos);
             cropTrans = newCropTrans;
         }
-        //Debug.Log("size : " + tran.rect.height);
-
     }
     public void scaleDrag_XNYP()
     {
         touchPos = Input.mousePosition;
-        if (((orignPos.x - touchPos.x + x) * 720 / Screen.width > 0) && ((touchPos.y - orignPos.y) * 1280 / Screen.height > 0))
+        if (((orignPos.x - touchPos.x + width) * 720 / Screen.width > 0) && ((touchPos.y - orignPos.y) * 1280 / Screen.height > 0))
         {
-            newCropTrans.sizeDelta = new Vector2(Math.Abs(x + ((orignPos.x - touchPos.x)) * 720 / Screen.width), (touchPos.y - orignPos.y) * 1280 / Screen.height);
+            newCropTrans.sizeDelta = new Vector2(Math.Abs(width + ((orignPos.x - touchPos.x)) * 720 / Screen.width), (touchPos.y - orignPos.y) * 1280 / Screen.height);
 
             Vector3 pos;
             pos.x = touchPos.x;
             pos.y = orignPos.y;
             pos.z = orignPos.z;
             newCropTrans.position = fashionCamera.ScreenToWorldPoint(pos);
-            //Debug.Log("size : " + tran.rect.height);
-
             cropTrans = newCropTrans;
         }
     }
     public void scaleDragX_N()
     {
         touchPos = Input.mousePosition;
-        if ((orignPos.x - touchPos.x + x) > 0)
+        if ((orignPos.x - touchPos.x + width) > 0)
         {
 
-            newCropTrans.sizeDelta = new Vector2(Math.Abs(x + ((orignPos.x - touchPos.x)) * 720 / Screen.width), orignCropTrans.rect.height);
-            //trans.sizeDelta = new Vector2(trans.rect.width, Math.Abs(orignTrans.rect.width + distansPos.y));
-
+            newCropTrans.sizeDelta = new Vector2(Math.Abs(width + ((orignPos.x - touchPos.x)) * 720 / Screen.width), orignCropTrans.rect.height);
 
             Vector3 pos;
             pos.x = touchPos.x;
             pos.y = orignPos.y;
             pos.z = orignPos.z;
             newCropTrans.position = fashionCamera.ScreenToWorldPoint(pos);
-            //Debug.Log("size : " + tran.rect.height);
-
             cropTrans = newCropTrans;
         }
     }
@@ -986,37 +1080,28 @@ public class FashionRecognition : MonoBehaviour
         {
             newCropTrans.sizeDelta = new Vector2((touchPos.x - orignPos.x) * 720 / Screen.width, orignCropTrans.rect.height);
             Debug.Log("input : " + Input.mousePosition.x + ", orign :  " + touchPos.x + ", " + orignPos.x + ", value : " + (touchPos.x - orignPos.x));
-            //trans.sizeDelta = new Vector2(trans.rect.width, Math.Abs(orignTrans.rect.width + distansPos.y));
-
 
             Vector3 pos;
             pos.x = orignPos.x;
             pos.y = orignPos.y;
             pos.z = orignPos.z;
             newCropTrans.position = fashionCamera.ScreenToWorldPoint(pos);
-            //Debug.Log("size : " + tran.rect.height);
-
             cropTrans = newCropTrans;
         }
     }
     public void scaleDragY_N()
     {
         touchPos = Input.mousePosition;
-        if ((orignPos.y - touchPos.y + y) * 1280 / Screen.height > 0)
+        if ((orignPos.y - touchPos.y + height) * 1280 / Screen.height > 0)
         {
-
-            newCropTrans.sizeDelta = new Vector2(orignCropTrans.rect.width, Math.Abs(y + ((orignPos.y - touchPos.y)) * 1280 / Screen.height));
+            newCropTrans.sizeDelta = new Vector2(orignCropTrans.rect.width, Math.Abs(height + ((orignPos.y - touchPos.y)) * 1280 / Screen.height));
             Debug.Log("orign :  " + orignPos.y + ", " + touchPos.y + ", value : " + (orignPos.y - touchPos.y));
-            //trans.sizeDelta = new Vector2(trans.rect.width, Math.Abs(orignTrans.rect.width + distansPos.y));
-
 
             Vector3 pos;
             pos.x = orignPos.x;
             pos.y = touchPos.y;
             pos.z = orignPos.z;
             newCropTrans.position = fashionCamera.ScreenToWorldPoint(pos);
-            //Debug.Log("size : " + tran.rect.height);
-
             cropTrans = newCropTrans;
         }
     }
@@ -1027,16 +1112,12 @@ public class FashionRecognition : MonoBehaviour
         if ((touchPos.y - orignPos.y) > 0)
         {
             newCropTrans.sizeDelta = new Vector2(orignCropTrans.rect.width, (touchPos.y - orignPos.y) * 1280 / Screen.height);
-            //trans.sizeDelta = new Vector2(trans.rect.width, Math.Abs(orignTrans.rect.width + distansPos.y));
-
 
             Vector3 pos;
             pos.x = orignPos.x;
             pos.y = orignPos.y;
             pos.z = orignPos.z;
             newCropTrans.position = fashionCamera.ScreenToWorldPoint(pos);
-            //Debug.Log("size : " + tran.rect.height);
-
             cropTrans = newCropTrans;
         }
     }
@@ -1050,7 +1131,6 @@ public class FashionRecognition : MonoBehaviour
     public void moveDrag()
     {
         touchPos = Input.mousePosition;
-        //Debug.Log("debugP : " + touchPos);
         Vector3 pos = fashionCamera.ScreenToWorldPoint(touchPos + distansPos);
         Debug.Log("pos : " + pos);
         pos.z = cropTrans.position.z;

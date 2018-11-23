@@ -32,19 +32,17 @@ public class AndroidFuntionCall : MonoBehaviour {
 
 		#endif
 
-        //img.transform.localScale = new Vector3(720 / 10, 0.1f, (720 / screenWidth) * screenHeight / 10);
-        //screenHeight = 2.0f * Mathf.Tan(0.5f * GameManager.instance.cameraAR.transform.Find("Camera").GetComponent<Camera>().fieldOfView * Mathf.Deg2Rad);
-        //screenWidth = screenHeight * Screen.width / Screen.height;
-        //img.transform.localScale = new Vector3(screenWidth, 1, screenHeight);
-        //img.transform.LookAt(GameManager.instance.cameraAR.transform);
-        //img.transform.localRotation = Quaternion.Euler(new Vector3(90, 0, 180));
+      
     }
 
     // Update is called once per frame
     void Update () {
 	
 	}
-
+    public void consoleLog(string msg)
+    {
+        plugins.Call("unityLog", msg);
+    }
     public void btnGallery()
     {
         GameManager.instance.instantiateSound(GameManager.instance.clickSound);
@@ -68,16 +66,7 @@ public class AndroidFuntionCall : MonoBehaviour {
 		GameManager.instance.callShareForiOS();
 		#endif
     }
-//    public void log(string str)
-//    {
-//#if UNITY_ANDROID && !UNITY_EDITOR
-//        plugins.Call("log", str);
-//#elif UNITY_IOS
 
-//#elif UNITY_EDITOR
-//        Debug.Log("log");
-//#endif
-//    }
     public void imgPath(string path)
     {
         if (GameManager.instance.uiState == GameManager.UIState.camera)
@@ -100,8 +89,6 @@ public class AndroidFuntionCall : MonoBehaviour {
     }
     public IEnumerator LoadImage()
     {
-        //texList = new Texture2D[pathList.Length];
-        //int dummy = 0;
         if (GameManager.instance.uiState == GameManager.UIState.camera)
         {
             yield return new WaitForEndOfFrame();
@@ -127,7 +114,6 @@ public class AndroidFuntionCall : MonoBehaviour {
                     if (strImgPath.Contains("Camera"))
                     {
                         Vector2 width = new Vector3(((float)texture.height) * (float)1280 / (float)texture.width, ((float)texture.width) * (float)1280 / (float)texture.width);
-                        //Vector2 width = new Vector3(((float)texture.height) * (float)720 / (float)texture.width, ((float)texture.width) * (float)720 / (float)texture.width);
                         GameManager.instance.charCamera.transform.Find("Canvas").Find("background").gameObject.SetActive(true);
                         GameManager.instance.charCamera.transform.Find("Canvas").Find("background").Find("image").GetComponent<UnityEngine.UI.Image>().sprite = Sprite.Create(texture, rect, new Vector2(0, 0));
                         GameManager.instance.charCamera.transform.Find("Canvas").Find("background").Find("image").GetComponent<RectTransform>().sizeDelta = new Vector2(width.y, width.x);
@@ -178,7 +164,6 @@ public class AndroidFuntionCall : MonoBehaviour {
                     FashionRecognition.canvasFashion.transform.Find("Image").gameObject.SetActive(true);
                     FashionRecognition.canvasFashion.transform.Find("Image").transform.GetComponent<RectTransform>().sizeDelta = width;
                     FashionRecognition.canvasFashion.transform.Find("Image").GetComponent<UnityEngine.UI.Image>().sprite = Sprite.Create(texture, rect, new Vector2(0, 0));
-                    //GameObject.Find("Canvas").transform.Find("Image").transform.localScale = new Vector3(((float)texture.width) * ((float)720 / (float)texture.width), ((float)texture.height) * ((float)720 / (float)texture.width), 0.1f);
                     FashionRecognition.canvasFashion.transform.Find("Image").transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
 
                     FashionRecognition.img_bytes = ScaleTexture(texture, 720, (int)(texture.height * 720 / texture.width)).EncodeToJPG();
@@ -188,11 +173,9 @@ public class AndroidFuntionCall : MonoBehaviour {
 
             FashionRecognition.canvasFashion.transform.Find("capturePlane").gameObject.SetActive(true);
             FashionRecognition.canvasFashion.transform.Find("capturePlane").GetComponent<UnityEngine.UI.Image>().sprite = null;
-            //GameObject.Find("Canvas").transform.Find("image").gameObject.SetActive(true);
             FashionRecognition.canvasFashion.transform.Find("album").gameObject.SetActive(false);
             FashionRecognition.canvasFashion.transform.Find("reCapture").gameObject.SetActive(true);
             FashionRecognition.canvasFashion.transform.Find("send").gameObject.SetActive(true);
-            //FashionRecognition.canvasFashion.transform.Find("selectCategory").gameObject.SetActive(true);
             FashionRecognition.canvasFashion.transform.Find("selectCategory").transform.Find("kid").Find("check").gameObject.SetActive(true);
             FashionRecognition.canvasFashion.transform.Find("selectCategory").transform.Find("adult").Find("check").gameObject.SetActive(false);
 
@@ -272,46 +255,5 @@ public class AndroidFuntionCall : MonoBehaviour {
 #endif
     }
    
-//    public void check()
-//    {
-
-//#if UNITY_EDITOR
-
-//#else
-//        plugins.Call("checkPermission");
-//#endif
-//    }
-
 }
 
-//    private AndroidJavaObject javaObj = null;
-
-//    private AndroidJavaObject GetJavaObject()
-//    {
-//        if (javaObj == null)
-//        {
-//            javaObj = new AndroidJavaObject("com.feelingk.test2.MainActivity");
-//        }
-//        return javaObj;
-//    }
-
-//    private void SetActivityInNativePlugin()
-//    {
-//        // Retrieve current Android Activity from the Unity Player
-//        AndroidJavaClass jclass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-//        AndroidJavaObject activity = jclass.GetStatic<AndroidJavaObject>("currentActivity");
-
-//        // Pass reference to the current Activity into the native plugin,
-//        // using the 'setActivity' method that we defined in the ImageTargetLogger Java class
-//        GetJavaObject().Call("setActivity", activity);
-//    }
-
-//    private void ShowTargetInfo(string eventMsg)
-//    {
-//        GetJavaObject().Call("showTargetInfo", eventMsg);
-//    }
-//#else
-//    private void ShowTargetInfo(string targetName) {
-//        Debug.Log("ShowTargetInfo method placeholder for Play Mode (not running on Android device)");
-//    }
-//#endif

@@ -46,8 +46,6 @@ public class CharacterController : MonoBehaviour {
         
     }
     int turnDirection;
-    CameraSettings tmp;
-
 
     Vector3 testRotPos;
     int rotDirection;
@@ -70,10 +68,6 @@ public class CharacterController : MonoBehaviour {
     void Start () {
         instance = this;
         charState = CharState.Basic;
-        //minXPos.transform.localPosition = GameManager.instance.cameraAR.transform.Find("Camera").GetComponent<Camera>().ScreenToWorldPoint(new Vector3(50, Screen.height/2, pos.transform.position.z));
-        //maxXPos.transform.localPosition = GameManager.instance.cameraAR.transform.Find("Camera").GetComponent<Camera>().ScreenToWorldPoint(new Vector3(Screen.width - 50, Screen.height/2, pos.transform.position.z));
-        //minYPos.transform.localPosition = GameManager.instance.cameraAR.transform.Find("Camera").GetComponent<Camera>().ScreenToWorldPoint(new Vector3(Screen.width / 2, 100, pos.transform.position.z));
-        //maxYPos.transform.localPosition = GameManager.instance.cameraAR.transform.Find("Camera").GetComponent<Camera>().ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height - 200, pos.transform.position.z));
     }
 
     // Update is called once per frame
@@ -93,26 +87,18 @@ public class CharacterController : MonoBehaviour {
             switch (turnDirection)
             {
                 case 0:
-                    //if (tmp.IsFrontCameraActive())
                     GameManager.instance.character.transform.Rotate(new Vector3(0, 0, -5));
-                    //else
-                    //    GameManager.instance.character.transform.Rotate(new Vector3(0, 0, -5));
                     break;
                 case 1:
-                    //resetTrans();
                     GameManager.instance.character.transform.rotation = Quaternion.Euler(new Vector3(-90, 180, 0));
                     charState = CharState.Basic;
                     break;
                 case 2:
-                    //if (tmp.IsFrontCameraActive())
                     GameManager.instance.character.transform.Rotate(new Vector3(0, 0, 5));
-                    //else
-                    //    GameManager.instance.character.transform.Rotate(new Vector3(0, 0, 5));
                     break;
             }
         }
 
-        //      
         //카메라viewport
         if (this.gameObject.transform.localScale.x > 2.5f)
         {
@@ -123,7 +109,6 @@ public class CharacterController : MonoBehaviour {
             gameObject.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
         }
         Vector3 characterPos = GameManager.instance.charCamera.GetComponent<Camera>().WorldToScreenPoint(gameObject.transform.position);
-        tmp = FindObjectOfType<CameraSettings>();
         Vector2 charSize = new Vector2(gameObject.transform.Find("character").GetComponent<Transform>().localScale.x, gameObject.transform.Find("character").GetComponent<Transform>().localScale.y);
 
         if (GameManager.instance.charInfo.body != "0")
@@ -131,79 +116,36 @@ public class CharacterController : MonoBehaviour {
 
             if (characterPos.x <= charSize.x / 3)
             {
-                //if (tmp.IsFrontCameraActive())
-                //{
-                //    //        Vector3 pos;
-                //    //        pos = GameManager.instance.cameraAR.transform.Find("Camera").GetComponent<Camera>().ScreenToWorldPoint(new Vector3(0, characterPos.y, 80));
-                //    //        pos.z = 80;
-                //    //        gameObject.transform.localPosition = pos;
-                //    //        //gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(-1 * (gameObject.GetComponent<RectTransform>().sizeDelta.x * gameObject.transform.localScale.x - (720 * 0.5f)), gameObject.GetComponent<RectTransform>().anchoredPosition.y);
-                //}
-                //else
-                //{
-
                 Vector3 charScreenPos = GameManager.instance.charCamera.GetComponent<Camera>().ScreenToWorldPoint(characterPos);
                 charScreenPos.x = minXPos.transform.localPosition.x;
                 charScreenPos.y = gameObject.transform.localPosition.y;
                 charScreenPos.z = pos.transform.localPosition.z;
-                //float testX = charScreenPos
-                //charScreenPos.z = 80 + GameManager.instance.cameraAR.transform.position.z;
                 gameObject.transform.localPosition = charScreenPos;
-                //}
-
             }
             else if (characterPos.x >= Screen.width - (charSize.x / 3))
             {
-                //if (tmp.IsFrontCameraActive())
-                //{
-                //    //gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(gameObject.GetComponent<RectTransform>().sizeDelta.x * gameObject.transform.localScale.x - (720 * 0.5f), gameObject.GetComponent<RectTransform>().anchoredPosition.y);
-                //}
-                //else
-                //{
                 Vector3 charScreenPos = GameManager.instance.charCamera.GetComponent<Camera>().ScreenToWorldPoint(characterPos);
                 charScreenPos.x = maxXPos.transform.localPosition.x;
                 charScreenPos.y = gameObject.transform.localPosition.y;
                 charScreenPos.z = pos.transform.localPosition.z;
                 gameObject.transform.localPosition = charScreenPos;
-                //}
             }
             if (characterPos.y <= -charSize.y * 4)
             {
-                //if (tmp.IsFrontCameraActive())
-                //{
-                //    Vector3 charScreenPos = GameManager.instance.cameraAR.transform.Find("Camera").GetComponent<Camera>().ScreenToWorldPoint(characterPos);
-                //    charScreenPos.x = gameObject.transform.localPosition.x;
-                //    charScreenPos.y = -minYPos.transform.localPosition.y;
-                //    charScreenPos.z = pos.transform.localPosition.z;
-                //    gameObject.transform.localPosition = charScreenPos;
-                //}
-                //else
-                //{
+                
                 Vector3 charScreenPos = GameManager.instance.charCamera.GetComponent<Camera>().ScreenToWorldPoint(characterPos);
                 charScreenPos.x = gameObject.transform.localPosition.x;
                 charScreenPos.y = minYPos.transform.localPosition.y;
                 charScreenPos.z = pos.transform.localPosition.z;
                 gameObject.transform.localPosition = charScreenPos;
-                //}
             }
             else if (characterPos.y >= Screen.height - charSize.y / 2)
             {
-                //if (tmp.IsFrontCameraActive())
-                //{
-                //    Vector3 charScreenPos = GameManager.instance.cameraAR.transform.Find("Camera").GetComponent<Camera>().ScreenToWorldPoint(characterPos);
-                //    charScreenPos.x = gameObject.transform.localPosition.x;
-                //    charScreenPos.y = -maxYPos.transform.localPosition.y;
-                //    charScreenPos.z = pos.transform.localPosition.z;
-                //    gameObject.transform.localPosition = charScreenPos;
-                //}
-                //else
-                //{
                 Vector3 charScreenPos = GameManager.instance.charCamera.GetComponent<Camera>().ScreenToWorldPoint(characterPos);
                 charScreenPos.x = gameObject.transform.localPosition.x;
                 charScreenPos.y = maxYPos.transform.localPosition.y;
                 charScreenPos.z = pos.transform.localPosition.z;
                 gameObject.transform.localPosition = charScreenPos;
-
             }
         }
         minXPos.transform.position = GameManager.instance.charCamera.GetComponent<Camera>().ScreenToWorldPoint(new Vector3(charSize.x / 3, Screen.height / 2, pos.transform.localPosition.z));
@@ -233,42 +175,7 @@ public class CharacterController : MonoBehaviour {
                             {
                                 Vector3 pos;
                                 trans.position = GameManager.instance.charCamera.GetComponent<Camera>().ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y,1));
-                                //pos.z = 1;
-                                Debug.Log(trans.position);
-                                //trans.localScale = new Vector3(0.4f, 0.4f, 0.4f);
                                 onEffect(trans);
-                                //StartCoroutine(onEffect(GameManager.instance.charInfo));
-                                
-                                //if (hit.transform.name.Contains("top"))
-                                //{
-                                //    if (GameManager.instance.charInfo.top.Contains("top"))
-                                //    {
-                                //        StartCoroutine(onParticle(gameObject.transform.Find("top").GetChild(0).GetComponent<ParticleSystem>()));
-                                //    }
-                                //    else if (GameManager.instance.charInfo.onepiece.Contains("onepiece"))
-                                //    {
-                                //        StartCoroutine(onParticle(gameObject.transform.Find("onepiece").GetChild(0).GetComponent<ParticleSystem>()));
-                                //    }
-                                //}
-                                //else if (hit.transform.name.Contains("bottom"))
-                                //{
-                                //    if (GameManager.instance.charInfo.bottom.Contains("bottom"))
-                                //    {
-                                //        StartCoroutine(onParticle(gameObject.transform.Find("bottom").GetChild(0).GetComponent<ParticleSystem>()));
-                                //    }
-                                //    else if (GameManager.instance.charInfo.onepiece.Contains("onepiece"))
-                                //    {
-                                //        StartCoroutine(onParticle(gameObject.transform.Find("onepiece").GetChild(0).GetComponent<ParticleSystem>()));
-                                //    }
-                                //}
-                                //else if (hit.transform.name.Contains("shoes") && GameManager.instance.charInfo.shoes.Contains("shoes"))
-                                //{
-                                //    StartCoroutine(onParticle(gameObject.transform.Find("shoes").GetChild(0).GetComponent<ParticleSystem>()));
-                                //}
-                                //else if (hit.transform.name.Contains("acc") && GameManager.instance.charInfo.acc.Contains("acc"))
-                                //{
-                                //    StartCoroutine(onParticle(gameObject.transform.Find("acc").GetChild(0).GetComponent<ParticleSystem>()));
-                                //}
                             }
                         }
 
@@ -311,27 +218,22 @@ public class CharacterController : MonoBehaviour {
         if (info.top.Contains("top"))
         {
             GameManager.instance.arCharacter.transform.Find(GameManager.instance.charInfo.top).GetComponent<Renderer>().material.shader = shader;
-            //GameManager.instance.arCharacter.transform.Find(GameManager.instance.charInfo.top).GetComponent<Renderer>().material.color = color;
         }
         if (info.bottom.Contains("bottom"))
         {
             GameManager.instance.arCharacter.transform.Find(GameManager.instance.charInfo.bottom).GetComponent<Renderer>().material.shader = shader;
-            //GameManager.instance.arCharacter.transform.Find(GameManager.instance.charInfo.bottom).GetComponent<Renderer>().material.color = color;
         }
         if (info.onepiece.Contains("onepiece"))
         {
             GameManager.instance.arCharacter.transform.Find(GameManager.instance.charInfo.onepiece).GetComponent<Renderer>().material.shader = shader;
-           // GameManager.instance.arCharacter.transform.Find(GameManager.instance.charInfo.onepiece).GetComponent<Renderer>().material.color = color;
         }
         if (info.shoes.Contains("shoes"))
         {
             GameManager.instance.arCharacter.transform.Find(GameManager.instance.charInfo.shoes).GetComponent<Renderer>().material.shader = shader;
-           // GameManager.instance.arCharacter.transform.Find(GameManager.instance.charInfo.shoes).GetComponent<Renderer>().material.color = color;
         }
         if (info.acc.Contains("acc"))
         {
             GameManager.instance.arCharacter.transform.Find(GameManager.instance.charInfo.acc).GetComponent<Renderer>().material.shader = shader;
-            //GameManager.instance.arCharacter.transform.Find(GameManager.instance.charInfo.acc).GetComponent<Renderer>().material.color = color;
         }
         yield return new WaitForSeconds(0.3f);
         if (info.top.Contains("top"))
@@ -351,18 +253,6 @@ public class CharacterController : MonoBehaviour {
         yield return new WaitForSeconds(1.0f);
         particle.gameObject.SetActive(false);
     }
-    //public void OnPointerDown(PointerEventData ped)
-    //{
-    //}
-    //public void OnPointerUp(PointerEventData ped)
-    //{
-    //}
-    //public float getDis(float size)
-    //{
-    //    float dis;
-    //    size %
-    //    return dis;
-    //}
     public void btnTurn(int dir)
     {
         charState = CharState.Turn;
@@ -386,10 +276,8 @@ public class CharacterController : MonoBehaviour {
             GameManager.charControlBtnUI.SetActive(false);
         }
         gameObject.transform.localScale = pos.transform.localScale;
-        //this.gameObject.transform.rotation = pos.transform.rotation;
-        
-            gameObject.transform.localPosition = pos.transform.localPosition;
-            gameObject.transform.rotation = pos.transform.rotation;
+        gameObject.transform.localPosition = pos.transform.localPosition;
+        gameObject.transform.rotation = pos.transform.rotation;
 
     }
    

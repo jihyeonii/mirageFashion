@@ -217,7 +217,7 @@ public class testArCameraTrackableEventHandler : MonoBehaviour, ITrackableEventH
             PopupManager.instance.showGuide();
         }
         GameManager.instance.availableRecognize = true;
-        GameManager.instance.recogObjName = null;
+        GameManager.instance.recogObjName = "";
     }
     public void recObjPopup(string obj)
     {

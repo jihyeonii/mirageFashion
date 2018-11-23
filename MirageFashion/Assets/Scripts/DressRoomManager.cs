@@ -4,33 +4,32 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 public class DressRoomManager : MonoBehaviour {
     public static DressRoomManager instance;
+
     GameObject[] locker;
     GameObject[] lockerPos;
     GameObject[] lockerEdit;
-    bool isClick = false;
-
-
-    Vector3 prePos;
-    Vector3 curPos;
 
     public GameObject lockerObj;
     int lockerNum = 0;
 
     bool isTurn = false;
-    public Dictionary<string, CharacterInfo> dicLockerChar;
-    Dictionary<string, CharacterInfo> orignLocker;
+    public Dictionary<string, CharacterInfo> dicLockerChar;         //보관함 변경한 후 캐릭터,의상 정보
+    Dictionary<string, CharacterInfo> orignLocker;                  //보관함 변경하기전 캐릭터, 의상 정보
     int direction;
     // Use this for initialization
     void Start () {
         instance = this;
+
         dicLockerChar = new Dictionary<string, CharacterInfo>();
         orignLocker = new Dictionary<string, CharacterInfo>();
+
         locker = new GameObject[3];
+        lockerPos = new GameObject[3];
         lockerEdit = new GameObject[3];
+
         locker[0] = lockerObj.transform.Find("locker_0").gameObject;
         locker[1] = lockerObj.transform.Find("locker_1").gameObject;
         locker[2] = lockerObj.transform.Find("locker_2").gameObject;
-        lockerPos = new GameObject[3];
         lockerPos[0] = lockerObj.transform.Find("locker0_pos").gameObject;
         lockerPos[1] = lockerObj.transform.Find("locker1_pos").gameObject;
         lockerPos[2] = lockerObj.transform.Find("locker2_pos").gameObject;
@@ -39,43 +38,23 @@ public class DressRoomManager : MonoBehaviour {
         lockerEdit[2] = locker[2].transform.Find("btnAdd,Remove").gameObject;
 
         gameObject.transform.Find("background").GetComponent<Image>().sprite = LoadAsset.instance.dicClothImg["dressBackground"];
-        //if(Screen.height * 720 /1280  < Screen.width)
-        //{
-        //    gameObject.transform.Find("background").transform.localScale = new Vector3(Screen.width, Screen.width * 1280 / 720);
-        //}
-        //else
-        //{
-
-        //     gameObject.transform.Find("background").transform.localScale = new Vector3(Screen.height * 720 / 1280, Screen.height, 1);
-        //}
-
+       
         //보관함
         if (PlayerPrefs.GetString("locker0_body").Contains("char"))
         {
             dicLockerChar.Add("char0", new CharacterInfo(PlayerPrefs.GetString("locker0_body"), PlayerPrefs.GetString("locker0_top"), PlayerPrefs.GetString("locker0_bottom"), PlayerPrefs.GetString("locker0_onepiece"), PlayerPrefs.GetString("locker0_shoes"), PlayerPrefs.GetString("locker0_acc")));
-            
         }
-        else
-        {
-
-        }
+        
         if (PlayerPrefs.GetString("locker1_body").Contains("char"))
         {
             dicLockerChar.Add("char1", new CharacterInfo(PlayerPrefs.GetString("locker1_body"), PlayerPrefs.GetString("locker1_top"), PlayerPrefs.GetString("locker1_bottom"), PlayerPrefs.GetString("locker1_onepiece"), PlayerPrefs.GetString("locker1_shoes"), PlayerPrefs.GetString("locker1_acc")));
         }
-        else
-        {
-
-        }
+        
         if (PlayerPrefs.GetString("locker2_body").Contains("char"))
         {
             dicLockerChar.Add("char2", new CharacterInfo(PlayerPrefs.GetString("locker2_body"), PlayerPrefs.GetString("locker2_top"), PlayerPrefs.GetString("locker2_bottom"), PlayerPrefs.GetString("locker2_onepiece"), PlayerPrefs.GetString("locker2_shoes"), PlayerPrefs.GetString("locker2_acc")));
         }
-        else
-        {
-
-        }
-
+        
         reloadLocker();
         if (dicLockerChar.ContainsKey("char0"))
         {
@@ -141,7 +120,7 @@ public class DressRoomManager : MonoBehaviour {
                     locker[i].transform.Find("emptySlot").gameObject.SetActive(false);
                     locker[i].transform.Find("character").transform.Find("body").gameObject.SetActive(true);
                     locker[i].transform.Find("character").transform.Find(dicLockerChar["char"+i].body).gameObject.SetActive(true);
-                    //top;
+                    //top
                     if (dicLockerChar["char" + i].top.Contains("top"))
                     {
                         locker[i].transform.Find("character").transform.Find(dicLockerChar["char" + i].top).gameObject.SetActive(true);
@@ -157,7 +136,6 @@ public class DressRoomManager : MonoBehaviour {
 
                     if (dicLockerChar["char" + i].bottom.Contains("bottom"))
                     {
-
                         locker[i].transform.Find("character").transform.Find(dicLockerChar["char" + i].bottom).gameObject.SetActive(true);
                     }
                     else
@@ -170,26 +148,17 @@ public class DressRoomManager : MonoBehaviour {
                     //onepiece
                     if (dicLockerChar["char" + i].onepiece.Contains("onepiece"))
                     {
-
                         locker[i].transform.Find("character").transform.Find(dicLockerChar["char" + i].onepiece).gameObject.SetActive(true);
                     }
                     //shoes
                     if (dicLockerChar["char" + i].shoes.Contains("shoes"))
                     {
-
                         locker[i].transform.Find("character").transform.Find(dicLockerChar["char" + i].shoes).gameObject.SetActive(true);
-                    }
-                    else
-                    {
                     }
                     //acc
                     if (dicLockerChar["char" + i].acc.Contains("acc"))
                     {
-
                         locker[i].transform.Find("character").transform.Find(dicLockerChar["char" + i].acc).gameObject.SetActive(true);
-                    }
-                    else
-                    {
                     }
                 }
             }
@@ -224,6 +193,7 @@ public class DressRoomManager : MonoBehaviour {
         float speed = 4f;
         if (lockerNum == 2)
         {
+            //editer hierarchy배치 변경 setsiblingindex값이 큰 오브젝트가 ui맨위에 보여짐
             if(direction == 1)
             {
                 locker[0].transform.SetSiblingIndex(0);
@@ -311,7 +281,9 @@ public class DressRoomManager : MonoBehaviour {
         if (obj.transform.Find("Text").GetComponent<Text>().text.Contains("편집"))
         {
             PopupManager.instance.popupState = PopupManager.Popup.editDressRoom;
+
             orignLocker = new Dictionary<string, CharacterInfo>();
+
             for(int i = 0; i< 3; i++)
             {
                 if (dicLockerChar.ContainsKey("char" + i))
@@ -326,6 +298,7 @@ public class DressRoomManager : MonoBehaviour {
             lockerEdit[0].SetActive(true);
             lockerEdit[1].SetActive(true);
             lockerEdit[2].SetActive(true);
+
             for(int i =0; i<3; i++)
             {
                 if (dicLockerChar.ContainsKey("char" + i))
@@ -340,21 +313,22 @@ public class DressRoomManager : MonoBehaviour {
                         lockerEdit[i].SetActive(false);
                 }
             }
-            obj.transform.Find("Text").GetComponent<Text>().text = "완료";
             gameObject.transform.Find("btnLeft").transform.gameObject.SetActive(false);
             gameObject.transform.Find("btnRight").transform.gameObject.SetActive(false);
             gameObject.transform.Find("btnBack").transform.gameObject.SetActive(false);
             gameObject.transform.Find("btnLoad").transform.gameObject.SetActive(false);
 
-            
+            obj.transform.Find("Text").GetComponent<Text>().text = "완료";
         }
         else if (obj.transform.Find("Text").GetComponent<Text>().text.Contains("완료"))
         {
             PopupManager.instance.popupState = PopupManager.Popup.settingDressRoom;
+
             lockerEdit[0].SetActive(false);
             lockerEdit[1].SetActive(false);
             lockerEdit[2].SetActive(false);
-            obj.transform.Find("Text").GetComponent<Text>().text = "편집";
+
+
             gameObject.transform.Find("btnLeft").transform.gameObject.SetActive(true);
             gameObject.transform.Find("btnRight").transform.gameObject.SetActive(true);
             gameObject.transform.Find("btnBack").transform.gameObject.SetActive(true);
@@ -365,6 +339,8 @@ public class DressRoomManager : MonoBehaviour {
             gameObject.transform.Find("btnRevert").transform.gameObject.SetActive(false);
             savePlayerPrefs();
             reloadLocker();
+
+            obj.transform.Find("Text").GetComponent<Text>().text = "편집";
         }
     }
     public void removeOrAdd(int num)//locker num
@@ -381,16 +357,13 @@ public class DressRoomManager : MonoBehaviour {
             if (GameManager.instance.charInfo.body.Contains("char"))
             {
                 dicLockerChar.Add("char" + num, new CharacterInfo(GameManager.instance.charInfo.body,
-                                                                                        GameManager.instance.charInfo.top,
-                                                                                        GameManager.instance.charInfo.bottom,
-                                                                                        GameManager.instance.charInfo.onepiece,
-                                                                                        GameManager.instance.charInfo.shoes,
-                                                                                        GameManager.instance.charInfo.acc));
-            }
-            else
-            {
-
-            }
+                                                                  GameManager.instance.charInfo.top,
+                                                                  GameManager.instance.charInfo.bottom,
+                                                                  GameManager.instance.charInfo.onepiece,
+                                                                  GameManager.instance.charInfo.shoes,
+                                                                  GameManager.instance.charInfo.acc));
+            }                                                    
+            
         }
         gameObject.transform.Find("btnRevert").transform.gameObject.SetActive(false);
         for(int i = 0; i<3; i++)
@@ -486,9 +459,10 @@ public class DressRoomManager : MonoBehaviour {
         GameManager.instance.instantiateSound(GameManager.instance.clickSound);
         if (GameManager.instance.isCardRecognition)
         {
-
             CameraSettings tmp;
+
             GameManager.instance.resetChar();
+
             if (GameManager.instance.uiState == GameManager.UIState.main)
             {
                 if (GameManager.instance.charInfo.body.Contains("char") == false)
@@ -508,17 +482,13 @@ public class DressRoomManager : MonoBehaviour {
                 GameManager.instance.GuideLine.SetActive(true);
                 GameManager.canvasBottomButtonUI.transform.Find("cameraModeImg").gameObject.SetActive(false);
             }
-            GameManager.instance.character.transform.localScale = GameManager.instance.charCamera.transform.Find("objPos").transform.localScale;//CharacterController.instance.pos.transform.localScale;
-            GameManager.instance.character.transform.rotation = GameManager.instance.charCamera.transform.Find("objPos").transform.rotation;//CharacterController.instance.pos.transform.rotation;
+            GameManager.instance.character.transform.localScale = GameManager.instance.charCamera.transform.Find("objPos").transform.localScale;
+            GameManager.instance.character.transform.rotation = GameManager.instance.charCamera.transform.Find("objPos").transform.rotation;
+            GameManager.instance.character.transform.localPosition = GameManager.instance.charCamera.transform.Find("objPos").transform.localPosition;
 
-            PopupManager.instance.popupState = PopupManager.Popup.home;
+            PopupManager.instance.popupState = PopupManager.Popup.none;
             GameManager.instance.cameraAR.SetActive(true);
             GameManager.instance.SwitchAutofocus(true);
-
-
-
-            GameManager.instance.character.transform.localPosition = GameManager.instance.charCamera.transform.Find("objPos").transform.localPosition;//CharacterController.instance.pos.transform.localPosition;
-            GameManager.instance.character.transform.rotation = GameManager.instance.charCamera.transform.Find("objPos").transform.rotation; //CharacterController.instance.pos.transform.rotation;
 
             GameManager.instance.charInfo.body = dicLockerChar["char" + lockerNum].body;
             GameManager.instance.charInfo.top = dicLockerChar["char" + lockerNum].top;
@@ -577,7 +547,6 @@ public class DressRoomManager : MonoBehaviour {
                 GameManager.instance.arCharacter.transform.Find("basic_bottom").gameObject.SetActive(true);
                 GameManager.instance.arCharacter.transform.Find("basic_top").gameObject.SetActive(true);
             }
-            Debug.Log("char : " + GameManager.instance.charInfo.body);
             lockerObj.transform.rotation = Quaternion.Euler(new Vector3(lockerObj.transform.rotation.x, 0, lockerObj.transform.rotation.z));
             lockerNum = 0;
             locker[0].transform.LookAt(GameObject.Find("PopupCamera").transform.Find("LookAt").transform);
@@ -620,6 +589,9 @@ public class DressRoomManager : MonoBehaviour {
         }
     }
     
+    /// <summary>
+    /// 보관함 저장
+    /// </summary>
     public void savePlayerPrefs()
     {
         for (int i = 0; i < 3; i++)

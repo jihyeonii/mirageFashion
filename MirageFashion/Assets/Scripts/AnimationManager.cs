@@ -11,10 +11,6 @@ public class AnimationManager : MonoBehaviour {
     
     public void endCharacterAnimation()
     {
-        //GameObject.Find("Canvas").transform.Find("character").GetComponent<Animator>().enabled = false;
-
-        //GameObject.Find("Canvas").transform.Find("character").GetComponent<UnityEngine.UI.Image>().sprite = Resources.Load<Sprite>("img_ari");
-        //GameObject.Find("Canvas").transform.Find("Effect").gameObject.SetActive(false);
         LoadAsset.instance.test.text = "finish";
             SceneManager.LoadScene(1);
     }

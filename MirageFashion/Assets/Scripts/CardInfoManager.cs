@@ -8,7 +8,7 @@ public class CardInfoManager : MonoBehaviour {
     float screenHeight;
 
     public int cardInfoType = 0; // 0 : 캐릭터, 1:상의 2: 하의, 3:원피스 4:신발 5:액세사리
-    //public GameObject obj;
+
     int objCount = 0;
     int charCount = 0;
     int topCount = 0;
@@ -52,7 +52,6 @@ public class CardInfoManager : MonoBehaviour {
                 accCount++;
             }
         }
-        //cardInfoPage();
     }
 
     // Update is called once per frame
@@ -63,7 +62,6 @@ public class CardInfoManager : MonoBehaviour {
     {
         float height = (720 / screenWidth) * screenHeight;
        
-            Debug.Log("adfasdf");
             //의상
             Vector3 size = new Vector3(720, height / 128*41, 1);
             gameObject.transform.Find("CardInfo").transform.Find("clothList").GetComponent<RectTransform>().sizeDelta = size;
@@ -140,13 +138,9 @@ public class CardInfoManager : MonoBehaviour {
         Vector3 pos;
         count = getCount(type);
 
-        //if (type == 0)
-        //    size = new Vector3(720, Mathf.CeilToInt((float)count / 3) * 205, 1);
-        //else
+       
             size = new Vector3(720, Mathf.CeilToInt((float)count / 3) * 205, 1);
 
-//        gameObject.transform.Find("CardInfo").transform.Find("cardInfo").transform.Find("Text").gameObject.SetActive(false);
-//        gameObject.transform.Find("CardInfo").transform.Find("cardInfo").transform.Find("Image").gameObject.SetActive(false);
         GameObject[] typeObj = new GameObject[20];
         gameObject.transform.Find("CardInfo").transform.Find("clothList").transform.Find("ScrollRectType").transform.Find("Obj").localPosition = new Vector3(0, 0, 0);
         for (int i = 0; i < 20; i++)
@@ -163,19 +157,10 @@ public class CardInfoManager : MonoBehaviour {
             typeObj[i].SetActive(true);
 
             typeObj[i].transform.localScale = new Vector3(1, 1, 1);
-            //if(type == 0)
-            //{
-            //    typeObj[i].GetComponent<RectTransform>().sizeDelta = new Vector2(180, 235);
-            //    pos = new Vector3(i % 3 * 240, -(((int)i / 4) * 235), 0);
-            //}
-            //else
-            //{
-            //    typeObj[i].GetComponent<RectTransform>().sizeDelta = new Vector2(240, 205);
-            //    pos = new Vector3(i % 3 * 240, -(((int)i / 3) * 205), 0);
-            //}
+            
             pos = new Vector3(i % 3 * 240, -(((int)i / 3) * 205), 0);
-            //pos = cameraPopup.GetComponent<Camera>().ScreenToWorldPoint(new Vector3(i % 4 * 180 * Screen.width / 720, ((Screen.height / 5 * 2) - (((int)i / 4) * 180) * Screen.width / 720), 100));
-            //typeObj[i].transform.position = pos;
+            
+
             typeObj[i].transform.localPosition = pos;
             typeObj[i].GetComponent<Image>().sprite = LoadAsset.instance.dicClothImg[GameManager.instance.dicCard[type + "_" + i].name + "_img"]; //Resources.Load<Sprite>("RecognizeImg/" + GameManager.instance.dicCard[type + "_" + i].name + "_img");
             if (GameManager.instance.dicCard[type + "_" + i].history == 1)
@@ -188,7 +173,6 @@ public class CardInfoManager : MonoBehaviour {
         for (int i = 0; i < gameObject.transform.Find("CardInfo").transform.Find("cardInfo").childCount; i++)
         {
             gameObject.transform.Find("CardInfo").transform.Find("cardInfo").transform.GetChild(i).gameObject.SetActive(false);
-            //
             gameObject.transform.Find("CardInfo").transform.Find("cardInfo").Find("Image").gameObject.SetActive(true);
             gameObject.transform.Find("CardInfo").transform.Find("cardInfo").Find("background").gameObject.SetActive(true);
             gameObject.transform.Find("CardInfo").transform.Find("cardInfo").Find("logo").gameObject.SetActive(true);
@@ -232,8 +216,7 @@ public class CardInfoManager : MonoBehaviour {
         obj = gameObject.transform.Find("CardInfo").transform.Find("cardInfo").gameObject;
         GameObject btn;
         btn = obj.transform.Find("btn").gameObject;
-        //gameObject.transform.Find("CardInfo").transform.Find("cardInfo").transform.Find("Image").gameObject.SetActive(true);
-        //gameObject.transform.Find("CardInfo").transform.Find("cardInfo").transform.Find("Text").gameObject.SetActive(true);
+      
         btn.SetActive(true);
         btn.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load<Sprite>("Button/cardInfo_open");
         if (cardInfoType != 0)
@@ -255,10 +238,7 @@ public class CardInfoManager : MonoBehaviour {
             obj.transform.Find("itemInfo").gameObject.SetActive(false);
 
             obj.transform.Find("charImg").transform.Find("char").GetComponent<Image>().sprite = LoadAsset.instance.dicClothImg[GameManager.instance.dicCard[cardInfoType + "_" + num].name + "_infoImg"];
-            obj.transform.Find("charImg").transform.Find("name").GetComponent<Image>().sprite = LoadAsset.instance.dicClothImg["name_"+ GameManager.instance.dicCard[cardInfoType + "_" + num].name];//Resources.Load<Sprite>("Button/name_" + GameManager.instance.dicCard[cardInfoType + "_" + num].name);
-                                                                                                                                                                                                     //            gameObject.transform.Find("CardInfo").transform.Find("cardInfo").transform.Find("Text").GetComponent<Text>().text =
-                                                                                                                                                                                                     //                GameManager.instance.dicCard[cardInfoType + "_" + num].strName + "\n" +
-                                                                                                                                                                                                     //                GameManager.instance.dicCard[cardInfoType + "_" + num].style;
+            obj.transform.Find("charImg").transform.Find("name").GetComponent<Image>().sprite = LoadAsset.instance.dicClothImg["name_"+ GameManager.instance.dicCard[cardInfoType + "_" + num].name];
         }
     }
     public void cardInfoBtn(GameObject btn)
@@ -333,12 +313,11 @@ public class CardInfoManager : MonoBehaviour {
         obj.transform.Find("itemName").GetComponent<Text>().text = GameManager.instance.dicCard[cardInfoType + "_" + selectNum].strName;
         obj.transform.Find("type").GetComponent<Image>().sprite = LoadAsset.instance.dicClothImg["icon_cloth_" + type];// Resources.Load<Sprite>("Button/icon_cloth_" + type);
         obj.transform.Find("level").GetComponent<Image>().sprite = LoadAsset.instance.dicClothImg["icon_level_" + GameManager.instance.dicCard[cardInfoType + "_" + selectNum].level];//
-        //Debug.Log(GameManager.instance.dicCard[cardInfoType + "_" + selectNum].style + ", " + GameManager.instance.dicCard[cardInfoType + "_" + selectNum].indexStyle);
         obj.transform.Find("style").GetComponent<Image>().sprite = LoadAsset.instance.dicClothImg["icon_style_" + GameManager.instance.dicCard[cardInfoType + "_" + selectNum].indexStyle];
         int score = GameManager.instance.dicCard[cardInfoType + "_" + selectNum].score;
 
-        //아이템 별☆
-        if(score <= 190)
+        //아이템 별☆    0~190 : ☆, 190~230 : ☆☆, 230~340 : ☆☆☆, 340~400 : ☆☆☆☆,  400~ : ☆☆☆☆☆
+        if (score <= 190)
         {
             for(int i = 0; i<5; i++)
             {

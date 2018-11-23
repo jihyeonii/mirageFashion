@@ -11,10 +11,10 @@ using TouchScript.Gestures;
 
 public class CardInfo
 {
-    public string name;
-    public string strName;
-    public int history;
-    public int level;       //0:일반 1:스페셜
+    public string name;        //아이템 이름 ex)char_ari 
+    public string strName;     //아이템 이름 ex)아리
+    public int history;        //카드인식 기록
+    public int level;          //0:일반 1:스페셜
     public string type;        //0:캐릭터 1:상의 2:하의 3:원피스 4:신발 5:악세사리
     public string style;       //0:멋져 1:귀여워 2:발랄해 3:아름다워 4:예뻐 5: 아리 6:민 7: 슈엘 8:수하
     public int score;
@@ -42,34 +42,54 @@ public class CardInfo
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+
     public GameObject character;
 
-    public GameObject cameraMainUI;
-    public GameObject cameraPaintUI;
-    public GameObject cameraAR;
+    public UIState uiState;
+    public enum UIState
+    {
+        guide, main, paint, camera, save, fashion       //guide: 처음 소개화면, main: 카드인식화면, paint: 꾸미기화면, camera: 카메라화면, save: 저장화면, fashion: 패션인식(촬영)화면
+    }
 
-    public GameObject GuideLine;
+    public PaintState paintState;
+    public enum PaintState
+    {
+        none, pen, text
+    }
 
-    //public GameObject dressPopup;
-    public GameObject cameraTutorial;
+    public Error errorState;
+    public enum Error
+    {
+        none, save, move, gallery                      //save: 사진저장에러, move: 경로에러, gallery
+    }
 
-
-    public CharacterInfo charInfo;
-
-    public static GameObject canvasBottomButtonUI;
-    public static GameObject canvasTopButtonUI;
-    public static GameObject charControlBtnUI;
-    public static GameObject canvasRecObj;
-    public GameObject canvasCaptureUI;
-    public static GameObject canvasCameraUI;
+    public GameObject cameraMainUI;                     //인식화면 UI 카메라
+    public GameObject cameraPaintUI;                    //꾸미기화면, 저장화면 UI 카메라
+    public static GameObject canvasBottomButtonUI;      //인식화면 bottom버튼
+    public static GameObject canvasTopButtonUI;         //인식화면 top버튼
+    public static GameObject charControlBtnUI;          //캐릭터 회전 버튼
+    public static GameObject canvasRecObj;              //인식화면 좌측 착용의상 이미지
+    public GameObject canvasCaptureUI;                  //카메라촬영 canvas
+    public MeshRenderer capturePic;                     //카메라촬영 plane
+    public static GameObject canvasCameraUI;            //카메라화면 버튼
     public static GameObject canvasMainUI;
-    public GameObject canvasPaintUI;
-    public GameObject canvasSaveUI;
-    public GameObject guideButtonUI;
 
-    //public static GameObject menuLayout;
+    public GameObject canvasPaintUI;                    //꾸미기화면
+    public GameObject canvasSaveUI;                     //저장화면
+    public GameObject guideButtonUI;                    //사용방법 페이지
 
-    public MeshRenderer capturePic;
+    public GameObject cameraAR;                         //카드인식 카메라(AR Camera)
+
+    public GameObject GuideLine;                        //카드인식중 나타내는 가이드라인
+
+    public GameObject cameraTutorial;                   //앱실행 후 사용방법 화면, 한번만 실행
+
+
+    public CharacterInfo charInfo;                      //착용한 캐릭터, 의상 정보
+
+
+
+    //갤러리
     byte[] imageByte;
 
     public string myFilename;
@@ -78,40 +98,17 @@ public class GameManager : MonoBehaviour
     string myDefaultLocation;
 
     public static Texture2D texture;
-    Material whiteDiffuseMat;
 
     float screenHeight;
     float screenWidth;
-
-    //public Text DebugTxt;
-    //string path = "/storage/emulated/0/DCIM/TEST/";
-
-    public PaintState paintState;
-    public enum PaintState
-    {
-        none, pen, text
-    }
-
-    public UIState uiState;
-    public enum UIState
-    {
-        guide, main, paint, camera, save,fashion
-    }
-
-    public Error errorState;
-    public enum Error
-    {
-        none, save, move, galleray
-    }
+   
     public bool isPopup = false;
-    Texture2D[] texList;
-    string[] pathList;
 
-    public static GameObject[] recognizeObj;
+    public static GameObject[] recognizeObj;            //카드인식화면 의상 아이콘(상의, 하의, 신발, 악세사리)
 
-    public GameObject effectCamera;
+    public GameObject effectCamera;         
     public GameObject charCamera;
-    public ParticleSystem topEffect;
+    public ParticleSystem topEffect;                    
     public ParticleSystem bottmEffect;
     public ParticleSystem onepieceEffect;
     public ParticleSystem shoesEffect;
@@ -126,17 +123,16 @@ public class GameManager : MonoBehaviour
 
     public Animator characterAni;
 
-    bool cancle = false;
+    bool close = false;
     public Text testT;
 
-    public GameObject arCharacter;
-    public GameObject fashionCharacter;
-    public Transform lockerCharacter;
-
+    public GameObject arCharacter;                      //카드인식 캐릭터
+    public GameObject fashionCharacter;                 //패션인식 캐릭터
+    public Transform lockerCharacter;                   //보관함 캐릭터
 
     bool mAutofocusEnabled = true;
 
-    public bool loadGallery = false;
+    public bool loadGallery = false;                    //카메라모드-> 갤러리 사진 부름
     //bool checkPermission = false;
 
     public GameObject guideSound;
@@ -146,33 +142,33 @@ public class GameManager : MonoBehaviour
     public GameObject saveSound;
     public GameObject missionSound;
     public GameObject lockerSound;
+
     float backKeyDelayTime = 0;
 
     public bool dressroomLoad = false;
 
-    public bool availableRecognize = true;
-    public string recogObjName = null;
-    public string offObjName = null;
+    public bool availableRecognize = true;              //카드인식 가능 여부 (카메라모드에서 인식 불가능)
+    public string recogObjName = null;                  //착용한 의상이 있을 경우 인식한 카드 이름 저장
+    public string offObjName = null;                    //의상제거 팝업띄울 때 제거할 카드 이름 저장
 
-    public float waitingTime = 0f;
+    public float waitingTime = 0f;                      //카드 인식
     public bool isOnCloth;
 
     public GameObject clickEffect;
 
     //패션인식
-    public bool isCardRecognition = true;           //true: 카드인식 false: 패션인식
+    public bool isCardRecognition = true;               //true: 카드인식 false: 패션인식
     public GameObject fashionCamera;
 
     public string selectCloth = "";
     public string selectTopColor = "";
     public string selectBottomColor = "";
-    public int onClothCount = 0;
+    public int onClothCount = 0;                        
 
     private void Start()
     {
         instance = this;
         errorState = Error.none;
-        //AndroidFuntionCall.instance.log("start");
         guideButtonUI.SetActive(true);
         uiState = UIState.main;
         canvasBottomButtonUI = cameraMainUI.transform.Find("CanvasMainButtonUI").transform.Find("panelBottom").gameObject;
@@ -181,21 +177,17 @@ public class GameManager : MonoBehaviour
         canvasRecObj = cameraMainUI.transform.Find("CanvasMainButtonUI").Find("recognizeObj").gameObject;
         //menuLayout = cameraMainUI.transform.Find("CanvasMainButtonUI").transform.Find("panelTop").Find("btnMenu").Find("MenuLayout").gameObject;
         capturePic = canvasCaptureUI.transform.Find("Plane").GetComponent<MeshRenderer>();
-        //GuideLine = cameraAR.transform.Find("Camera").transform.Find("Canvas").transform.Find("GuideLine").gameObject;
         charControlBtnUI = cameraMainUI.transform.Find("CanvasMainButtonUI").transform.Find("CharControlBtn").gameObject;
 
-        //resetChar();
         charInfo = new CharacterInfo("0", "0", "0", "0", "0", "0");
 
         //캡처 plane 
         screenWidth = Screen.width;
-        screenHeight = (float)screenWidth * ((float)Screen.height / (float)Screen.width);
+        screenHeight = (float)Screen.height;
         capturePic.transform.localScale = new Vector3(720 / 10, 0.1f, (720 / screenWidth) * screenHeight / 10);
         capturePic.transform.LookAt(cameraMainUI.transform);
         capturePic.transform.rotation = Quaternion.Euler(new Vector3(90, -180, 0));
 
-        //WriteData("bbb");
-        //ReadData();
         recognizeObj = new GameObject[4];
         recognizeObj[0] = charControlBtnUI.transform.Find("top").gameObject;
         recognizeObj[1] = charControlBtnUI.transform.Find("bottom").gameObject;
@@ -203,25 +195,21 @@ public class GameManager : MonoBehaviour
         recognizeObj[3] = charControlBtnUI.transform.Find("acc").gameObject;
 
         gameObject.GetComponent<PopupManager>().enabled = true;
+
         //사용가이드
         //PlayerPrefs.SetString("guide", "on");
         if (PlayerPrefs.GetString("guide") != "off")
         {
             uiState = UIState.guide;
             cameraTutorial.SetActive(true);
-            //GameObject.Find("tutorial").gameObject.SetActive(true);
-            //GameObject.Find("PopupCamera").gameObject.SetActive(true);
             GameObject.Find("PopupCamera").transform.Find("CanvasPopup").transform.Find("Guide").gameObject.SetActive(true);
             GameObject.Find("PopupCamera").transform.Find("CanvasPopup").transform.Find("Guide").transform.Find("Text").GetComponent<Text>().text = "캐릭터 카드를 먼저 보여줘!";
-            //GameObject.Find("PopupCamera").transform.Find("CanvasPopup").transform.Find("Guide").transform.Find("btn").gameObject.SetActive(false);
         }
 
         setFont();
         setCard();
 
-
-
-        //characterload
+        //카드인식 캐릭터
         arCharacter = Instantiate(LoadAsset.assetCharacter) as GameObject;
         arCharacter.transform.parent = character.transform;
         arCharacter.name = "character";
@@ -337,7 +325,7 @@ public class GameManager : MonoBehaviour
     public void matchMaterial()
     {
         characterAni = arCharacter.GetComponent<Animator>();
-        //characterAni.SetBool("char_suha", true);
+
         for (int i = 0; i < LoadAsset.instance.material.Count; i++)
         {
             if (LoadAsset.instance.material[i].name.Contains("top") || LoadAsset.instance.material[i].name.Contains("bottom") || LoadAsset.instance.material[i].name.Contains("onepiece") || LoadAsset.instance.material[i].name.Contains("shoes") || LoadAsset.instance.material[i].name.Contains("acc") || LoadAsset.instance.material[i].name.Contains("body"))
@@ -376,9 +364,7 @@ public class GameManager : MonoBehaviour
                     fashionCharacter.transform.Find(LoadAsset.instance.material[i].name.Remove(0, 5)).transform.Find(LoadAsset.instance.material[i].name).GetComponent<Renderer>().material = LoadAsset.instance.material[i];
                     fashionCharacter.transform.Find(LoadAsset.instance.material[i].name.Remove(0, 5)).transform.Find(LoadAsset.instance.material[i].name).GetComponent<Renderer>().material.shader = Shader.Find(/*"Mobile/Unlit (Supports Lightmap)"*/"Unlit/Texture");
                 }
-                //DestroyObject(fashionCharacter.transform.Find("char_min").gameObject);
-                //DestroyObject(fashionCharacter.transform.Find("char_suha").gameObject);
-                //DestroyObject(fashionCharacter.transform.Find("char_shuel").gameObject);
+                
                 for (int j = 0; j < 3; j++)
                 {
                     lockerCharacter.transform.Find("locker_" + j).transform.Find("character").transform.Find(LoadAsset.instance.material[i].name.Remove(0, 5)).transform.Find(LoadAsset.instance.material[i].name).GetComponent<Renderer>().material = LoadAsset.instance.material[i];
@@ -398,11 +384,9 @@ public class GameManager : MonoBehaviour
     public void setGuide()
     {
         Transform obj = guideButtonUI.transform.Find("Guide").Find("Scroll View").Find("Viewport").Find("Content");
-        //Transform obj2 = PopupManager.guideUI.transform.Find("Scroll View").Find("Viewport").Find("Content");
         for (int i = 1; i < 11; i++)
         {
             obj.Find("use_" + i).GetComponent<UnityEngine.UI.Image>().sprite = LoadAsset.instance.dicClothImg["use_" + i];
-            //obj2.Find("use_" + i).GetComponent<UnityEngine.UI.Image>().sprite = LoadAsset.instance.dicClothImg["use_" + i];
         }
 
     }
@@ -410,24 +394,20 @@ public class GameManager : MonoBehaviour
     {
         charCamera.transform.position = cameraAR.transform.position;
         charCamera.transform.rotation = cameraAR.transform.rotation;
-        //testT.text = character.transform.localPosition.ToString();
-        //cameraAR.transform.localPosition = new Vector3(0, 0, 0);
-        //Debug.Log(character.transform.position);
         if (!charInfo.body.Contains("char"))
         {
             canvasBottomButtonUI.transform.Find("btnSaveChar").transform.gameObject.SetActive(false);
         }
 
+        //안드로이드 뒤로가기
         if (Application.platform == RuntimePlatform.Android)
         {
             if (Input.GetKey(KeyCode.Escape))
             {
-
                 if (uiState == UIState.camera && loadGallery)
                 {
                     if (backKeyDelayTime == 0)
                     {
-
                         AndroidFuntionCall.instance.img.gameObject.SetActive(false);
                         charCamera.transform.Find("Canvas").Find("background").gameObject.SetActive(false);
                         AndroidFuntionCall.instance.btnOnOff(true);
@@ -467,15 +447,15 @@ public class GameManager : MonoBehaviour
                     StartCoroutine(backKeyDelay());
                     PopupManager.instance.closeGuide();
                 }
+                //안드로이드 뒤로가기 두번눌러 앱종료
                 else if (isPopup == false)
                 {
-
-                    if (cancle == false)
+                    if (close == false)
                     {
                         if (backKeyDelayTime == 0)
                         {
                             AndroidFuntionCall.instance.onBackPressed();
-                            StartCoroutine(WaitCancle());
+                            StartCoroutine(WaitClose());
                         }
                     }
                     else
@@ -489,15 +469,13 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        //if (uiState == UIState.camera || isPopup)
-        //    GuideLine.SetActive(false);
-
-        if ((PopupManager.instance.popupState != PopupManager.Popup.home && PopupManager.instance.popupState != PopupManager.Popup.settingHome) || /*(uiState == UIState.camera && loadGallery) ||*/ uiState == UIState.paint || uiState == UIState.save)
+        if ((PopupManager.instance.popupState != PopupManager.Popup.none && PopupManager.instance.popupState != PopupManager.Popup.settingHome) || /*(uiState == UIState.camera && loadGallery) ||*/ uiState == UIState.paint || uiState == UIState.save)
         {
             cameraAR.SetActive(false);
         }
         else
             cameraAR.SetActive(true);
+
         if (dressroomLoad)
         {
             StartCoroutine(appearChar());
@@ -528,22 +506,20 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         backKeyDelayTime = 0;
     }
-    IEnumerator WaitCancle()
+    IEnumerator WaitClose()
     {
-
         yield return new WaitForSeconds(0.5f);
-        cancle = true;
-        StartCoroutine(this.Cancle());
+        close = true;
+        StartCoroutine(this.Close());
     }
-    IEnumerator Cancle()
+    IEnumerator Close()
     {
         yield return new WaitForSeconds(1.0f);
         //PopupManager.toast.SetActive(false);
-        cancle = false;
+        close = false;
     }
     public void checkAnimation()
     {
-
         //세트 애니메이션
         if (charInfo.body.Contains("ari") && charInfo.onepiece.Contains("witch") && charInfo.shoes.Contains("witch"))
             characterAni.SetBool("witch", true);
@@ -605,6 +581,7 @@ public class GameManager : MonoBehaviour
         {
             missionEffect.SetActive(false);
         }
+        //캐릭터가 슈엘일 때 치유마법 의상 색 바뀜.
         if (charInfo.body.Contains("shuel"))
         {
             for (int i = 0; i < LoadAsset.instance.material.Count; i++)
@@ -641,7 +618,6 @@ public class GameManager : MonoBehaviour
    
     public void loadChar()
     {
-        //StartCoroutine(appearAni());
         arCharacter.transform.gameObject.SetActive(false);
         arCharacter.transform.gameObject.SetActive(true);
         characterAni.SetBool(charInfo.body, true);
@@ -675,6 +651,7 @@ public class GameManager : MonoBehaviour
         characterAni.SetBool("appear_char", false);
     }
 
+    //카드인식화면 초기화면 가이드 버튼
     public void btnGuide()
     {
         isPopup = true;
@@ -712,7 +689,10 @@ public class GameManager : MonoBehaviour
         characterAni.SetBool(cardName, true);
 
     }
-
+    /// <summary>
+    /// 캐릭터 의상제거
+    /// </summary>
+    /// <param name="obj"></param>
     public void offCharObj(string obj)
     {
         if (uiState == UIState.main || uiState == UIState.camera)
@@ -742,122 +722,11 @@ public class GameManager : MonoBehaviour
                 GameObject.Find("FashionCamera").transform.Find("CanvasFashion").Find("camera").gameObject.SetActive(false);
             else
                 GameObject.Find("FashionCamera").transform.Find("CanvasFashion").Find("camera").gameObject.SetActive(true);
-            Debug.Log("!!!!!" + charInfo.top + charInfo.bottom + charInfo.onepiece);
         }
     }
-    //public void WriteData(string strData)
-
-    //{
-    //    string m_strPath = "Assets/Resources/";
-
-    //    FileStream f = new FileStream(m_strPath + "Data.txt", FileMode.Append, FileAccess.Write);
-
-    //    StreamWriter writer = new StreamWriter(f, System.Text.Encoding.Unicode);
-
-    //    writer.WriteLine(strData);
-    //    writer.Close();
-
-    //}
-    //public void ReadData()
-    //{
-    //    TextAsset data = Resources.Load("Data", typeof(TextAsset)) as TextAsset;
-    //    StringReader sr = new StringReader(data.text);
-
-    //    string sources = sr.ReadLine();
-    //    string[] values;
-    //    while (sources != null)
-    //    {
-    //        values = sources.Split(',');
-
-    //        if (values.Length == 0)
-    //        {
-    //            sr.Close();
-    //            return;
-    //        }
-    //        sources = sr.ReadLine();
-
-    //    }
-    //}
-    public void modeChangeDrag(GameObject obj)
-    {
-        Vector3 pos;
-        pos = obj.transform.position;
-
-        if (uiState == UIState.main)
-        {
-            pos.x = cameraMainUI.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition).x;
-            obj.transform.position = pos;
-            if (pos.x < cameraMainUI.GetComponent<Camera>().ScreenToWorldPoint(new Vector3(Screen.width / 2, 0, 0)).x)
-            {
-                pos.x = cameraMainUI.GetComponent<Camera>().ScreenToWorldPoint(new Vector3(Screen.width / 2, 0, 0)).x;
-                obj.transform.position = pos;
-            }
-            if (pos.x > cameraMainUI.GetComponent<Camera>().ScreenToWorldPoint(new Vector3(Screen.width * 3 / 4, 1280, 0)).x)
-            {
-                Color color = new Color(1, 0.6f, 0.8f,1);
-                canvasBottomButtonUI.transform.Find("cameraModeImg").gameObject.GetComponent<UnityEngine.UI.Image>().color = color;
-            }
-            else
-            {
-                Color color = new Color(1, 1, 1);
-                canvasBottomButtonUI.transform.Find("cameraModeImg").gameObject.GetComponent<UnityEngine.UI.Image>().color = color;
-            }
-        }
-        else if (uiState == UIState.camera)
-        {
-            //인식모드
-            CharacterController.instance.gameObject.GetComponent<TransformGesture>().enabled = false;
-            if (isCardRecognition)
-            {
-                //인식모드
-                pos.x = cameraMainUI.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition).x;
-                obj.transform.position = pos;
-                if (pos.x > cameraMainUI.GetComponent<Camera>().ScreenToWorldPoint(new Vector3(Screen.width / 2, 0, 0)).x)
-                {
-                    pos.x = cameraMainUI.GetComponent<Camera>().ScreenToWorldPoint(new Vector3(Screen.width / 2, 0, 0)).x;
-                    obj.transform.position = pos;
-                }
-                if (pos.x < cameraMainUI.GetComponent<Camera>().ScreenToWorldPoint(new Vector3(Screen.width / 4, 1280, 0)).x)
-                {
-                    Color color = new Color(1, 0.6f, 0.8f);
-                    canvasCameraUI.transform.Find("panelBottom").transform.Find("RecognitionModeImg").gameObject.GetComponent<UnityEngine.UI.Image>().color = color;
-                }
-                else
-                {
-                    Color color = new Color(1, 1, 1);
-                    canvasCameraUI.transform.Find("panelBottom").transform.Find("RecognitionModeImg").gameObject.GetComponent<UnityEngine.UI.Image>().color = color;
-                }
-            }
-        }
-        else if (uiState == UIState.save)
-        {
-            //인식, 카메라모드
-            pos.x = cameraPaintUI.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition).x;
-            obj.transform.position = pos;
-
-            if (pos.x < cameraPaintUI.GetComponent<Camera>().ScreenToWorldPoint(new Vector3(Screen.width / 4, 1280, 0)).x)
-            {
-                Color color = new Color(1, 0.6f, 0.8f);
-                canvasSaveUI.transform.Find("RecognitionModeImg").gameObject.GetComponent<UnityEngine.UI.Image>().color = color;
-            }
-            
-            else if (pos.x > cameraPaintUI.GetComponent<Camera>().ScreenToWorldPoint(new Vector3(Screen.width * 3 / 4, 1280, 0)).x)
-            {
-                Color color = new Color(1, 0.6f, 0.8f);
-                canvasSaveUI.transform.Find("cameraModeImg").gameObject.GetComponent<UnityEngine.UI.Image>().color = color;
-            }
-            else
-            {
-                Color color = new Color(1,1, 1);
-                canvasSaveUI.transform.Find("cameraModeImg").gameObject.GetComponent<UnityEngine.UI.Image>().color = color;
-                canvasSaveUI.transform.Find("RecognitionModeImg").gameObject.GetComponent<UnityEngine.UI.Image>().color = color;
-            }
-        }
-    }
-   
     public void modeBtnDown()
     {
-        Color color = new Color(1, 1, 1,1);
+        Color color = new Color(1, 1, 1, 1);
         if (uiState == UIState.main)
         {
             canvasBottomButtonUI.transform.Find("cameraModeImg").gameObject.SetActive(true);
@@ -879,6 +748,85 @@ public class GameManager : MonoBehaviour
             canvasSaveUI.transform.Find("cameraModeImg").GetComponent<UnityEngine.UI.Image>().color = color;
         }
     }
+    public void modeChangeDrag(GameObject obj)
+    {
+        Vector3 pos;
+        pos = obj.transform.position;
+
+        if (uiState == UIState.main)
+        {
+            //카메라모드로
+            pos.x = cameraMainUI.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition).x;
+            obj.transform.position = pos;
+            if (pos.x < cameraMainUI.GetComponent<Camera>().ScreenToWorldPoint(new Vector3(Screen.width / 2, 0, 0)).x)
+            {
+                pos.x = cameraMainUI.GetComponent<Camera>().ScreenToWorldPoint(new Vector3(Screen.width / 2, 0, 0)).x;
+                obj.transform.position = pos;
+            }
+            if (pos.x > cameraMainUI.GetComponent<Camera>().ScreenToWorldPoint(new Vector3(Screen.width * 3 / 4, 0, 0)).x)
+            {
+                Color color = new Color(1, 0.6f, 0.8f,1);
+                canvasBottomButtonUI.transform.Find("cameraModeImg").gameObject.GetComponent<UnityEngine.UI.Image>().color = color;
+            }
+            else
+            {
+                Color color = new Color(1, 1, 1);
+                canvasBottomButtonUI.transform.Find("cameraModeImg").gameObject.GetComponent<UnityEngine.UI.Image>().color = color;
+            }
+        }
+        else if (uiState == UIState.camera)
+        {
+            //인식모드로
+            CharacterController.instance.gameObject.GetComponent<TransformGesture>().enabled = false;
+            if (isCardRecognition)
+            {
+                //인식모드
+                pos.x = cameraMainUI.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition).x;
+                obj.transform.position = pos;
+                if (pos.x > cameraMainUI.GetComponent<Camera>().ScreenToWorldPoint(new Vector3(Screen.width / 2, 0, 0)).x)
+                {
+                    pos.x = cameraMainUI.GetComponent<Camera>().ScreenToWorldPoint(new Vector3(Screen.width / 2, 0, 0)).x;
+                    obj.transform.position = pos;
+                }
+                if (pos.x < cameraMainUI.GetComponent<Camera>().ScreenToWorldPoint(new Vector3(Screen.width / 4, 0, 0)).x)
+                {
+                    Color color = new Color(1, 0.6f, 0.8f);
+                    canvasCameraUI.transform.Find("panelBottom").transform.Find("RecognitionModeImg").gameObject.GetComponent<UnityEngine.UI.Image>().color = color;
+                }
+                else
+                {
+                    Color color = new Color(1, 1, 1);
+                    canvasCameraUI.transform.Find("panelBottom").transform.Find("RecognitionModeImg").gameObject.GetComponent<UnityEngine.UI.Image>().color = color;
+                }
+            }
+        }
+        else if (uiState == UIState.save)
+        {
+            //인식, 카메라모드로
+            pos.x = cameraPaintUI.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition).x;
+            obj.transform.position = pos;
+
+            if (pos.x < cameraPaintUI.GetComponent<Camera>().ScreenToWorldPoint(new Vector3(Screen.width / 4, 0, 0)).x)
+            {
+                Color color = new Color(1, 0.6f, 0.8f);
+                canvasSaveUI.transform.Find("RecognitionModeImg").gameObject.GetComponent<UnityEngine.UI.Image>().color = color;
+            }
+            
+            else if (pos.x > cameraPaintUI.GetComponent<Camera>().ScreenToWorldPoint(new Vector3(Screen.width * 3 / 4, 0, 0)).x)
+            {
+                Color color = new Color(1, 0.6f, 0.8f);
+                canvasSaveUI.transform.Find("cameraModeImg").gameObject.GetComponent<UnityEngine.UI.Image>().color = color;
+            }
+            else
+            {
+                Color color = new Color(1,1, 1);
+                canvasSaveUI.transform.Find("cameraModeImg").gameObject.GetComponent<UnityEngine.UI.Image>().color = color;
+                canvasSaveUI.transform.Find("RecognitionModeImg").gameObject.GetComponent<UnityEngine.UI.Image>().color = color;
+            }
+        }
+    }
+   
+   
     public void modeBtnUp(GameObject obj)
     {
         Vector3 pos;
@@ -886,7 +834,6 @@ public class GameManager : MonoBehaviour
 
         if (uiState == UIState.main)
         {
-            //카메라모드
             pos.x = cameraMainUI.GetComponent<Camera>().ScreenToWorldPoint(new Vector3(Screen.width / 2, 1280, 0)).x;
             obj.transform.position = pos;
             if (Input.mousePosition.x > Screen.width *3/4)
@@ -895,7 +842,6 @@ public class GameManager : MonoBehaviour
         }
         else if (uiState == UIState.camera)
         {
-            //인식모드
             CharacterController.instance.gameObject.GetComponent<TransformGesture>().enabled = true;
             pos.x = cameraMainUI.GetComponent<Camera>().ScreenToWorldPoint(new Vector3(Screen.width / 2, 1280, 0)).x;
             obj.transform.position = pos;
@@ -913,7 +859,6 @@ public class GameManager : MonoBehaviour
         }
         else if (uiState == UIState.save)
         {
-            //인식, 카메라모드
             pos.x = cameraPaintUI.GetComponent<Camera>().ScreenToWorldPoint(new Vector3(Screen.width / 2, 1280, 0)).x;
             obj.transform.position = pos;
             if (Input.mousePosition.x < Screen.width / 4)
@@ -931,257 +876,7 @@ public class GameManager : MonoBehaviour
     {
         Instantiate(sound);
     }
-    ////보관함 팝업 
-    //public void btnLocker ()
-    //{
-    //    isPopup = true;
-    //    dressPopup.SetActive(true);
-    //    if (0 < dicLockerChar.Count && dicLockerChar.Count < 4)
-    //    {
-    //        if (dicLockerChar.ContainsKey("char0"))
-    //        {
-    //            if (dicLockerChar["char0"].body.Contains("char"))
-    //            {
-    //                GameObject[] anotherObj = new GameObject[dressPopup.transform.Find("GameObject").transform.Find("locker_1").childCount];
-    //                dressPopup.transform.Find("GameObject").transform.Find("locker_1").gameObject.SetActive(true);
-    //                for (int i = 0; i < dressPopup.transform.Find("GameObject").transform.Find("locker_1").childCount; i++)
-    //                {
-    //                    anotherObj[i] = dressPopup.transform.Find("GameObject").transform.Find("locker_1").GetChild(i).gameObject;
-    //                    anotherObj[i].SetActive(false);
-    //                }
-    //                dressPopup.transform.Find("GameObject").transform.Find("locker_1").transform.Find("btnLoad").gameObject.SetActive(true);
-    //                dressPopup.transform.Find("GameObject").transform.Find("locker_1").transform.Find("btnRemove").gameObject.SetActive(true);
-    //                dressPopup.transform.Find("GameObject").transform.Find("locker_1").transform.Find("body").gameObject.SetActive(true);
-    //                dressPopup.transform.Find("GameObject").transform.Find("locker_1").transform.Find(dicLockerChar["char0"].body).gameObject.SetActive(true);
-    //                //top;
-    //                if (dicLockerChar["char0"].top.Contains("top"))
-    //                {
-    //                    dressPopup.transform.Find("GameObject").transform.Find("locker_1").transform.Find(dicLockerChar["char0"].top).gameObject.SetActive(true);
-    //                }
-    //                else
-    //                {
-    //                    if (dicLockerChar["char0"].onepiece.Contains("onepiece"))
-    //                        dressPopup.transform.Find("GameObject").transform.Find("locker_1").transform.Find("basic_top").gameObject.SetActive(false);
-    //                    else
-    //                        dressPopup.transform.Find("GameObject").transform.Find("locker_1").transform.Find("basic_top").gameObject.SetActive(true);
-    //                }
-    //                //bottom
-
-    //                if (dicLockerChar["char0"].bottom.Contains("bottom"))
-    //                {
-
-    //                    dressPopup.transform.Find("GameObject").transform.Find("locker_1").transform.Find(dicLockerChar["char0"].bottom).gameObject.SetActive(true);
-    //                }
-    //                else
-    //                {
-    //                    if(dicLockerChar["char0"].onepiece.Contains("onepiece"))
-    //                        dressPopup.transform.Find("GameObject").transform.Find("locker_1").transform.Find("basic_bottom").gameObject.SetActive(false);
-    //                    else
-    //                        dressPopup.transform.Find("GameObject").transform.Find("locker_1").transform.Find("basic_bottom").gameObject.SetActive(true);
-    //                }
-    //                //onepiece
-    //                if (dicLockerChar["char0"].onepiece.Contains("onepiece"))
-    //                {
-
-    //                    dressPopup.transform.Find("GameObject").transform.Find("locker_1").transform.Find(dicLockerChar["char0"].onepiece).gameObject.SetActive(true);
-    //                }
-
-    //                //shoes
-
-    //                if (dicLockerChar["char0"].shoes.Contains("shoes"))
-    //                {
-
-    //                    dressPopup.transform.Find("GameObject").transform.Find("locker_1").transform.Find(dicLockerChar["char0"].shoes).gameObject.SetActive(true);
-    //                }
-    //                else
-    //                {
-    //                }
-    //                //acc
-
-    //                if (dicLockerChar["char0"].acc.Contains("acc"))
-    //                {
-
-    //                    dressPopup.transform.Find("GameObject").transform.Find("locker_1").transform.Find(dicLockerChar["char0"].acc).gameObject.SetActive(true);
-    //                }
-    //                else
-    //                {
-    //                }
-    //            }
-    //        }
-    //        else
-    //        {
-
-    //        }
-    //        if (dicLockerChar.ContainsKey("char1"))
-    //        {
-    //            if (dicLockerChar["char1"].body.Contains("char"))
-    //            {
-    //                GameObject[] anotherObj = new GameObject[dressPopup.transform.Find("GameObject").transform.Find("locker_2").childCount];
-    //                dressPopup.transform.Find("GameObject").transform.Find("locker_2").gameObject.SetActive(true);
-    //                for (int i = 0; i < dressPopup.transform.Find("GameObject").transform.Find("locker_2").childCount; i++)
-    //                {
-    //                    anotherObj[i] = dressPopup.transform.Find("GameObject").transform.Find("locker_2").GetChild(i).gameObject;
-    //                    anotherObj[i].SetActive(false);
-    //                }
-    //                dressPopup.transform.Find("GameObject").transform.Find("locker_2").transform.Find("btnLoad").gameObject.SetActive(true);
-    //                dressPopup.transform.Find("GameObject").transform.Find("locker_2").transform.Find("btnRemove").gameObject.SetActive(true);
-    //                dressPopup.transform.Find("GameObject").transform.Find("locker_2").transform.Find("body").gameObject.SetActive(true);
-    //                dressPopup.transform.Find("GameObject").transform.Find("locker_2").transform.Find(dicLockerChar["char1"].body).gameObject.SetActive(true);
-    //                //TOP
-
-    //                if (dicLockerChar["char1"].top.Contains("top"))
-    //                {
-    //                    dressPopup.transform.Find("GameObject").transform.Find("locker_2").transform.Find(dicLockerChar["char1"].top).gameObject.SetActive(true);
-
-    //                }
-    //                else
-    //                {
-    //                    if (dicLockerChar["char1"].onepiece.Contains("onepiece"))
-    //                        dressPopup.transform.Find("GameObject").transform.Find("locker_2").transform.Find("basic_top").gameObject.SetActive(false);
-    //                    else
-    //                        dressPopup.transform.Find("GameObject").transform.Find("locker_2").transform.Find("basic_top").gameObject.SetActive(true);
-    //                }
-
-
-    //                //bottom
-    //                if (dicLockerChar["char1"].bottom.Contains("bottom"))
-    //                {
-
-    //                    dressPopup.transform.Find("GameObject").transform.Find("locker_2").transform.Find(dicLockerChar["char1"].bottom).gameObject.SetActive(true);
-    //                }
-    //                else
-    //                {
-    //                    if (dicLockerChar["char1"].onepiece.Contains("onepiece"))
-    //                        dressPopup.transform.Find("GameObject").transform.Find("locker_2").transform.Find("basic_bottom").gameObject.SetActive(false);
-    //                    else
-    //                        dressPopup.transform.Find("GameObject").transform.Find("locker_2").transform.Find("basic_bottom").gameObject.SetActive(true);
-    //                }
-    //                //onepiece
-    //                if (dicLockerChar["char1"].onepiece.Contains("onepiece"))
-    //                {
-
-    //                    dressPopup.transform.Find("GameObject").transform.Find("locker_2").transform.Find(dicLockerChar["char1"].onepiece).gameObject.SetActive(true);
-    //                }
-
-    //                //shoes
-
-    //                if (dicLockerChar["char1"].shoes.Contains("shoes"))
-    //                {
-
-    //                    dressPopup.transform.Find("GameObject").transform.Find("locker_2").transform.Find(dicLockerChar["char1"].shoes).gameObject.SetActive(true);
-    //                }
-    //                else
-    //                {
-    //                }
-    //                //acc
-
-    //                if (dicLockerChar["char1"].acc.Contains("acc"))
-    //                {
-
-    //                    dressPopup.transform.Find("GameObject").transform.Find("locker_2").transform.Find(dicLockerChar["char1"].acc).gameObject.SetActive(true);
-    //                }
-    //                else
-    //                {
-    //                }
-    //            }
-
-    //        }
-    //        else
-    //        {
-
-    //        }
-    //        if (dicLockerChar.ContainsKey("char2"))
-    //        {
-    //            if (dicLockerChar["char2"].body.Contains("char"))
-    //            {
-    //                GameObject[] anotherObj = new GameObject[dressPopup.transform.Find("GameObject").transform.Find("locker_3").childCount];
-    //                dressPopup.transform.Find("GameObject").transform.Find("locker_3").gameObject.SetActive(true);
-    //                for (int i = 0; i < dressPopup.transform.Find("GameObject").transform.Find("locker_3").childCount; i++)
-    //                {
-    //                    anotherObj[i] = dressPopup.transform.Find("GameObject").transform.Find("locker_3").GetChild(i).gameObject;
-    //                    anotherObj[i].SetActive(false);
-    //                }
-    //                dressPopup.transform.Find("GameObject").transform.Find("locker_3").transform.Find("btnLoad").gameObject.SetActive(true);
-    //                dressPopup.transform.Find("GameObject").transform.Find("locker_3").transform.Find("btnRemove").gameObject.SetActive(true);
-    //                dressPopup.transform.Find("GameObject").transform.Find("locker_3").transform.Find("body").gameObject.SetActive(true);
-    //                dressPopup.transform.Find("GameObject").transform.Find("locker_3").transform.Find(dicLockerChar["char2"].body).gameObject.SetActive(true);
-    //                //TOP
-
-    //                if (dicLockerChar["char2"].top.Contains("top"))
-    //                {
-    //                    dressPopup.transform.Find("GameObject").transform.Find("locker_3").transform.Find(dicLockerChar["char2"].top).gameObject.SetActive(true);
-
-    //                }
-    //                else
-    //                {
-    //                    if (dicLockerChar["char2"].onepiece.Contains("onepiece"))
-    //                        dressPopup.transform.Find("GameObject").transform.Find("locker_3").transform.Find("basic_top").gameObject.SetActive(false);
-    //                    else
-    //                        dressPopup.transform.Find("GameObject").transform.Find("locker_3").transform.Find("basic_top").gameObject.SetActive(true);
-    //                }
-
-
-    //                //bottom
-    //                if (dicLockerChar["char2"].bottom.Contains("bottom"))
-    //                {
-
-    //                    dressPopup.transform.Find("GameObject").transform.Find("locker_3").transform.Find(dicLockerChar["char2"].bottom).gameObject.SetActive(true);
-    //                }
-    //                else
-    //                {
-    //                    if (dicLockerChar["char2"].onepiece.Contains("onepiece"))
-    //                        dressPopup.transform.Find("GameObject").transform.Find("locker_3").transform.Find("basic_bottom").gameObject.SetActive(false);
-    //                    else
-    //                        dressPopup.transform.Find("GameObject").transform.Find("locker_3").transform.Find("basic_bottom").gameObject.SetActive(true);
-    //                }
-    //                //onepiece
-    //                if (dicLockerChar["char2"].onepiece.Contains("onepiece"))
-    //                {
-
-    //                    dressPopup.transform.Find("GameObject").transform.Find("locker_3").transform.Find(dicLockerChar["char2"].onepiece).gameObject.SetActive(true);
-    //                }
-
-    //                //shoes
-
-    //                if (dicLockerChar["char2"].shoes.Contains("shoes"))
-    //                {
-
-    //                    dressPopup.transform.Find("GameObject").transform.Find("locker_3").transform.Find(dicLockerChar["char2"].shoes).gameObject.SetActive(true);
-    //                }
-    //                else
-    //                {
-    //                }
-    //                //acc
-
-    //                if (dicLockerChar["char2"].acc.Contains("acc"))
-    //                {
-
-    //                    dressPopup.transform.Find("GameObject").transform.Find("locker_3").transform.Find(dicLockerChar["char2"].acc).gameObject.SetActive(true);
-    //                }
-    //                else
-    //                {
-    //                }
-    //            }
-
-    //        }
-    //        else
-    //        {
-
-    //        }
-    //    }
-    //    else if(dicLockerChar.Count == 0)
-    //    {
-    //        //알림메세지
-    //        PopupManager.instance.showToast("아직 저장해 놓은 친구들이 없네~");
-    //    }
-    //}
-
-
-    //public void closeDressPopup()
-    //{
-    //    dressPopup.SetActive(false);
-    //    isPopup = false;
-    //}
+   
     public void cameraSwitch()
     {
         instantiateSound(clickSound);
@@ -1192,25 +887,12 @@ public class GameManager : MonoBehaviour
         CameraSettings tmp = FindObjectOfType<CameraSettings>();
         if (tmp.IsFrontCameraActive())
         {
-            //charPos.z = CharacterController.instance.pos.transform.localPosition.z;
-            //character.transform.localPosition = charPos;
-            //character.transform.localRotation = Quaternion.Euler(new Vector3(90,  z, 0));
-            //character.SetActive(false);
             tmp.SelectCamera(CameraDevice.CameraDirection.CAMERA_BACK);
             testT.text = character.transform.localRotation.eulerAngles.ToString();
-            //character.SetActive(true);
         }
         else
         {
-            //charPos.z = CharacterController.instance.switchPos.transform.localPosition.z;
-            //testT.text = charPos.ToString();
-            //character.transform.localPosition = charPos;
-            //character.transform.localRotation = Quaternion.Euler(new Vector3(90, z, 0));
             tmp.SelectCamera(CameraDevice.CameraDirection.CAMERA_FRONT);
-            testT.text = character.transform.localRotation.eulerAngles.ToString();
-            //character.SetActive(false);
-            //character.SetActive(true);
-            //changeChar(charInfo.body);
             if (charInfo.body != "0")
                 StartCoroutine(appearChar());
         }
@@ -1227,21 +909,6 @@ public class GameManager : MonoBehaviour
     public void album()
     {
         AndroidFuntionCall.instance.btnGallery();
-        ////androidfunction
-        //{
-        //    AndroidJavaClass intentClass = new AndroidJavaClass("android.content.Intent");
-        //    AndroidJavaObject intentObject = new AndroidJavaObject("android.content.Intent");
-        //    intentObject.Call<AndroidJavaObject>("setAction", intentClass.GetStatic<string>("ACTION_GET_CONTENT"));
-        //    AndroidJavaClass uriClass = new AndroidJavaClass("android.net.Uri");
-        //    AndroidJavaObject uriObject = uriClass.CallStatic<AndroidJavaObject>("parse", "content://media/internal/images/media");
-        //    intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_STREAM"), uriObject);
-        //    intentObject.Call<AndroidJavaObject>("setType", "image/jpeg");
-        //    AndroidJavaClass unity = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-        //    AndroidJavaObject currentActivity = unity.GetStatic<AndroidJavaObject>("currentActivity");
-        //    currentActivity.Call("startActivity", intentObject);
-        //}
-
-        //goPaintScene();
     }
 
 
@@ -1259,7 +926,6 @@ public class GameManager : MonoBehaviour
 
     public void goTrackingScene()
     {
-       
         availableRecognize = true;
         cameraAR.SetActive(true);
         CameraSettings tmp = FindObjectOfType<CameraSettings>();
@@ -1322,16 +988,16 @@ public class GameManager : MonoBehaviour
         }
         canvasCaptureUI.SetActive(false);
         canvasBottomButtonUI.SetActive(true);
-        //canvasTopButtonUI.SetActive(true);
-        //charControlBtnUI.SetActive(true);
         onClothCount = 0;
         if (isCardRecognition)
         {
+            //카드인식
             GuideLine.SetActive(true);
             uiState = UIState.main;
         }
         else
         {
+            //패션인식
             GuideLine.SetActive(false);
             uiState = UIState.fashion;
         }
@@ -1344,13 +1010,12 @@ public class GameManager : MonoBehaviour
         canvasTopButtonUI.transform.Find("btnAlbum").gameObject.SetActive(false);
         AndroidFuntionCall.instance.img.gameObject.SetActive(false);
         canvasTopButtonUI.transform.Find("btnCamSwitch").gameObject.SetActive(true);
-        //canvasTopButtonUI.transform.Find("btnGuide").gameObject.SetActive(true);
         PopupManager.instance.cameraPopup.transform.Find("CanvasPopup").Find("SettingPage").Find("btnSetting").gameObject.SetActive(true);
+
         cameraAR.transform.position = new Vector3(0, 0, 0);
         cameraAR.transform.Find("Camera").transform.position = new Vector3(0, 0, 0);
         cameraAR.transform.Find("Camera").Find("BackgroundPlane").transform.position = new Vector3(0, 0, 400);
 
-        //StartCoroutine(waitCloudReco());
         tmp.SelectCamera(CameraDevice.CameraDirection.CAMERA_BACK);
         cameraAR.SetActive(true);
         SwitchAutofocus(true);
@@ -1449,7 +1114,6 @@ public class GameManager : MonoBehaviour
             uiState = UIState.camera;
         }
         canvasTopButtonUI.transform.Find("btnAlbum").gameObject.SetActive(true);
-        //canvasTopButtonUI.transform.Find("btnGuide").gameObject.SetActive(false);
         PopupManager.instance.cameraPopup.transform.Find("CanvasPopup").Find("SettingPage").Find("btnSetting").gameObject.SetActive(true);
         
         GuideLine.SetActive(false);
@@ -1490,22 +1154,9 @@ public class GameManager : MonoBehaviour
             canvasSaveUI.SetActive(false);
             uiState = UIState.paint;
         }
-        //갤러리
-        else if (uiState == UIState.main)
-        {
-            GuideLine.SetActive(false);
-            canvasBottomButtonUI.SetActive(false);
-            canvasTopButtonUI.SetActive(false);
-            charControlBtnUI.SetActive(false);
-
-            //갤러리 사진 
-            string path = "/storage/emulated/0/Download/박주현 증명사진.JPG";
-            pathList = Directory.GetFiles(path);
-            StartCoroutine(LoadImage());
-        }
+     
         canvasTopButtonUI.transform.Find("btnAlbum").gameObject.SetActive(false);
         PopupManager.instance.cameraPopup.transform.Find("CanvasPopup").Find("SettingPage").Find("btnSetting").gameObject.SetActive(false);
-        //cameraAR.SetActive(false);
     }
 
     public void goSaveScene()
@@ -1518,35 +1169,13 @@ public class GameManager : MonoBehaviour
         }
         cameraAR.SetActive(false);
     }
-    public IEnumerator LoadImage()
-    {
-        texList = new Texture2D[pathList.Length];
-
-        int dummy = 0;
-        foreach (string tstring in pathList)
-        {
-            string pathTemp = @"file://" + tstring;
-            WWW www = new WWW(pathTemp);
-            yield return www;
-            Texture2D texTmp = new Texture2D(Screen.width, Screen.height, TextureFormat.DXT1, false);
-            www.LoadImageIntoTexture(texTmp);
-            texList[dummy] = texTmp;
-            capturePic.GetComponent<MeshRenderer>().material.mainTexture = texTmp;
-        }
-        canvasCaptureUI.SetActive(true);
-        cameraPaintUI.SetActive(true);
-        canvasPaintUI.SetActive(true);
-        uiState = UIState.paint;
-        paintState = PaintState.none;
-        PaintManager.mainLayout.SetActive(true);
-    }
+   
 
     public IEnumerator takePicture()
     {
         yield return new WaitForEndOfFrame();
 
         // 화면 캡쳐
-
         if (uiState == UIState.camera)
         {
             texture = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, true);
@@ -1554,7 +1183,6 @@ public class GameManager : MonoBehaviour
             texture.Apply();
             capturePic.GetComponent<MeshRenderer>().material.mainTexture = texture;
             canvasCaptureUI.SetActive(true);
-            //cameraChar.SetActive(false);
 
             uiState = UIState.paint;
             canvasBottomButtonUI.SetActive(false);
@@ -1562,6 +1190,7 @@ public class GameManager : MonoBehaviour
             cameraPaintUI.SetActive(true);
             canvasPaintUI.SetActive(true);
         }
+        //사진저장
         else
         {
             texture = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, true);
@@ -1645,7 +1274,7 @@ public class GameManager : MonoBehaviour
 #if !UNITY_EDITOR && UNITY_ANDROID
             AndroidFuntionCall.instance.mediaScan();
 #endif
-            PopupManager.instance.showPraiseMsgPopup();
+            PopupManager.instance.showPraiseMsgToast();
             canvasSaveUI.SetActive(true);
         }
         catch (Exception ex)
@@ -1669,7 +1298,7 @@ public class GameManager : MonoBehaviour
 
 			instantiateSound(saveSound);
 			canvasSaveUI.SetActive(true);
-			PopupManager.instance.showPraiseMsgPopup();
+			PopupManager.instance.showPraiseMsgToast();
 			uiState = UIState.save;
 
 #endif
@@ -1682,118 +1311,81 @@ public class GameManager : MonoBehaviour
         charInfo = new CharacterInfo("0", "0", "0", "0", "0", "0");
         arCharacter.gameObject.SetActive(false);
     }
-
-    private List<string> GetAllGalleryImagePaths()
-    {
-        List<string> results = new List<string>();
-        HashSet<string> allowedExtesions = new HashSet<string>() { ".png", ".jpg", ".jpeg" };
-
-        try
-        {
-            errorState = Error.none;
-            AndroidJavaClass mediaClass = new AndroidJavaClass("android.provider.MediaStore$Images$Media");
-
-            // Set the tags for the data we want about each image.  This should really be done by calling; 
-            //string dataTag = mediaClass.GetStatic<string>("DATA");
-            // but I couldn't get that to work...
-
-            const string dataTag = "_data";
-
-            string[] projection = new string[] { dataTag };
-            AndroidJavaClass player = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-            AndroidJavaObject currentActivity = player.GetStatic<AndroidJavaObject>("currentActivity");
-
-            string[] urisToSearch = new string[] { "EXTERNAL_CONTENT_URI", "INTERNAL_CONTENT_URI" };
-            foreach (string uriToSearch in urisToSearch)
-            {
-                AndroidJavaObject externalUri = mediaClass.GetStatic<AndroidJavaObject>(uriToSearch);
-                AndroidJavaObject finder = currentActivity.Call<AndroidJavaObject>("managedQuery", externalUri, projection, null, null, null);
-                bool foundOne = finder.Call<bool>("moveToFirst");
-                while (foundOne)
-                {
-                    int dataIndex = finder.Call<int>("getColumnIndex", dataTag);
-                    string data = finder.Call<string>("getString", dataIndex);
-                    if (allowedExtesions.Contains(Path.GetExtension(data).ToLower()))
-                    {
-                        string path = @"file:///" + data;
-                        results.Add(path);
-                    }
-
-                    foundOne = finder.Call<bool>("moveToNext");
-                }
-            }
-        }
-        catch (System.Exception e)
-        {
-            // do something with error...
-            errorState = Error.galleray;
-            PopupManager.instance.showPopup("사진첩을 불러 올 수 없습니다. \n 잠시후 시도해 주세요.");
-            Debug.Log(e.ToString());
-        }
-
-        return results;
-    }
-    public void showCardInfo(GameObject obj)
+    /// <summary>
+    /// 의상 착용했을 때 왼쪽 의상 아이콘 버튼
+    /// 원피스는 상의, 하의 두개 표시
+    /// </summary>
+    /// <param name="obj"></param>
+    public void offCloth(GameObject obj)
     {
 
-        if (obj.transform.name == "top" && (charInfo.top.Contains("top") || charInfo.onepiece.Contains("onepiece")))
-        {
-            obj.transform.Find("Image").transform.gameObject.SetActive(true);
-        }
-        else if (obj.transform.name == "bottom" && (charInfo.bottom.Contains("bottom") || charInfo.onepiece.Contains("onepiece")))
-        {
-            obj.transform.Find("Image").transform.gameObject.SetActive(true);
-        }
-        else if (obj.transform.name == "shoes" && charInfo.shoes.Contains("shoes"))
-        {
-            obj.transform.Find("Image").transform.gameObject.SetActive(true);
-        }
-        else if (obj.transform.name == "acc" && charInfo.acc.Contains("acc"))
-        {
-            obj.transform.Find("Image").transform.gameObject.SetActive(true);
-        }
-    }
-    public void btnRecogObj(bool btn)
-    {
         instantiateSound(clickSound);
         if (uiState == UIState.main)
         {
-            if (btn)
+            if (obj.transform.name == "top" && (charInfo.top.Contains("top") || charInfo.onepiece.Contains("onepiece")))
             {
-                if (isOnCloth)
-                    testArCameraTrackableEventHandler.instance.recObj(recogObjName);
-                else
-                    offCloth(offObjName);
-            }
-            else
-            {
-                if (recogObjName.Contains("char") && !charInfo.body.Contains("char"))
+                if (charInfo.top.Contains("top"))
                 {
-                    guideButtonUI.SetActive(true);
-                    closeGuide();
+                    offClothPopup(charInfo.top);
+
                 }
-                recogObjName = null;
-                offObjName = null;
+                else if (charInfo.onepiece.Contains("onepiece"))
+                {
+                    offClothPopup(charInfo.onepiece);
+                }
+
             }
-            canvasRecObj.SetActive(false);
-            availableRecognize = true;
-            GuideLine.SetActive(true);
+            else if (obj.transform.name == "bottom" && (charInfo.bottom.Contains("bottom") || charInfo.onepiece.Contains("onepiece")))
+            {
+                if (charInfo.bottom.Contains("bottom"))
+                {
+                    offClothPopup(charInfo.bottom);
+                }
+                else if (charInfo.onepiece.Contains("onepiece"))
+                {
+                    offClothPopup(charInfo.onepiece);
+                }
+
+            }
+            else if (obj.transform.name == "shoes" && charInfo.shoes.Contains("shoes"))
+            {
+                offClothPopup(charInfo.shoes);
+            }
+            else if (obj.transform.name == "acc" && charInfo.acc.Contains("acc"))
+            {
+                offClothPopup(charInfo.acc);
+            }
         }
         else if (uiState == UIState.fashion)
         {
-            if (btn)
+            if (obj.transform.name == "top" && (charInfo.top.Contains("top") || charInfo.onepiece.Contains("onepiece")))
             {
-                offCloth(offObjName);
-                onClothCount--;
-            }
-            else
-            {
+                if (charInfo.top.Contains("top"))
+                {
+                    offClothPopup(charInfo.top);
+
+                }
+                else if (charInfo.onepiece.Contains("onepiece"))
+                {
+                    offClothPopup(charInfo.onepiece);
+                }
 
             }
-            offObjName = null;
-            FashionRecognition.canvasFashion.transform.Find("popup").gameObject.SetActive(false);
+            else if (obj.transform.name == "bottom" && (charInfo.bottom.Contains("bottom") || charInfo.onepiece.Contains("onepiece")))
+            {
+                if (charInfo.bottom.Contains("bottom"))
+                {
+                    offClothPopup(charInfo.bottom);
+                }
+                else if (charInfo.onepiece.Contains("onepiece"))
+                {
+                    offClothPopup(charInfo.onepiece);
+                }
+
+            }
         }
     }
+   
     public void offClothPopup(string obj)
     {
         if (uiState == UIState.main)
@@ -1830,6 +1422,58 @@ public class GameManager : MonoBehaviour
 
         }
     }
+
+    /// <summary>
+    /// 의상 착용, 해제 팝업 버튼
+    /// </summary>
+    /// <param name="btn"></param>
+    public void btnRecogObj(bool btn)
+    {
+        instantiateSound(clickSound);
+        if (uiState == UIState.main)
+        {
+            if (btn)
+            {
+                if (isOnCloth)
+                    testArCameraTrackableEventHandler.instance.recObj(recogObjName);
+                else
+                    offCloth(offObjName);
+            }
+            else
+            {
+                Debug.Log("body : " + charInfo.body);
+                if (recogObjName.Contains("char") && !charInfo.body.Contains("char"))
+                {
+                    guideButtonUI.SetActive(true);
+                    closeGuide();
+                }
+                recogObjName = "";
+                offObjName = "";
+            }
+            canvasRecObj.SetActive(false);
+            availableRecognize = true;
+            GuideLine.SetActive(true);
+        }
+        else if (uiState == UIState.fashion)
+        {
+            if (btn)
+            {
+                offCloth(offObjName);
+                onClothCount--;
+            }
+            else
+            {
+
+            }
+            offObjName = null;
+        FashionRecognition.canvasFashion.transform.Find("popup").gameObject.SetActive(false);
+        }
+    }
+   
+    /// <summary>
+    /// 캐릭터의상 해제
+    /// </summary>
+    /// <param name="cloth"></param>
     public void offCloth(string cloth)
     {
         if (uiState == UIState.main || uiState == UIState.camera)
@@ -1911,75 +1555,11 @@ public class GameManager : MonoBehaviour
         }
 
     }
-    public void offCloth(GameObject obj)
-    {
-
-        instantiateSound(clickSound);
-        if (uiState == UIState.main)
-        {
-            if (obj.transform.name == "top" && (charInfo.top.Contains("top") || charInfo.onepiece.Contains("onepiece")))
-            {
-                if (charInfo.top.Contains("top"))
-                {
-                    offClothPopup(charInfo.top);
-
-                }
-                else if (charInfo.onepiece.Contains("onepiece"))
-                {
-                    offClothPopup(charInfo.onepiece);
-                }
-
-            }
-            else if (obj.transform.name == "bottom" && (charInfo.bottom.Contains("bottom") || charInfo.onepiece.Contains("onepiece")))
-            {
-                if (charInfo.bottom.Contains("bottom"))
-                {
-                    offClothPopup(charInfo.bottom);
-                }
-                else if (charInfo.onepiece.Contains("onepiece"))
-                {
-                    offClothPopup(charInfo.onepiece);
-                }
-
-            }
-            else if (obj.transform.name == "shoes" && charInfo.shoes.Contains("shoes"))
-            {
-                offClothPopup(charInfo.shoes);
-            }
-            else if (obj.transform.name == "acc" && charInfo.acc.Contains("acc"))
-            {
-                offClothPopup(charInfo.acc);
-            }
-        }
-        else if (uiState == UIState.fashion)
-        {
-            if (obj.transform.name == "top" && (charInfo.top.Contains("top") || charInfo.onepiece.Contains("onepiece")))
-            {
-                if (charInfo.top.Contains("top"))
-                {
-                    offClothPopup(charInfo.top);
-
-                }
-                else if (charInfo.onepiece.Contains("onepiece"))
-                {
-                    offClothPopup(charInfo.onepiece);
-                }
-
-            }
-            else if (obj.transform.name == "bottom" && (charInfo.bottom.Contains("bottom") || charInfo.onepiece.Contains("onepiece")))
-            {
-                if (charInfo.bottom.Contains("bottom"))
-                {
-                    offClothPopup(charInfo.bottom);
-                }
-                else if (charInfo.onepiece.Contains("onepiece"))
-                {
-                    offClothPopup(charInfo.onepiece);
-                }
-
-            }
-        }
-    }
+    /// <summary>
+    /// 캐릭터 의상 착용
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="cardName"></param>
     public void onCloth(string obj, string cardName)
     {
         if (cardName.Contains(obj))
@@ -2103,6 +1683,9 @@ public class GameManager : MonoBehaviour
         dicCard.Add("5_6", new CardInfo("shuelidol_acc", "아이돌 헤어리본", PlayerPrefs.GetInt("shuelidol_acc"), 0, 5, 4, 230));
         dicCard.Add("5_7", new CardInfo("patissier_acc", "파티시에 모자", PlayerPrefs.GetInt("patissier_acc"), 1, 5, 3, 400));
     }
+    /// <summary>
+    /// 패션인식 버튼
+    /// </summary>
     public void fasionRecognition()
     {
         isCardRecognition = false;
@@ -2116,6 +1699,11 @@ public class GameManager : MonoBehaviour
             showRecognitionCanvas(isCardRecognition);
         }
     }
+    /// <summary>
+    /// 패션인식, 카드인식 화면으로 이동
+    /// true: 카드인식, false: 패션인식
+    /// </summary>
+    /// <param name="cardRec"></param>
     public void showRecognitionCanvas(bool cardRec)
     {
         if (cardRec)
